@@ -1,3 +1,39 @@
+# ECLIPSE
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+
+# Locally stored "Eclipse launch configurations"
+#*.launch
+
+
+# JAVA
+# Compiled class file
+*.class
+
+
+# Package Files #
+*.jar
+# *.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+
+# MAVEN
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -10,3 +46,7 @@ buildNumber.properties
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
+
+
+# pom.properties
+Item 1/Acme-Madruga/target/m2e-wtp/web-resources/META-INF/maven/Acme.com/Acme-Madruga/pom.properties
