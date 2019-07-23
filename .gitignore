@@ -25,7 +25,7 @@ local.properties
 *.jar
 # *.war
 *.ear
-*.zip
+.zip
 *.tar.gz
 *.rar
 
@@ -50,3 +50,7 @@ buildNumber.properties
 
 # pom.properties
 Item 1/Acme-Madruga/target/m2e-wtp/web-resources/META-INF/maven/Acme.com/Acme-Madruga/pom.properties
+
+# IDEA
+*.idea
+*.iml
