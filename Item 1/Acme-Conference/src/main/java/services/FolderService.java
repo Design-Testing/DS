@@ -63,7 +63,6 @@ public class FolderService {
 		return saved;
 	}
 
-	//TODO ALBA llamar al método en el sitio correspondiente
 	public Collection<Folder> setFoldersByDefault(final Actor actor) {
 		final Collection<Folder> folders = new ArrayList<Folder>();
 		final Collection<Message> messages = new ArrayList<Message>();
