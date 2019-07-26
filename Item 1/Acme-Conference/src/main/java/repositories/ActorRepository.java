@@ -12,8 +12,8 @@ import domain.Actor;
 @Repository
 public interface ActorRepository extends JpaRepository<Actor, Integer> {
 
-	//@Query("select count(a) from Folder f join f.actor a join f.messages m where m.id=?1")
-	//int countByMessageId(Integer id);
+	@Query("select count(a) from Folder f join f.actor a join f.messages m where m.id=?1")
+	int countByMessageId(Integer id);
 
 	@Query("select a from Actor a where a.userAccount.id=?1")
 	Actor findByUserId(Integer id);

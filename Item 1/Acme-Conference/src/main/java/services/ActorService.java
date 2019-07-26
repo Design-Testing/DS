@@ -48,6 +48,11 @@ public class ActorService {
 		return this.actorRepository.findByUserId(id);
 	}
 
+	public int countByMessageId(final Integer id) {
+		Assert.isTrue(id != 0);
+		return this.actorRepository.countByMessageId(id);
+	}
+
 	public Actor findByPrincipal() {
 		final UserAccount user = LoginService.getPrincipal();
 		Assert.notNull(user, "User account principal cannot be null");

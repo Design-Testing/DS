@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 import repositories.MessageRepository;
 import security.Authority;
 import domain.Actor;
+import domain.Folder;
 import domain.Message;
 
 @Service
@@ -29,7 +30,7 @@ public class MessageService {
 	private AdministratorService	administratorService;
 
 	@Autowired
-	private AuthorService			authorService;
+	private FolderService			folderService;
 
 
 	public Message create() {
@@ -57,15 +58,30 @@ public class MessageService {
 	 * */
 	public Message send(final Message m) {
 		Assert.notNull(m);
-		Assert.isTrue(m.getId() == 0);
 
 		final Actor sender = this.actorService.findByPrincipal();
+		final Folder outbox = this.folderService.findOutboxByUserId(sender.getUserAccount().getId());
+		final Collection<Message> outboxMessages = outbox.getMessages();
 
 		m.setSender(sender);
 		final Date moment = new Date(System.currentTimeMillis() - 1000);
 		m.setMoment(moment);
 
+		final Collection<Actor> recipients = m.getRecivers();
+		Folder inbox;
+
 		final Message sent = this.messageRepository.save(m);
+
+		outboxMessages.add(sent);
+		outbox.setMessages(outboxMessages);
+
+		for (final Actor r : recipients) {
+			inbox = this.folderService.findInboxByUserId(r.getUserAccount().getId());
+			final Collection<Message> inboxMessages = inbox.getMessages();
+			inboxMessages.add(sent);
+			inbox.setMessages(inboxMessages);
+			this.folderService.save(inbox, r);
+		}
 
 		return sent;
 	}
@@ -105,7 +121,7 @@ public class MessageService {
 		this.send(m);
 	}
 
-	//TODO ALBA
+	//TODO ALBA llamar al método en el sitio correspondiente
 	/**
 	 * This method sends a message to the authors who have made a submission to a conference and sets the logged user as the sender.
 	 * */
@@ -126,7 +142,7 @@ public class MessageService {
 		this.send(m);
 	}
 
-	//TODO ALBA
+	//TODO ALBA llamar al método en el sitio correspondiente
 	/**
 	 * This method sends a message to the authors who has registered to a conference and sets the logged user as the sender.
 	 * */
@@ -147,8 +163,32 @@ public class MessageService {
 		this.send(m);
 	}
 
-	//TODO ALBA
-	public void delete(final Message message) {
+	public Collection<Message> findAllByFolderIdAndUserId(final int folderId, final int userAccountId) {
+		Assert.isTrue(folderId != 0);
+		Assert.isTrue(userAccountId != 0);
+
+		return this.messageRepository.findAllByFolderIdAndUserId(folderId, userAccountId);
+	}
+
+	/**
+	 * Remove a message from a folder
+	 * */
+	public void deleteFromFolder(final Message message, final Folder folder) {
+		Assert.notNull(message);
+		Assert.isTrue(message.getId() != 0);
+		Assert.isTrue(folder.getMessages().contains(message));
+
+		final Actor principal = this.actorService.findByPrincipal();
+
+		final Collection<Message> folderMessages = this.findAllByFolderIdAndUserId(folder.getId(), principal.getUserAccount().getId());
+
+		folderMessages.remove(message);
+		folder.setMessages(folderMessages);
+		this.folderService.save(folder, principal);
+
+		//Delete message from db if only exists in one folder
+		if (this.actorService.countByMessageId(message.getId()) == 0)
+			this.messageRepository.delete(message);
 
 	}
 

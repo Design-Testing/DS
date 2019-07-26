@@ -22,4 +22,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 	@Query("select m from Message m join m.recivers r where r.id=?1")
 	Collection<Message> findAllByRecipient(int recipientId);
 
+	@Query("select m from Folder f join f.messages m where f.id=?1 and f.actor.userAccount.id=?2")
+	Collection<Message> findAllByFolderIdAndUserId(Integer mid, Integer uid);
+
 }
