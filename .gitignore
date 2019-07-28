@@ -54,3 +54,6 @@ Item 1/Acme-Madruga/target/m2e-wtp/web-resources/META-INF/maven/Acme.com/Acme-Ma
 # IDEA
 *.idea
 *.iml
+
+# Entities map
+*.map

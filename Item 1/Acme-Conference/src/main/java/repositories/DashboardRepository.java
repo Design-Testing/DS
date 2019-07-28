@@ -23,7 +23,7 @@ public interface DashboardRepository extends JpaRepository<DomainEntity, Integer
 	Double[] getConferenceFees();
 
 	/** Average, minimum, maximum and standard deviation of the number of days per conference. */
-	@Query()
+	@Query("select avg(day(c.endDate) - day(c.startDate)), min(day(c.endDate) - day(c.startDate)), max(day(c.endDate) - day(c.startDate)), stddev(day(c.endDate) - day(c.startDate)) from Conference c")
 	Double[] getNumberOfDaysPerConference();
 
 	/** Average, minimum, maximum and standard deviation of the number of conferences per category. */
