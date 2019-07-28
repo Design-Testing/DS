@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Register extends DomainEntity {
+public class Registration extends DomainEntity {
 
 	private CreditCard	creditCard;
 

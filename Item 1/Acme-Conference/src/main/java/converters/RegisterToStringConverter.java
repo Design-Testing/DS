@@ -6,14 +6,14 @@ import javax.transaction.Transactional;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import domain.Register;
+import domain.Registration;
 
 @Component
 @Transactional
-public class RegisterToStringConverter implements Converter<Register, String> {
+public class RegisterToStringConverter implements Converter<Registration, String> {
 
 	@Override
-	public String convert(final Register register) {
+	public String convert(final Registration register) {
 
 		String result;
 

@@ -1,5 +1,5 @@
 #./src/main/resources/Entities.map
-#Fri Jul 26 10:11:02 CEST 2019
+#Sun Jul 28 14:06:27 CEST 2019
 reviewer1=1796
 inBoxReviewer2=1827
 inBoxReviewer1=1825
@@ -48,6 +48,8 @@ userAccountSponsor1=1755
 author1=1798
 outBoxSponsor2=1822
 outBoxSponsor1=1820
+registration2=1809
+registration1=1808
 presentation2=1805
 presentation1=1807
 inBoxAdmin2=1815
@@ -73,8 +75,6 @@ outBoxAuthor2=1818
 outBoxAuthor1=1816
 sponsorship2=1811
 sponsorship1=1810
-register2=1809
-register1=1808
 comment5=1782
 comment4=1781
 comment3=1780

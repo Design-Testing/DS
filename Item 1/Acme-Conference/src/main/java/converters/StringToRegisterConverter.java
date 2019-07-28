@@ -8,21 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import repositories.RegisterRepository;
-import domain.Register;
+import repositories.RegistrationRepository;
+import domain.Registration;
 
 @Component
 @Transactional
-public class StringToRegisterConverter implements Converter<String, Register> {
+public class StringToRegisterConverter implements Converter<String, Registration> {
 
 	@Autowired
-	private RegisterRepository	registerRepository;
+	private RegistrationRepository	registerRepository;
 
 
 	@Override
-	public Register convert(final String text) {
+	public Registration convert(final String text) {
 
-		final Register result;
+		final Registration result;
 		final int id;
 
 		try {

@@ -987,13 +987,13 @@
 	<!-- ========================== REGISTER =============================== -->
 	<!-- =================================================================== -->
 
-	<bean id="register1" class="domain.Register">
+	<bean id="registration1" class="domain.Registration">
 		<property name="author" ref="author1" />
 		<property name="conference" ref="conference1" />
 		<property name="creditCard" ref="creditCard1" />
 	</bean>
 
-	<bean id="register2" class="domain.Register">
+	<bean id="registration2" class="domain.Registration">
 		<property name="author" ref="author2" />
 		<property name="conference" ref="conference2" />
 		<property name="creditCard" ref="creditCard2" />
