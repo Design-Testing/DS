@@ -110,9 +110,6 @@ public class ActorService {
 		final Collection<Authority> auths = user.getAuthorities();
 		Assert.notEmpty(auths);
 
-		final Authority banned = new Authority();
-		Assert.isTrue(!auths.contains(banned));
-
 		final Authority newAuth = new Authority();
 		newAuth.setAuthority(auth);
 

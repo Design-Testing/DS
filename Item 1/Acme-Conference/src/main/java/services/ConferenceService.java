@@ -25,10 +25,10 @@ import forms.ConferenceForm;
 public class ConferenceService {
 
 	@Autowired
-	ConferenceRepository	conferenceRepository;
+	private ConferenceRepository	conferenceRepository;
 
 	@Autowired
-	private Validator		validator;
+	private Validator				validator;
 
 
 	//METODOS CRUD
@@ -122,6 +122,7 @@ public class ConferenceService {
 		pruned.setEndDate(conference.getEndDate());
 		pruned.setSummary(conference.getSummary());
 		pruned.setFee(conference.getFee());
+		pruned.setCategory(conference.getCategory());
 
 		return pruned;
 	}
@@ -145,6 +146,7 @@ public class ConferenceService {
 		result.setEndDate(conferenceForm.getEndDate());
 		result.setSummary(conferenceForm.getSummary());
 		result.setFee(conferenceForm.getFee());
+		result.setCategory(conferenceForm.getCategory());
 
 		this.validator.validate(result, binding);
 

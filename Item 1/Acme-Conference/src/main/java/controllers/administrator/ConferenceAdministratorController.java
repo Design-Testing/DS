@@ -116,6 +116,7 @@ public class ConferenceAdministratorController extends AbstractController {
 			result.addObject("isAdministrator", true);
 			result.addObject("categories", this.categoryRepository.findAll());
 			result.addObject("lang", this.lang);
+			System.out.println("AQUIIIIIIIII " + this.lang);
 		}
 
 		else
@@ -134,6 +135,7 @@ public class ConferenceAdministratorController extends AbstractController {
 			result.addObject("conferenceForm", conferenceForm);
 			result.addObject("isAdministrator", true);
 			result.addObject("errors", binding.getAllErrors());
+			result.addObject("lang", this.lang);
 		} else
 			try {
 				Conference conference = this.conferenceService.reconstruct(conferenceForm, binding);
@@ -143,12 +145,15 @@ public class ConferenceAdministratorController extends AbstractController {
 				result = new ModelAndView("conference/edit");
 				result.addObject("conferenceForm", conferenceForm);
 				result.addObject("isAdministrator", true);
+				result.addObject("lang", this.lang);
 				result.addObject("errors", "commit.lesson.error");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("conference/edit");
 				result.addObject("conferenceForm", conferenceForm);
 				result.addObject("isAdministrator", true);
+				result.addObject("lang", this.lang);
 				result.addObject("errors", binding.getAllErrors());
+
 			}
 
 		return result;

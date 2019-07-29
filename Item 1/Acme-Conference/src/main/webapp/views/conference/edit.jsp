@@ -20,6 +20,8 @@
     <form:hidden path="version"/>
     
     
+    
+    
     <acme:textbox path="title" code="conference.title"/>
     <br/>
     
@@ -54,9 +56,7 @@
 	
 	
 	
-    
-    
-    <form:label path="category">
+       <form:label path="category">
         <spring:message code="conference.category"/>:
     </form:label>
     <form:select path="category" code="conference.category">
@@ -72,28 +72,18 @@
 	
     <br/>
     <br/>
+    
+    
+  
+	
+    <br/>
+    <br/>
 
     
 
 
 
-	<!--<form:label path="recipients">
-        <spring:message code="message.recipients"/>:
-    </form:label>
-    <form:select path="recipients" code="message.recipients">
-    	<jstl:forEach items="${recipients}" var="r">
-    		<form:option value="${r.id}" label="${r.name}"/>
-    	</jstl:forEach>
-    </form:select> -->
-
-    <!--<form:label path="priority">
-        <spring:message code="message.priority"/>:
-    </form:label>
-    <form:select path="priority" code="message.priority">
-        <form:options items="${priorities}"/>
-    </form:select>-->
-    <br/>
-    <br/>
+	
 
 
     <!---------------------------- BOTONES -------------------------->

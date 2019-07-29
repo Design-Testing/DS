@@ -31,19 +31,19 @@
 		</display:column>
 		
 		<display:column>
-		<jstl:if test=${row.isDraft eq true } >
-			<acme:button url="conference/admistrator/edit.do?conferenceId=${row.id}" name="display" code="conference.edit"/>		
+		<jstl:if test="${row.isDraft eq true }" >
+			<acme:button url="conference/administrator/edit.do?conferenceId=${row.id}" name="display" code="conference.edit"/>		
 		</jstl:if>
-		<jstl:if test=${row.isDraft eq false } >
+		<jstl:if test="${row.isDraft eq false }" >
 			-
 		</jstl:if>
 		</display:column>
 		
 		<display:column>
-		<jstl:if test=${row.isDraft eq true } >
-			<acme:button url="conference/admistrator/finalMode.do?conferenceId=${row.id}" name="display" code="conference.toFinal"/>		
+		<jstl:if test="${row.isDraft eq true }" >
+			<acme:button url="conference/administrator/finalMode.do?conferenceId=${row.id}" name="display" code="conference.toFinal"/>		
 		</jstl:if>
-		<jstl:if test=${row.isDraft eq false } >
+		<jstl:if test="${row.isDraft eq false }" >
 			<spring:message code="conference.final"/>
 		</jstl:if>
 		</display:column>
@@ -52,10 +52,10 @@
 	<jstl:when test="${isAdministrator eq false }">
 	
 		<display:column>
-		<jstl:if test=${row.isDraft eq true } >
+		<jstl:if test="${row.isDraft eq true }" >
 			<spring:message code="conference.not.final"/>		
 		</jstl:if>
-		<jstl:if test=${row.isDraft eq false } >
+		<jstl:if test="${row.isDraft eq false }" >
 			<acme:button url="conference/display.do?conferenceId=${row.id}" name="display" code="conference.display"/>
 		</jstl:if>
 			
