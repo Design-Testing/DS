@@ -29,7 +29,7 @@ public class ConferenceController extends AbstractController {
 
 		final Conference conference = this.conferenceService.findOne(conferenceId);
 
-		if (conference != null) {
+		if (conference != null && conference.getIsDraft() == false) {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", false);

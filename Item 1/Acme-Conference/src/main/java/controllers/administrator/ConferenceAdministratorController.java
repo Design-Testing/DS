@@ -92,7 +92,7 @@ public class ConferenceAdministratorController extends AbstractController {
 				String errormsg = "error";
 				result = this.myConferences();
 				if (!conference.getIsDraft())
-					errormsg = "error.already.draft";
+					errormsg = "conference.error.already.final";
 				result.addObject("msg", errormsg);
 				result.addObject("isAdministrator", true);
 			}
