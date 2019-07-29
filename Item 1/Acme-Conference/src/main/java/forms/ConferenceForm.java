@@ -1,14 +1,11 @@
 
-package domain;
+package forms;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,38 +17,29 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import domain.Category;
+import domain.DomainEntity;
+
 @Entity
 @Access(AccessType.PROPERTY)
-public class Conference extends DomainEntity {
+public class ConferenceForm extends DomainEntity {
 
 	//Atributos
-	private String					title;
-	private String					acronym;
-	private String					venue;
-	private Date					submission;
-	private Date					notification;
-	private Date					cameraReady;
-	private Date					startDate;
-	private Date					endDate;
-
-	private String					summary;
-	private Double					fee;
-	private Boolean					isDraft;
+	private String		title;
+	private String		acronym;
+	private String		venue;
+	private Date		submission;
+	private Date		notification;
+	private Date		cameraReady;
+	private Date		startDate;
+	private Date		endDate;
+	private String		summary;
+	private Double		fee;
 
 	//Relaciones
 
-	private Category				category;
-	private Collection<Activity>	activities;
+	private Category	category;
 
-
-	@NotNull
-	public Boolean getIsDraft() {
-		return this.isDraft;
-	}
-
-	public void setIsDraft(final Boolean isDraft) {
-		this.isDraft = isDraft;
-	}
 
 	@NotBlank
 	@SafeHtml
@@ -152,16 +140,6 @@ public class Conference extends DomainEntity {
 
 	public void setCategory(final Category category) {
 		this.category = category;
-	}
-
-	@Valid
-	@OneToMany(cascade = CascadeType.ALL)
-	public Collection<Activity> getActivities() {
-		return this.activities;
-	}
-
-	public void setActivities(final Collection<Activity> activities) {
-		this.activities = activities;
 	}
 
 }

@@ -1,13 +1,3 @@
-<%--
- * header.jsp
- *
- * Copyright (C) 2018 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- --%>
-
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -19,8 +9,17 @@
 
 <div>
 	<ul id="jMenu">
+	
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
+		
+		
+		<!------------------------------------------------------------>
+		<!------------------------ ADMIN ---------------------------->
+		<!------------------------------------------------------------>
+		
+		
 		<security:authorize access="hasRole('ADMIN')">
+			<li><a class="fNiv" href="conference/administrator/myConferences.do"><spring:message code="master.page.my.conferences" /></a></li>
 			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -30,19 +29,64 @@
 			</li>
 		</security:authorize>
 		
-		<security:authorize access="hasRole('CUSTOMER')">
-			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message code="master.page.customer.action.2" /></a></li>					
-				</ul>
-			</li>
+		
+		
+		<!------------------------------------------------------------>
+		<!------------------------ AUTHOR ---------------------------->
+		<!------------------------------------------------------------>
+		
+		
+		<security:authorize access="hasRole('AUTHOR')">
+			<li><a class="fNiv" href="conference/list.do"><spring:message code="master.page.conferences" /></a></li>
+			
 		</security:authorize>
 		
+		
+		
+		<!-------------------------------------------------------------->
+		<!------------------------ REVIEWER ---------------------------->
+		<!-------------------------------------------------------------->
+		
+		
+		
+		<security:authorize access="hasRole('REVIEWER')">
+			<li><a class="fNiv" href="conference/list.do"><spring:message code="master.page.conferences" /></a></li>
+			
+		</security:authorize>
+		
+		
+		
+		<!------------------------------------------------------------->
+		<!------------------------ SPONSOR ---------------------------->
+		<!------------------------------------------------------------->
+		
+		
+		<security:authorize access="hasRole('SPONSOR')">
+			<li><a class="fNiv" href="conference/list.do"><spring:message code="master.page.conferences" /></a></li>
+			
+		</security:authorize>
+		
+		
+		
+		<!--------------------------------------------------------------->
+		<!------------------------ ANONYMOUS ---------------------------->
+		<!--------------------------------------------------------------->
+		
+		
+		
 		<security:authorize access="isAnonymous()">
+			<li><a class="fNiv" href="conference/list.do"><spring:message code="master.page.conferences" /></a></li>
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 		</security:authorize>
+		
+		
+		
+		
+		<!------------------------------------------------------------------->
+		<!------------------------ AUTHENTICATED ---------------------------->
+		<!------------------------------------------------------------------->
+		
+		
 		
 		<security:authorize access="isAuthenticated()">
 			<li>
