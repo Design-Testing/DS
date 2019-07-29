@@ -28,9 +28,11 @@ public interface SponsorshipRepository extends JpaRepository<Sponsorship, Intege
 	//@Query("select s from Sponsorship s where s.position.id=?1")
 	//Collection<Sponsorship> findByPosition(int positionId);
 
-	@Query("select s from Sponsorship s where s.position.id=?1 and s.sponsor.userAccount.id=?2")
-	Sponsorship findByPosition(int positionId, int sponsorUAId);
+	//TODO ERROR DE VALIDACIÓN AL CORRER SERVIDOR
+	//@Query("select s from Sponsorship s where s.position.id=?1 and s.sponsor.userAccount.id=?2")
+	//Sponsorship findByPosition(int positionId, int sponsorUAId);
 
+	//TODO ERROR DE VALIDACIÓN AL CORRER SERVIDOR
 	//@Query("select case when (count(sp) > 0) then false else true end from Sponsorship sp where sp.position.id=?1 and sp.sponsor.userAccount.id=?2")
 	//boolean availableSponsorshipPosition(int positionId, int sponsorUAId);
 
