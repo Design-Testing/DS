@@ -10,6 +10,10 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 
+ <input type="button" class="btn btn-danger" name="create"
+           value="<spring:message code="conference.create" />"
+           onclick="relativeRedir('conference/administrator/create.do');"/>
+
 <display:table name="conferences" id="row"
 		requestURI="${requestURI}" pagesize="5"
 		class="displaytag">
@@ -25,14 +29,31 @@
 		<display:column>
 			<acme:button url="conference/admistrator/display.do?conferenceId=${row.id}" name="display" code="conference.display"/>
 		</display:column>
+		
+		<display:column>
+		<jstl:if test=${row.isDraft eq true } >
+			<acme:button url="conference/admistrator/edit.do?conferenceId=${row.id}" name="display" code="conference.edit"/>		
+		</jstl:if>
+		<jstl:if test=${row.isDraft eq false } >
+			-
+		</jstl:if>
+		</display:column>
+		
+		<display:column>
+		<jstl:if test=${row.isDraft eq true } >
+			<acme:button url="conference/admistrator/finalMode.do?conferenceId=${row.id}" name="display" code="conference.toFinal"/>		
+		</jstl:if>
+		<jstl:if test=${row.isDraft eq false } >
+			<spring:message code="conference.final"/>
+		</jstl:if>
+		</display:column>
 	
 	</jstl:when>
 	<jstl:when test="${isAdministrator eq false }">
 	
 		<display:column>
 		<jstl:if test=${row.isDraft eq true } >
-		
-		
+			<spring:message code="conference.not.final"/>		
 		</jstl:if>
 		<jstl:if test=${row.isDraft eq false } >
 			<acme:button url="conference/display.do?conferenceId=${row.id}" name="display" code="conference.display"/>
@@ -44,40 +65,7 @@
 	</jstl:choose>
 	
 	
-	<display:column>
-		<acme:button url="conference/display.do?lessonId=${row.id}" name="display" code="lesson.display"/>
-	</display:column>
 	
-	<security:authorize access="hasRole('TEACHER')">
-		<display:column>
-			<jstl:if test="${row.isDraft}">
-				<acme:button url="lesson/teacher/edit.do?lessonId=${row.id}&subjectId=${row.subject.id}" name="edit" code="lesson.edit"/>
-			</jstl:if>
-		</display:column>
-		
-		<display:column>
-			<jstl:if test="${row.isDraft}">
-				<acme:button url="lesson/teacher/finalMode.do?lessonId=${row.id}" name="finalMode" code="lesson.finalMode"/>
-			</jstl:if>
-		</display:column>
-		
-			<jstl:choose>
-				<jstl:when test="${not empty reservations}">
-				</jstl:when>
-				<jstl:otherwise>
-					<display:column>
-					<acme:button url="lesson/teacher/delete.do?lessonId=${row.id}" name="delete" code="lesson.delete"/>
-					</display:column>
-				</jstl:otherwise>
-			</jstl:choose>
-		
-	</security:authorize>
-	
-	<security:authorize access="hasRole('STUDENT')">
-			<display:column>
-				<acme:button url="assesment/student/create.do?lessonId=${row.id}" name="create" code="lesson.assesment.create"/>
-			</display:column>
-		</security:authorize>
 
 </display:table>
 
