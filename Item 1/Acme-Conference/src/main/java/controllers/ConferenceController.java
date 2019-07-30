@@ -5,13 +5,19 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
+import services.ActorService;
 import services.ConferenceService;
+import domain.Actor;
 import domain.Conference;
 
 @Controller
@@ -20,6 +26,9 @@ public class ConferenceController extends AbstractController {
 
 	@Autowired
 	private ConferenceService	conferenceService;
+
+	@Autowired
+	private ActorService		actorService;
 
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
@@ -32,10 +41,25 @@ public class ConferenceController extends AbstractController {
 
 		final Conference conference = this.conferenceService.findOne(conferenceId);
 
+		final SecurityContext context = SecurityContextHolder.getContext();
+		final Authentication authentication = context.getAuthentication();
+		final Object principal = authentication.getPrincipal();
+
+		Boolean isAuthor = false;
+		if (!principal.toString().equals("anonymousUser")) {
+			final Actor logged = this.actorService.findByPrincipal();
+			final Authority authAuthor = new Authority();
+			authAuthor.setAuthority("AUTHOR");
+			if (logged.getUserAccount().getAuthorities().contains(authAuthor))
+				isAuthor = true;
+
+		}
+
 		if (conference != null && conference.getIsDraft() == false) {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", false);
+			result.addObject("isAuthor", isAuthor);
 			result.addObject("lang", this.lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");

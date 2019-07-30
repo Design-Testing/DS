@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import repositories.CategoryRepository;
 import services.AdministratorService;
-import services.CategoryService;
 import services.ConferenceService;
 import controllers.AbstractController;
 import domain.Conference;
@@ -37,9 +36,6 @@ public class ConferenceAdministratorController extends AbstractController {
 
 	@Autowired
 	private CategoryRepository		categoryRepository;
-
-	@Autowired
-	private CategoryService			categoryService;
 
 	final String					lang	= LocaleContextHolder.getLocale().getLanguage();
 
@@ -263,7 +259,7 @@ public class ConferenceAdministratorController extends AbstractController {
 				result.addObject("isAdministrator", true);
 				result.addObject("lang", this.lang);
 				result.addObject("categories", this.categoryRepository.findAll());
-				result.addObject("errors", "commit.lesson.error");
+				result.addObject("errors", "commit.error");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("conference/edit");
 				result.addObject("conferenceForm", conferenceForm);
@@ -286,6 +282,7 @@ public class ConferenceAdministratorController extends AbstractController {
 
 		return result;
 	}
+
 	// DISPLAY --------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)

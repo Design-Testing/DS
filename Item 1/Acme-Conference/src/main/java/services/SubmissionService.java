@@ -83,6 +83,7 @@ public class SubmissionService {
 		submission.setAuthor(principal);
 		Assert.isTrue(submission.getId() == 0);
 		Assert.notNull(submission.getConference() != null);
+		Assert.isTrue(!submission.getConference().getIsDraft(), "conferece must be in final mode");
 		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
 		final Date now = new Date();
 		Assert.isTrue(now.before(submission.getConference().getSubmission()), "submission deadline is elapsed");
@@ -138,6 +139,7 @@ public class SubmissionService {
 	 * then the corresponding submissions are accepted.
 	 **/
 
+	//TODO ALBA REVISAR
 	public void decideOnSubmission(final int submissionId) {
 		this.administratorService.findByPrincipal();
 		final Submission retrieved = this.findOne(submissionId);
@@ -153,12 +155,16 @@ public class SubmissionService {
 				numberReject = numberReject + 1;
 			else if (r.getDecision().equals("BORDER-LINE"))
 				numberBorderLine = numberBorderLine + 1;
-		
-		if(numberAccept >= numberReject)
+
+		if (numberAccept > numberReject)
 			this.acceptSubmission(submissionId);
-		else if(){
-			
-		}
+		else if (numberAccept == numberReject) {
+			if (numberBorderLine > 0)
+				this.acceptSubmission(submissionId);
+			else
+				this.acceptSubmission(submissionId);
+		} else if (numberReject > numberAccept)
+			this.rejectSubmission(submissionId);
 
 	}
 	public Submission findOne(final Integer submissionId) {
