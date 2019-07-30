@@ -71,6 +71,111 @@ public class ConferenceAdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/fiveDaysSubmission", method = RequestMethod.GET)
+	public ModelAndView fiveDaysSubmission() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> conferences = this.conferenceService.findFiveDaysFromSubmissionConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", true);
+		result.addObject("requetURI", "conference/administrator/fiveDaysSubmission.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/fiveDaysNotification", method = RequestMethod.GET)
+	public ModelAndView fiveDaysNotification() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> conferences = this.conferenceService.findFiveDaysForNotificationConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", true);
+		result.addObject("requetURI", "conference/administrator/fiveDaysNotification.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/fiveDaysCameraReady", method = RequestMethod.GET)
+	public ModelAndView fiveDaysCameraReady() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> conferences = this.conferenceService.findFiveDaysForCameraReadyConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", true);
+		result.addObject("requetURI", "conference/administrator/fiveDaysCameraReady.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/fiveDaysBeginning", method = RequestMethod.GET)
+	public ModelAndView fiveDaysBeginning() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> conferences = this.conferenceService.findFiveDaysForBeginningConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", true);
+		result.addObject("requetURI", "conference/administrator/fiveDaysBeginning.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listFurthcoming", method = RequestMethod.GET)
+	public ModelAndView listFurthcoming() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> conferences = this.conferenceService.findFurthcomingConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", true);
+		result.addObject("requetURI", "conference/administrator/listFurthcoming.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listPast", method = RequestMethod.GET)
+	public ModelAndView listPast() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> conferences = this.conferenceService.findPastConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", true);
+		result.addObject("requetURI", "conference/administrator/listPast.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listRunning", method = RequestMethod.GET)
+	public ModelAndView listRunning() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> conferences = this.conferenceService.findRunningConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", true);
+		result.addObject("requetURI", "conference/administrator/listRunning.do");
+
+		return result;
+	}
+
 	// TO FINAL MODE --------------------------------------------------------
 
 	@RequestMapping(value = "/finalMode", method = RequestMethod.GET)

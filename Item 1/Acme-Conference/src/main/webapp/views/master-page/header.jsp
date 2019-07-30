@@ -19,14 +19,21 @@
 		
 		
 		<security:authorize access="hasRole('ADMIN')">
-			<li><a class="fNiv" href="conference/administrator/myConferences.do"><spring:message code="master.page.my.conferences" /></a></li>
-			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
+			<li><a class="fNiv"><spring:message	code="master.page.conferences" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>					
+					<li><a href="conference/administrator/myConferences.do"><spring:message code="master.page.all.conferences" /></a></li>
+					<li><a href="conference/administrator/listPast.do"><spring:message code="master.page.past.conferences" /></a></li>
+					<li><a href="conference/administrator/listRunning.do"><spring:message code="master.page.running.conferences" /></a></li>
+					<li><a href="conference/administrator/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
+					<li><a href="conference/administrator/fiveDaysSubmission.do"><spring:message code="master.page.five.days.submission.conferences" /></a></li>
+					<li><a href="conference/administrator/fiveDaysNotification.do"><spring:message code="master.page.five.days.notification.conferences" /></a></li>
+					<li><a href="conference/administrator/fiveDaysCameraReady.do"><spring:message code="master.page.five.days.camera.ready.conferences" /></a></li>
+					<li><a href="conference/administrator/fiveDaysBeginning.do"><spring:message code="master.page.five.days.beginning.conferences" /></a></li>
 				</ul>
 			</li>
+			
+			
 		</security:authorize>
 		
 		
@@ -37,7 +44,15 @@
 		
 		
 		<security:authorize access="hasRole('AUTHOR')">
-			<li><a class="fNiv" href="conference/list.do"><spring:message code="master.page.conferences" /></a></li>
+			<li><a class="fNiv"><spring:message	code="master.page.conferences" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="conference/list.do"><spring:message code="master.page.all.conferences" /></a></li>
+					<li><a href="conference/listPast.do"><spring:message code="master.page.past.conferences" /></a></li>
+					<li><a href="conference/listRunning.do"><spring:message code="master.page.running.conferences" /></a></li>
+					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
+				</ul>
+			</li>
 			
 		</security:authorize>
 		
@@ -50,8 +65,16 @@
 		
 		
 		<security:authorize access="hasRole('REVIEWER')">
-			<li><a class="fNiv" href="conference/list.do"><spring:message code="master.page.conferences" /></a></li>
-			
+			<li><a class="fNiv"><spring:message	code="master.page.conferences" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="conference/list.do"><spring:message code="master.page.all.conferences" /></a></li>
+					<li><a href="conference/listPast.do"><spring:message code="master.page.past.conferences" /></a></li>
+					<li><a href="conference/listRunning.do"><spring:message code="master.page.running.conferences" /></a></li>
+					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
+				</ul>
+			</li>
+						
 		</security:authorize>
 		
 		
@@ -62,8 +85,16 @@
 		
 		
 		<security:authorize access="hasRole('SPONSOR')">
-			<li><a class="fNiv" href="conference/list.do"><spring:message code="master.page.conferences" /></a></li>
-			
+			<li><a class="fNiv"><spring:message	code="master.page.conferences" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="conference/list.do"><spring:message code="master.page.all.conferences" /></a></li>
+					<li><a href="conference/listPast.do"><spring:message code="master.page.past.conferences" /></a></li>
+					<li><a href="conference/listRunning.do"><spring:message code="master.page.running.conferences" /></a></li>
+					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
+				</ul>
+			</li>
+						
 		</security:authorize>
 		
 		
@@ -75,7 +106,15 @@
 		
 		
 		<security:authorize access="isAnonymous()">
-			<li><a class="fNiv" href="conference/list.do"><spring:message code="master.page.conferences" /></a></li>
+			<li><a class="fNiv"><spring:message	code="master.page.conferences" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="conference/list.do"><spring:message code="master.page.all.conferences" /></a></li>
+					<li><a href="conference/listPast.do"><spring:message code="master.page.past.conferences" /></a></li>
+					<li><a href="conference/listRunning.do"><spring:message code="master.page.running.conferences" /></a></li>
+					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
+				</ul>
+			</li>
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 		</security:authorize>
 		

@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -105,6 +106,60 @@ public class ConferenceService {
 		final Collection<Conference> res = this.conferenceRepository.findConferences(keyword, categoryName, fromDate, toDate, maximumFee);
 		Assert.notNull(res);
 		return res;
+	}
+
+	public Collection<Conference> findFurthcomingConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findFurthcomingConferences();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findPastConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findPastConferences();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findRunningConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findRunningConferences();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findFiveDaysFromSubmissionConferences() {
+		final Date now = new Date();
+		final Collection<Conference> result = new ArrayList<Conference>();
+		for (final Conference c : this.findAll())
+			if ((now.getTime() - c.getSubmission().getTime()) / (1000 * 60 * 60 * 24) <= 5)
+				result.add(c);
+		return result;
+	}
+
+	public Collection<Conference> findFiveDaysForNotificationConferences() {
+		final Date now = new Date();
+		final Collection<Conference> result = new ArrayList<Conference>();
+		for (final Conference c : this.findAll())
+			if ((c.getNotification().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) <= 5)
+				result.add(c);
+		return result;
+	}
+
+	public Collection<Conference> findFiveDaysForCameraReadyConferences() {
+		final Date now = new Date();
+		final Collection<Conference> result = new ArrayList<Conference>();
+		for (final Conference c : this.findAll())
+			if ((c.getCameraReady().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) <= 5)
+				result.add(c);
+		return result;
+	}
+
+	public Collection<Conference> findFiveDaysForBeginningConferences() {
+		final Date now = new Date();
+		final Collection<Conference> result = new ArrayList<Conference>();
+		for (final Conference c : this.findAll())
+			if ((c.getStartDate().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) <= 5)
+				result.add(c);
+		return result;
 	}
 
 	public ConferenceForm constructPruned(final Conference conference) {

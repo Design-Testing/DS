@@ -55,4 +55,45 @@ public class ConferenceController extends AbstractController {
 		return result;
 	}
 
+	public ModelAndView listFurthcoming() {
+		final ModelAndView result;
+
+		final Collection<Conference> conferences = this.conferenceService.findFurthcomingConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", false);
+		result.addObject("requetURI", "conference/administrator/listFurthcoming.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listPast", method = RequestMethod.GET)
+	public ModelAndView listPast() {
+		final ModelAndView result;
+
+		final Collection<Conference> conferences = this.conferenceService.findPastConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", false);
+		result.addObject("requetURI", "conference/administrator/listPast.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/listRunning", method = RequestMethod.GET)
+	public ModelAndView listRunning() {
+		final ModelAndView result;
+
+		final Collection<Conference> conferences = this.conferenceService.findRunningConferences();
+
+		result = new ModelAndView("conference/list");
+		result.addObject("conferences", conferences);
+		result.addObject("isAdministrator", false);
+		result.addObject("requetURI", "conference/administrator/listRunning.do");
+
+		return result;
+	}
+
 }
