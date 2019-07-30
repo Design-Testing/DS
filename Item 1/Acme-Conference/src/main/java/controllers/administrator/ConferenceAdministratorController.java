@@ -56,7 +56,7 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", true);
-		result.addObject("requetURI", "conference/administrator/myConferences.do");
+		result.addObject("requestURI", "conference/administrator/myConferences.do");
 
 		return result;
 	}
@@ -71,7 +71,7 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", true);
-		result.addObject("requetURI", "conference/administrator/fiveDaysSubmission.do");
+		result.addObject("requestURI", "conference/administrator/fiveDaysSubmission.do");
 
 		return result;
 	}
@@ -86,7 +86,7 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", true);
-		result.addObject("requetURI", "conference/administrator/fiveDaysNotification.do");
+		result.addObject("requestURI", "conference/administrator/fiveDaysNotification.do");
 
 		return result;
 	}
@@ -101,7 +101,7 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", true);
-		result.addObject("requetURI", "conference/administrator/fiveDaysCameraReady.do");
+		result.addObject("requestURI", "conference/administrator/fiveDaysCameraReady.do");
 
 		return result;
 	}
@@ -116,7 +116,7 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", true);
-		result.addObject("requetURI", "conference/administrator/fiveDaysBeginning.do");
+		result.addObject("requestURI", "conference/administrator/fiveDaysBeginning.do");
 
 		return result;
 	}
@@ -131,7 +131,7 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", true);
-		result.addObject("requetURI", "conference/administrator/listFurthcoming.do");
+		result.addObject("requestURI", "conference/administrator/listFurthcoming.do");
 
 		return result;
 	}
@@ -146,7 +146,7 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", true);
-		result.addObject("requetURI", "conference/administrator/listPast.do");
+		result.addObject("requestURI", "conference/administrator/listPast.do");
 
 		return result;
 	}
