@@ -14,6 +14,7 @@ import repositories.SubmissionRepository;
 import domain.Author;
 import domain.Conference;
 import domain.Paper;
+import domain.Report;
 import domain.Submission;
 
 @Service
@@ -31,6 +32,9 @@ public class SubmissionService {
 
 	@Autowired
 	private ConferenceService		conferenceService;
+
+	@Autowired
+	private ReportService			reportService;
 
 
 	public Submission create(final int conferenceId) {
@@ -135,9 +139,28 @@ public class SubmissionService {
 	 **/
 
 	public void decideOnSubmission(final int submissionId) {
+		this.administratorService.findByPrincipal();
+		final Submission retrieved = this.findOne(submissionId);
+		Assert.notNull(retrieved);
+		Integer numberAccept = 0;
+		Integer numberReject = 0;
+		Integer numberBorderLine = 0;
+		final Collection<Report> reports = this.reportService.findReportsBySubmission(submissionId);
+		for (final Report r : reports)
+			if (r.getDecision().equals("ACCEPT"))
+				numberAccept = numberAccept + 1;
+			else if (r.getDecision().equals("REJECT"))
+				numberReject = numberReject + 1;
+			else if (r.getDecision().equals("BORDER-LINE"))
+				numberBorderLine = numberBorderLine + 1;
+		
+		if(numberAccept >= numberReject)
+			this.acceptSubmission(submissionId);
+		else if(){
+			
+		}
 
 	}
-
 	public Submission findOne(final Integer submissionId) {
 		Assert.notNull(submissionId);
 		final Submission res = this.submissionRepository.findOne(submissionId);
@@ -165,10 +188,12 @@ public class SubmissionService {
 		return result;
 	}
 
-	public void delete(final Integer submissionId) {
-		Assert.notNull(submissionId);
-		this.submissionRepository.delete(submissionId);
-	}
+	/*
+	 * public void delete(final Integer submissionId) {
+	 * Assert.notNull(submissionId);
+	 * this.submissionRepository.delete(submissionId);
+	 * }
+	 */
 
 	/** El ticker es ABC-XXXX donde ABC son las inciales del autor y XXXX cuatro letras randoms en mayuscula **/
 	private String generateTicker() {

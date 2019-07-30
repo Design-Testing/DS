@@ -37,6 +37,9 @@ public class ConferenceService {
 	private SubmissionService		submissionService;
 
 	@Autowired
+	private AdministratorService	administratorService;
+
+	@Autowired
 	private Validator				validator;
 
 
@@ -200,7 +203,8 @@ public class ConferenceService {
 	 * then the corresponding submissions are accepted.
 	 **/
 
-	public void decideOncConference(final int conferenceId) {
+	public void decideOnConference(final int conferenceId) {
+		this.administratorService.findByPrincipal();
 		final Conference retrieved = this.findOne(conferenceId);
 		Assert.notNull(retrieved);
 		final Date now = new Date();
@@ -210,7 +214,6 @@ public class ConferenceService {
 			this.submissionService.decideOnSubmission(s.getId());
 
 	}
-
 	public ConferenceForm constructPruned(final Conference conference) {
 		final ConferenceForm pruned = new ConferenceForm();
 

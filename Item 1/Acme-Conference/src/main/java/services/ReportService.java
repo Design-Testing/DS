@@ -65,4 +65,10 @@ public class ReportService {
 		Assert.notNull(reportId);
 		this.reportRepository.delete(reportId);
 	}
+
+	public Collection<Report> findReportsBySubmission(final int submissionId) {
+		final Collection<Report> result = this.reportRepository.findReportsBySubmission(submissionId);
+		Assert.notNull(result);
+		return result;
+	}
 }
