@@ -24,4 +24,40 @@ public class CategoryService {
 		Assert.notNull(result);
 		return result;
 	}
+
+	public Category create() {
+		final Category res = new Category();
+		return res;
+	}
+
+	public Category save(final Category category) {
+		Category res = new Category();
+		Assert.notNull(category);
+		Assert.isTrue(category.getTitleEn().trim() != "" && category.getTitleEs().trim() != "");
+
+		res = this.categoryRepository.save(category);
+		Assert.notNull(res);
+
+		return res;
+	}
+	public Category findOne(final Integer categoryId) {
+		Category res;
+		Assert.notNull(categoryId);
+		res = this.categoryRepository.findOne(categoryId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Category> findAll() {
+		Collection<Category> res;
+		res = this.categoryRepository.findAll();
+		Assert.notNull(res);
+		return res;
+
+	}
+
+	public void delete(final Integer categoryId) {
+		Assert.notNull(categoryId);
+		this.categoryRepository.delete(categoryId);
+	}
 }
