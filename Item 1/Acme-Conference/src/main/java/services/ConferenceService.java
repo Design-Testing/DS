@@ -18,6 +18,7 @@ import repositories.ConferenceRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Category;
 import domain.Conference;
 import forms.ConferenceForm;
 
@@ -27,6 +28,9 @@ public class ConferenceService {
 
 	@Autowired
 	private ConferenceRepository	conferenceRepository;
+
+	@Autowired
+	private CategoryService			categoryService;
 
 	@Autowired
 	private Validator				validator;
@@ -42,6 +46,9 @@ public class ConferenceService {
 		admin.setAuthority(Authority.ADMIN);
 		Assert.isTrue(usuario.getAuthorities().contains(admin), "Debes ser admin - create");
 
+		final Collection<Category> categories = this.categoryService.findCategoriesWithNameConference();
+		final Category category = categories.iterator().next();
+
 		final Conference res = new Conference();
 		res.setTitle("");
 		res.setAcronym("");
@@ -51,7 +58,7 @@ public class ConferenceService {
 		res.setCameraReady(null);
 		res.setStartDate(null);
 		res.setEndDate(null);
-		res.setCategory(null);
+		res.setCategory(category);
 		res.setSummary("");
 		res.setFee(0.0);
 		res.setIsDraft(true);

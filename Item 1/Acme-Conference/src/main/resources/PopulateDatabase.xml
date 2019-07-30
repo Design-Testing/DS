@@ -683,21 +683,28 @@
 	<!-- ========================== CATEGORY =============================== -->
 	<!-- =================================================================== -->
 
+	<!-- root -->
 	<bean id="category1" class="domain.Category">
-		<property name="titleEs" value="Tecnología" />
-		<property name="titleEn" value="Technology" />
+		<property name="titleEs" value="CONFERENCIA" />
+		<property name="titleEn" value="CONFERENCE" />
 	</bean>
 
 	<bean id="category2" class="domain.Category">
-		<property name="titleEs" value="Programación" />
-		<property name="titleEn" value="Coding" />
+		<property name="titleEs" value="PROGRAMACIÓN" />
+		<property name="titleEn" value="CODING" />
 		<property name="father" ref="category1" />
 	</bean>
 
 	<bean id="category3" class="domain.Category">
-		<property name="titleEs" value="Sistemas operativos" />
-		<property name="titleEn" value="Operating systems" />
+		<property name="titleEs" value="REDES" />
+		<property name="titleEn" value="NETWORK" />
 		<property name="father" ref="category1" />
+	</bean>
+	
+	<bean id="category4" class="domain.Category">
+		<property name="titleEs" value="SISTEMAS OPERATIVOS" />
+		<property name="titleEn" value="OPERATING SYSTEMS" />
+		<property name="father" ref="category3" />
 	</bean>
 
 

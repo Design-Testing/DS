@@ -40,20 +40,6 @@ public class ConferenceAdministratorController extends AbstractController {
 	final String					lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
-	// CREATE  ---------------------------------------------------------------
-
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		ModelAndView result;
-		final Conference conference = this.conferenceService.create();
-		result = new ModelAndView("conference/edit");
-		result.addObject("conferenceForm", this.conferenceService.constructPruned(conference)); //this.constructPruned(position)
-		result.addObject("isAdministrator", true);
-		result.addObject("categories", this.categoryRepository.findAll());
-		result.addObject("message", null);
-		return result;
-	}
-
 	// LIST --------------------------------------------------------
 
 	@RequestMapping(value = "/myConferences", method = RequestMethod.GET)
@@ -202,6 +188,23 @@ public class ConferenceAdministratorController extends AbstractController {
 				result.addObject("isAdministrator", true);
 			}
 
+		return result;
+	}
+
+	// CREATE  ---------------------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+
+		final Conference conference = this.conferenceService.create();
+		result = new ModelAndView("conference/edit");
+		result.addObject("conferenceForm", this.conferenceService.constructPruned(conference)); //this.constructPruned(position)
+		result.addObject("isAdministrator", true);
+		result.addObject("categories", this.categoryRepository.findAll());
+		result.addObject("message", null);
 		return result;
 	}
 

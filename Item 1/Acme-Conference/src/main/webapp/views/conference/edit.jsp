@@ -10,7 +10,7 @@
 
 
 
-
+<jstl:out value="${categories }" />
 
 
 
