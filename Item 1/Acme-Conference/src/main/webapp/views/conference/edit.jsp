@@ -10,8 +10,6 @@
 
 
 
-<jstl:out value="${categories }" />
-
 
 
 <form:form action="conference/administrator/edit.do" modelAttribute="conferenceForm">
@@ -38,6 +36,7 @@
     <acme:textbox path="fee" code="conference.fee"/>
     <br/>
     <br/>
+    
     
      <form:label path="category">
         <spring:message code="conference.category"/>:

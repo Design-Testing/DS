@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import repositories.CategoryRepository;
 import services.AdministratorService;
+import services.CategoryService;
 import services.ConferenceService;
 import controllers.AbstractController;
 import domain.Conference;
@@ -36,6 +37,9 @@ public class ConferenceAdministratorController extends AbstractController {
 
 	@Autowired
 	private CategoryRepository		categoryRepository;
+
+	@Autowired
+	private CategoryService			categoryService;
 
 	final String					lang	= LocaleContextHolder.getLocale().getLanguage();
 
@@ -200,9 +204,13 @@ public class ConferenceAdministratorController extends AbstractController {
 		this.administratorService.findByPrincipal();
 
 		final Conference conference = this.conferenceService.create();
+
+		final ConferenceForm conferenceForm = this.conferenceService.constructPruned(conference);
+
 		result = new ModelAndView("conference/edit");
-		result.addObject("conferenceForm", this.conferenceService.constructPruned(conference)); //this.constructPruned(position)
+		result.addObject("conferenceForm", conferenceForm); //this.constructPruned(position)
 		result.addObject("isAdministrator", true);
+		result.addObject("lang", this.lang);
 		result.addObject("categories", this.categoryRepository.findAll());
 		result.addObject("message", null);
 		return result;
@@ -224,7 +232,6 @@ public class ConferenceAdministratorController extends AbstractController {
 			result.addObject("isAdministrator", true);
 			result.addObject("categories", this.categoryRepository.findAll());
 			result.addObject("lang", this.lang);
-			System.out.println("AQUIIIIIIIII " + this.lang);
 		}
 
 		else

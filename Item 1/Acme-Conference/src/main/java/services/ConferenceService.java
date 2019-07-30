@@ -49,6 +49,9 @@ public class ConferenceService {
 		final Collection<Category> categories = this.categoryService.findCategoriesWithNameConference();
 		final Category category = categories.iterator().next();
 
+		System.out.println("CATEGORIES" + categories);
+		System.out.println("CATEGORY" + category);
+
 		final Conference res = new Conference();
 		res.setTitle("");
 		res.setAcronym("");

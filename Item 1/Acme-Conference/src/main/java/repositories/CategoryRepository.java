@@ -12,6 +12,6 @@ import domain.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
-	@Query("select c from Category where c.titleEn = 'CONFERENCE'")
+	@Query("select c from Category c where c.titleEn = 'CONFERENCE'")
 	Collection<Category> findCategoriesWithNameConference();
 }
