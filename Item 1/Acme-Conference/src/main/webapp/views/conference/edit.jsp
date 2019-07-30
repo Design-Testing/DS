@@ -20,6 +20,7 @@
     <form:hidden path="version"/>
     
     
+    <h3><spring:message code="conference.general.information" /></h3>
     
     
     <acme:textbox path="title" code="conference.title"/>
@@ -38,25 +39,7 @@
     <br/>
     <br/>
     
-    
-     <jstl:if test="${alert}">
-		<h5 style="color: red;"><spring:message code="conference.alert.dates"/></h5>
-	</jstl:if>
-	
-	<acme:textbox path="submission" code="conference.submission"/>
-	
-	<acme:textbox path="notification" code="conference.notification"/>
-	
-	<acme:textbox path="cameraReady" code="conference.cameraReady"/>
-	
-	<acme:textbox path="startDate" code="conference.startDate"/>
-	
-	<acme:textbox path="endDate" code="conference.endDate"/>
-	
-	
-	
-	
-       <form:label path="category">
+     <form:label path="category">
         <spring:message code="conference.category"/>:
     </form:label>
     <form:select path="category" code="conference.category">
@@ -69,6 +52,48 @@
     		</jstl:if>
     	</jstl:forEach>
     </form:select>
+    
+    
+     <jstl:if test="${alert}">
+		<h5 style="color: red;"><spring:message code="conference.alert.dates"/></h5>
+	</jstl:if>
+	
+	<br/>
+	
+	<br/>
+	
+	<br/>
+	
+	<h5 style="color: red;"><spring:message code="conference.alert.dates"/></h5>
+	
+	<br/>
+	
+	<h3><spring:message code="conference.deadlines" /></h3>
+	
+	<acme:textbox path="submission" code="conference.submission" placeholder="yyyy-MM-dd HH:mm"/>
+	
+	<br/>
+	
+	<acme:textbox path="notification" code="conference.notification" placeholder="yyyy-MM-dd HH:mm"/>
+	
+	<br/>
+	
+	<acme:textbox path="cameraReady" code="conference.cameraReady" placeholder="yyyy-MM-dd HH:mm"/>
+	
+	<br/>
+	
+	<h3><spring:message code="conference.dates" /></h3>
+	
+	<acme:textbox path="startDate" code="conference.startDate" placeholder="yyyy-MM-dd HH:mm" />
+	
+	<br/>
+	
+	<acme:textbox path="endDate" code="conference.endDate" placeholder="yyyy-MM-dd HH:mm"/>
+	
+	
+	
+	
+      
 	
     <br/>
     <br/>

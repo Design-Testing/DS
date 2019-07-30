@@ -27,7 +27,7 @@
 	<jstl:when test="${isAdministrator eq true }">
 		
 		<display:column>
-			<acme:button url="conference/admistrator/display.do?conferenceId=${row.id}" name="display" code="conference.display"/>
+			<acme:button url="conference/administrator/display.do?conferenceId=${row.id}" name="display" code="conference.display"/>
 		</display:column>
 		
 		<display:column>

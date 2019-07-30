@@ -43,13 +43,13 @@ public class ConferenceAdministratorController extends AbstractController {
 	// CREATE  ---------------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int categoryId) {
+	public ModelAndView create() {
 		ModelAndView result;
 		final Conference conference = this.conferenceService.create();
 		result = new ModelAndView("conference/edit");
 		result.addObject("conferenceForm", this.conferenceService.constructPruned(conference)); //this.constructPruned(position)
-		result.addObject("categoryId", categoryId);
 		result.addObject("isAdministrator", true);
+		result.addObject("categories", this.categoryRepository.findAll());
 		result.addObject("message", null);
 		return result;
 	}
@@ -239,6 +239,7 @@ public class ConferenceAdministratorController extends AbstractController {
 			result = new ModelAndView("conference/edit");
 			result.addObject("conferenceForm", conferenceForm);
 			result.addObject("isAdministrator", true);
+			result.addObject("categories", this.categoryRepository.findAll());
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("lang", this.lang);
 		} else
@@ -251,11 +252,13 @@ public class ConferenceAdministratorController extends AbstractController {
 				result.addObject("conferenceForm", conferenceForm);
 				result.addObject("isAdministrator", true);
 				result.addObject("lang", this.lang);
+				result.addObject("categories", this.categoryRepository.findAll());
 				result.addObject("errors", "commit.lesson.error");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("conference/edit");
 				result.addObject("conferenceForm", conferenceForm);
 				result.addObject("isAdministrator", true);
+				result.addObject("categories", this.categoryRepository.findAll());
 				result.addObject("lang", this.lang);
 				result.addObject("errors", binding.getAllErrors());
 
@@ -278,6 +281,7 @@ public class ConferenceAdministratorController extends AbstractController {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", true);
+			result.addObject("lang", this.lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
 

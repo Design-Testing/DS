@@ -6,4 +6,107 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<h3><spring:message code="conference.general.information" /></h3>
+
+<acme:display code="conference.title" value="${conference.title}" />
+
+<acme:display code="conference.acronym" value="${conference.acronym}" />
+
+<acme:display code="conference.venue" value="${conference.venue}" />
+
+<acme:display code="conference.summary" value="${conference.summary}" />
+
+<acme:display code="conference.fee" value="${conference.fee}" />
+
+
+
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<acme:display code="conference.category" value="${conference.category.titleEn}" />
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:display code="conference.category" value="${conference.category.titleEs}" />
+	</jstl:otherwise>
+</jstl:choose>
+
+<br>
+
+<h3><spring:message code="conference.deadlines" /></h3>
+
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="conference.submission" />: <fmt:formatDate
+			value="${conference.submission}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="conference.submission" />: <fmt:formatDate
+			value="${conference.submission}" type="both" pattern="dd/MM/yyyy HH:mm" />
+	</jstl:otherwise>
+</jstl:choose>
+
+<br>
+
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="conference.notification" />: <fmt:formatDate
+			value="${conference.notification}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="conference.notification" />: <fmt:formatDate
+			value="${conference.notification}" type="both" pattern="dd/MM/yyyy HH:mm" />
+	</jstl:otherwise>
+</jstl:choose>
+
+<br>
+
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="conference.cameraReady" />: <fmt:formatDate
+			value="${conference.cameraReady}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="conference.cameraReady" />: <fmt:formatDate
+			value="${conference.cameraReady}" type="both" pattern="dd/MM/yyyy HH:mm" />
+	</jstl:otherwise>
+</jstl:choose>
+
+<br>
+
+<h3><spring:message code="conference.dates" /></h3>
+
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="conference.startDate" />: <fmt:formatDate
+			value="${conference.startDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="conference.startDate" />: <fmt:formatDate
+			value="${conference.startDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
+	</jstl:otherwise>
+</jstl:choose>
+
+<br>
+
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="conference.endDate" />: <fmt:formatDate
+			value="${conference.endDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="conference.endDate" />: <fmt:formatDate
+			value="${conference.endDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
+	</jstl:otherwise>
+</jstl:choose>
+
+
+<br>
+<br>
+<br>
+
+
+<acme:button url="conference/administrator/myConferences.do" name="back" code="conference.back" />
+
 

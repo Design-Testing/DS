@@ -4,6 +4,7 @@ package controllers;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,8 @@ public class ConferenceController extends AbstractController {
 	@Autowired
 	private ConferenceService	conferenceService;
 
+	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
+
 
 	// DISPLAY --------------------------------------------------------
 
@@ -33,6 +36,7 @@ public class ConferenceController extends AbstractController {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", false);
+			result.addObject("lang", this.lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
 
@@ -55,6 +59,7 @@ public class ConferenceController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/listFurthcoming", method = RequestMethod.GET)
 	public ModelAndView listFurthcoming() {
 		final ModelAndView result;
 

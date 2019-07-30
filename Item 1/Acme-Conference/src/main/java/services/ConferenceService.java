@@ -130,8 +130,9 @@ public class ConferenceService {
 		final Date now = new Date();
 		final Collection<Conference> result = new ArrayList<Conference>();
 		for (final Conference c : this.findAll())
-			if ((now.getTime() - c.getSubmission().getTime()) / (1000 * 60 * 60 * 24) <= 5)
-				result.add(c);
+			if (c.getSubmission().before(now))
+				if ((now.getTime() - c.getSubmission().getTime()) / (1000 * 60 * 60 * 24) <= 5)
+					result.add(c);
 		return result;
 	}
 
@@ -139,8 +140,9 @@ public class ConferenceService {
 		final Date now = new Date();
 		final Collection<Conference> result = new ArrayList<Conference>();
 		for (final Conference c : this.findAll())
-			if ((c.getNotification().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) <= 5)
-				result.add(c);
+			if (now.before(c.getNotification()))
+				if ((c.getNotification().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) < 5)
+					result.add(c);
 		return result;
 	}
 
@@ -148,17 +150,18 @@ public class ConferenceService {
 		final Date now = new Date();
 		final Collection<Conference> result = new ArrayList<Conference>();
 		for (final Conference c : this.findAll())
-			if ((c.getCameraReady().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) <= 5)
-				result.add(c);
+			if (now.before(c.getCameraReady()))
+				if ((c.getCameraReady().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) < 5)
+					result.add(c);
 		return result;
 	}
-
 	public Collection<Conference> findFiveDaysForBeginningConferences() {
 		final Date now = new Date();
 		final Collection<Conference> result = new ArrayList<Conference>();
 		for (final Conference c : this.findAll())
-			if ((c.getStartDate().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) <= 5)
-				result.add(c);
+			if (now.before(c.getStartDate()))
+				if ((c.getStartDate().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) < 5)
+					result.add(c);
 		return result;
 	}
 
