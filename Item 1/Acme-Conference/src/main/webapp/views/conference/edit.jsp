@@ -53,9 +53,6 @@
     </form:select>
     
     
-     <jstl:if test="${alert}">
-		<h5 style="color: red;"><spring:message code="conference.alert.dates"/></h5>
-	</jstl:if>
 	
 	<br/>
 	
@@ -97,16 +94,15 @@
     <br/>
     <br/>
     
-    
+    <jstl:if test="${not empty msgerror  }">
+    	<h5 style="color: red;"><spring:message code="${msgerror}"/></h5>
+    </jstl:if>
   
 	
     <br/>
     <br/>
 
     
-
-
-
 	
 
 

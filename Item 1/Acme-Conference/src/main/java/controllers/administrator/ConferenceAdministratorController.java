@@ -270,13 +270,22 @@ public class ConferenceAdministratorController extends AbstractController {
 				result.addObject("isAdministrator", true);
 				result.addObject("categories", this.categoryRepository.findAll());
 				result.addObject("lang", this.lang);
+				if (oops.getMessage().equals("no deadline or date can be null"))
+					result.addObject("msgerror", "conference.error.empty");
+				if (oops.getMessage().equals("submission before notification"))
+					result.addObject("msgerror", "conference.submission.before.notification");
+				if (oops.getMessage().equals("notification before camera ready"))
+					result.addObject("msgerror", "conference.notification.before.camera.ready");
+				if (oops.getMessage().equals("camera ready before start date"))
+					result.addObject("msgerror", "conference.camera.ready.before.start.date");
+				if (oops.getMessage().equals("start date before end date"))
+					result.addObject("msgerror", "conference.start.date.before.end.date");
 				result.addObject("errors", binding.getAllErrors());
 
 			}
 
 		return result;
 	}
-
 	// DISPLAY --------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)

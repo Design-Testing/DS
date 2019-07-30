@@ -93,6 +93,13 @@ public class ConferenceService {
 
 		conference.setIsDraft(true);
 
+		Assert.isTrue(conference.getSubmission() != null && conference.getNotification() != null && conference.getCameraReady() != null && conference.getStartDate() != null && conference.getEndDate() != null, "no deadline or date can be null");
+
+		Assert.isTrue(conference.getSubmission().before(conference.getNotification()), "submission before notification");
+		Assert.isTrue(conference.getNotification().before(conference.getCameraReady()), "notification before camera ready");
+		Assert.isTrue(conference.getCameraReady().before(conference.getStartDate()), "camera ready before start date");
+		Assert.isTrue(conference.getStartDate().before(conference.getEndDate()), "start date before end date");
+
 		final Authority admin = new Authority();
 		admin.setAuthority(Authority.ADMIN);
 		Assert.isTrue(usuario.getAuthorities().contains(admin), "Debes ser admin - save");
