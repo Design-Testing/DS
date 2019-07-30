@@ -8,18 +8,28 @@
 <tiles-definitions>
 
 	<definition name="submission/display" extends="master.page">	
-		<put-attribute name="title" value="Entrega: mostrar" />
+		<put-attribute name="title" value="Presentación: mostrar" />
 		<put-attribute name="body" value="/views/submission/display.jsp" />
 	</definition>
 	
-	<definition name="submission/edit" extends="master.page">	
-		<put-attribute name="title" value="Entrega: editar" />
-		<put-attribute name="body" value="/views/submission/edit.jsp" />
+	<definition name="submission/editReviewPaper" extends="master.page">	
+		<put-attribute name="title" value="Presentación: documento para revisar" />
+		<put-attribute name="body" value="/views/submission/editReviewPaper.jsp" />
+	</definition>
+	
+	<definition name="submission/editCameraReadyPaper" extends="master.page">	
+		<put-attribute name="title" value="Presentación: documento definitivo" />
+		<put-attribute name="body" value="/views/submission/editCameraReadyPaper.jsp" />
 	</definition>
 	
 	<definition name="submission/list" extends="master.page">	
-		<put-attribute name="title" value="Entrega: listar" />
+		<put-attribute name="title" value="Presentación: listar" />
 		<put-attribute name="body" value="/views/submission/list.jsp" />
+	</definition>
+	
+	<definition name="submission/listReviewers" extends="master.page">	
+		<put-attribute name="title" value="Escoger un revisor para asignar a la presentación" />
+		<put-attribute name="body" value="/views/submission/listReviewers.jsp" />
 	</definition>
 	
 </tiles-definitions>

@@ -152,4 +152,10 @@ public class ReviewerService {
 
 		return reviewer;
 	}
+
+	public Collection<Reviewer> findAll() {
+		final Collection<Reviewer> result = this.reviewerRepository.findAll();
+		Assert.notNull(result);
+		return result;
+	}
 }

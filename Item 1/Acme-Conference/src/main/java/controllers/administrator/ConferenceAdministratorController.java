@@ -304,4 +304,19 @@ public class ConferenceAdministratorController extends AbstractController {
 		return result;
 	}
 
+	// DECIDE ON CONFERENCE --------------------------------------------------------
+
+	@RequestMapping(value = "/decideOnConference", method = RequestMethod.GET)
+	public ModelAndView decideOnConference(@RequestParam final int conferenceId) {
+		ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+
+		this.conferenceService.decideOnConference(conferenceId);
+
+		result = this.display(conferenceId);
+
+		return result;
+	}
+
 }

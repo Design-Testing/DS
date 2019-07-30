@@ -15,6 +15,7 @@ import domain.Author;
 import domain.Conference;
 import domain.Paper;
 import domain.Report;
+import domain.Reviewer;
 import domain.Submission;
 
 @Service
@@ -35,6 +36,9 @@ public class SubmissionService {
 
 	@Autowired
 	private ReportService			reportService;
+
+	@Autowired
+	private ReviewerService			reviewerService;
 
 
 	public Submission create(final int conferenceId) {
@@ -123,6 +127,20 @@ public class SubmissionService {
 		Assert.isTrue(retrieved.getStatus().equals("UNDER-REVIEWED"));
 		retrieved.setStatus("REJECTED");
 		this.submissionRepository.save(retrieved);
+	}
+
+	public void assignToReviewer(final int submissionId, final int reviewerId) {
+		final Submission submission = this.findOne(submissionId);
+		final Reviewer reviewer = this.reviewerService.findOne(reviewerId);
+		Assert.notNull(submission);
+		Assert.notNull(reviewer);
+		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
+		final Collection<Reviewer> reviewers = submission.getReviewers();
+		Assert.isTrue(!reviewers.contains(reviewer), "this reviewer has already been assigned to that submission");
+		Assert.isTrue(reviewers.size() <= 3, "no more than 3 reviewers can be assigned to a submission");
+		reviewers.add(reviewer);
+		submission.setReviewers(reviewers);
+		this.submissionRepository.save(submission);
 	}
 
 	/**
@@ -230,4 +248,19 @@ public class SubmissionService {
 			this.generateTicker();
 		return res;
 	}
+
+	public Collection<Reviewer> availableReviewers(final int submissionId) {
+		final Collection<Reviewer> reviewers = this.reviewerService.findAll();
+		final Submission submission = this.findOne(submissionId);
+		Assert.notNull(submission);
+		final Collection<Reviewer> reviewersAssigned = submission.getReviewers();
+		reviewers.removeAll(reviewersAssigned);
+		return reviewers;
+	}
+
+	public void runAssignation() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
