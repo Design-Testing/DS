@@ -20,6 +20,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Category;
 import domain.Conference;
+import domain.Submission;
 import forms.ConferenceForm;
 
 @Service
@@ -31,6 +32,9 @@ public class ConferenceService {
 
 	@Autowired
 	private CategoryService			categoryService;
+
+	@Autowired
+	private SubmissionService		submissionService;
 
 	@Autowired
 	private Validator				validator;
@@ -180,6 +184,31 @@ public class ConferenceService {
 				if ((c.getStartDate().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) < 5)
 					result.add(c);
 		return result;
+	}
+
+	/**
+	 * Run a decision-making procedure on a conference,
+	 * as long as the corresponding submission deadline has elapsed.
+	 * Making a decision on a submission means analysing the reports
+	 * written by the reviewers to decide if the corresponding submission
+	 * must change its status to either REJECTED or ACCEPTED.
+	 * A submission is accepted if the number of reports with decision
+	 * ACCEPT that it's got is greater than or equal to the number
+	 * of reports with decision REJECT that it's got;
+	 * in cases of ties, reports whose decision is BORDER-LINE
+	 * are considered to ACCEPT the paper; in cases in which ties persist,
+	 * then the corresponding submissions are accepted.
+	 **/
+
+	public void decideOncConference(final int conferenceId) {
+		final Conference retrieved = this.findOne(conferenceId);
+		Assert.notNull(retrieved);
+		final Date now = new Date();
+		Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
+		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
+		for (final Submission s : submissions)
+			this.submissionService.decideOnSubmission(s.getId());
+
 	}
 
 	public ConferenceForm constructPruned(final Conference conference) {

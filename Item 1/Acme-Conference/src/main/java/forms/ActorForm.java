@@ -1,7 +1,7 @@
 
 package forms;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -24,17 +24,17 @@ import domain.DomainEntity;
 @Access(AccessType.PROPERTY)
 public class ActorForm extends DomainEntity {
 
-	private String				name;
-	private String				middleName;
-	private Collection<String>	surname;
-	private String				photo;
-	private String				email;
-	private String				phone;
-	private String				address;
+	private String			name;
+	private String			middleName;
+	private List<String>	surname;
+	private String			photo;
+	private String			email;
+	private String			phone;
+	private String			address;
 
 	//Relational attributes
-	private String				userAccountuser;
-	private String				userAccountpassword;
+	private String			userAccountuser;
+	private String			userAccountpassword;
 
 
 	@Size(min = 5, max = 32)
@@ -75,11 +75,11 @@ public class ActorForm extends DomainEntity {
 	@ElementCollection
 	@NotEmpty
 	@EachNotBlank
-	public Collection<String> getSurname() {
+	public List<String> getSurname() {
 		return this.surname;
 	}
 
-	public void setSurname(final Collection<String> surname) {
+	public void setSurname(final List<String> surname) {
 		this.surname = surname;
 	}
 

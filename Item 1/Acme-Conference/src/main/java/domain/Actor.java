@@ -1,7 +1,7 @@
 
 package domain;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -27,19 +27,19 @@ import cz.jirutka.validator.collection.constraints.EachNotBlank;
 @Access(AccessType.PROPERTY)
 public class Actor extends DomainEntity {
 
-	private String				name;
-	private String				middleName;
-	private Collection<String>	surname;
-	private String				photo;
-	private String				email;
-	private String				phone;
-	private String				address;
-	private Double				score;
-	private Finder				finder;
+	private String			name;
+	private String			middleName;
+	private List<String>	surname;
+	private String			photo;
+	private String			email;
+	private String			phone;
+	private String			address;
+	private Double			score;
+	private Finder			finder;
 	// private Boolean				spammer;
 
 	//Relational attributes
-	private UserAccount			userAccount;
+	private UserAccount		userAccount;
 
 
 	@NotBlank
@@ -63,11 +63,11 @@ public class Actor extends DomainEntity {
 	@ElementCollection
 	@NotEmpty
 	@EachNotBlank
-	public Collection<String> getSurname() {
+	public List<String> getSurname() {
 		return this.surname;
 	}
 
-	public void setSurname(final Collection<String> surname) {
+	public void setSurname(final List<String> surname) {
 		this.surname = surname;
 	}
 
