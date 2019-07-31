@@ -20,7 +20,7 @@ import domain.Reviewer;
 import domain.Submission;
 
 @Service
-@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+//@Transactional
 public class SubmissionService {
 
 	@Autowired
@@ -37,6 +37,9 @@ public class SubmissionService {
 
 	@Autowired
 	private ReportService			reportService;
+
+	@Autowired
+	private PaperService			paperService;
 
 	@Autowired
 	private ReviewerService			reviewerService;
@@ -81,7 +84,7 @@ public class SubmissionService {
 	 * return res;
 	 * }
 	 */
-
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Submission submits(final Submission submission, final Paper reviewPaper) {
 		Submission res;
 		final Author principal = this.authorService.findByPrincipal();
@@ -93,8 +96,9 @@ public class SubmissionService {
 		final Date now = new Date();
 		Assert.isTrue(now.before(submission.getConference().getSubmission()), "submission deadline is elapsed");
 		submission.setMoment(new Date(System.currentTimeMillis() - 1000));
-		submission.setReviewPaper(reviewPaper);
-		System.out.println("HOLAAAAAAAAAAAAA");
+
+		final Paper paperSaved = this.paperService.save(reviewPaper);
+		submission.setReviewPaper(paperSaved);
 		res = this.submissionRepository.save(submission);
 		Assert.notNull(res);
 		return res;
@@ -243,8 +247,9 @@ public class SubmissionService {
 			initial3 = author.getSurname().get(1).charAt(0);
 		}
 
-		res = initial1 + initial2 + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
+		//res = initial1 + initial2 + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
 
+		res = "ABC" + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
 		final Collection<Submission> submissions = this.submissionRepository.getSubmissionWithTicker(res);
 		if (!submissions.isEmpty())
 			this.generateTicker();

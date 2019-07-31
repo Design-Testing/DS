@@ -72,10 +72,10 @@ public class SubmissionAuthorController extends AbstractController {
 			result.addObject("lang", this.lang);
 		} else
 			try {
-				final Paper paperSaved = this.paperService.save(paper);
 				final Submission submission = this.submissionService.create(Integer.parseInt(conferenceId));
-				this.submissionService.submits(submission, paperSaved);
+				this.submissionService.submits(submission, paper);
 				result = this.mySubmissions();
+
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editReviewPaper");
 				result.addObject("paper", paper);
@@ -83,7 +83,6 @@ public class SubmissionAuthorController extends AbstractController {
 				result.addObject("conferenceId", conferenceId);
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable oops) {
-				System.out.println("AQUIIII" + oops.getMessage());
 				result = new ModelAndView("submission/editReviewPaper");
 				result.addObject("paper", paper);
 				result.addObject("conferenceId", conferenceId);
