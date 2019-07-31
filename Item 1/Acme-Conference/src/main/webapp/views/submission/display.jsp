@@ -58,6 +58,8 @@
 <jstl:choose>
 	<jstl:when test="${isAdministrator eq true }">
 		<acme:button url="submission/administrator/submissions.do" name="back" code="submission.back" />
+		<br>
+		<acme:button url="conference/administrator/display.do?conferenceId=${submission.conference.id }" name="back" code="submission.back.conference" />
 	</jstl:when>
 	<jstl:when test="${isAuthor eq true }">
 		<acme:button url="submission/author/mySubmissions.do" name="back" code="submission.back" />
