@@ -15,7 +15,8 @@
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
-    
+   
+    <input type="hidden" name="conferenceId" value="${conferenceId }" />
     
     
     <acme:textbox path="title" code="paper.title"/>
@@ -24,7 +25,7 @@
     <acme:textarea path="summary" code="paper.summary"/>
     <br/>
 
-    <acme:textarea path="document" code="paper.document"/>
+    <acme:textbox path="document" code="paper.document"/>
     <br/>
     
      <acme:textarea path="authors" code="paper.authors"/>

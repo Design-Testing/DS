@@ -61,31 +61,35 @@ public class SubmissionAuthorController extends AbstractController {
 
 	/** Cuando ha rellenado el papel review y manda la presentación finalmente **/
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView submit(@Valid final Paper paper, final BindingResult binding, @RequestParam final int conferenceId, final HttpServletRequest request) {
+	public ModelAndView submit(@Valid final Paper paper, final BindingResult binding, @RequestParam final String conferenceId, final HttpServletRequest request) {
 		ModelAndView result;
 
 		if (binding.hasErrors()) {
 			result = new ModelAndView("submission/editReviewPaper");
 			result.addObject("paper", paper);
 			result.addObject("errors", binding.getAllErrors());
+			result.addObject("conferenceId", conferenceId);
 			result.addObject("lang", this.lang);
 		} else
 			try {
 				final Paper paperSaved = this.paperService.save(paper);
-				final Submission submission = this.submissionService.create(conferenceId);
+				final Submission submission = this.submissionService.create(Integer.parseInt(conferenceId));
 				this.submissionService.submits(submission, paperSaved);
 				result = this.mySubmissions();
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editReviewPaper");
 				result.addObject("paper", paper);
 				result.addObject("lang", this.lang);
+				result.addObject("conferenceId", conferenceId);
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable oops) {
+				System.out.println("AQUIIII" + oops.getMessage());
 				result = new ModelAndView("submission/editReviewPaper");
 				result.addObject("paper", paper);
+				result.addObject("conferenceId", conferenceId);
 				result.addObject("lang", this.lang);
-				//if (oops.getMessage().equals("no deadline or date can be null"))
-				//result.addObject("msgerror", "conference.error.empty");
+				if (oops.getMessage().equals("submission deadline is elapsed"))
+					result.addObject("msgerror", "error.submission.elapsed");
 				result.addObject("errors", binding.getAllErrors());
 
 			}
@@ -120,6 +124,7 @@ public class SubmissionAuthorController extends AbstractController {
 		if (binding.hasErrors()) {
 			result = new ModelAndView("submission/editCameraReadyPaper");
 			result.addObject("paper", paper);
+			result.addObject("submissionId", submissionId);
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("lang", this.lang);
 		} else
@@ -131,10 +136,12 @@ public class SubmissionAuthorController extends AbstractController {
 				result = new ModelAndView("submission/editCameraReadyPaper");
 				result.addObject("paper", paper);
 				result.addObject("lang", this.lang);
+				result.addObject("submissionId", submissionId);
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("submission/editCameraReadyPaper");
 				result.addObject("paper", paper);
+				result.addObject("submissionId", submissionId);
 				result.addObject("lang", this.lang);
 				//if (oops.getMessage().equals("no deadline or date can be null"))
 				//result.addObject("msgerror", "conference.error.empty");

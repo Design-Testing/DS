@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -19,7 +20,7 @@ import domain.Reviewer;
 import domain.Submission;
 
 @Service
-@Transactional
+@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public class SubmissionService {
 
 	@Autowired
@@ -91,8 +92,9 @@ public class SubmissionService {
 		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
 		final Date now = new Date();
 		Assert.isTrue(now.before(submission.getConference().getSubmission()), "submission deadline is elapsed");
-		submission.setMoment(new Date());
+		submission.setMoment(new Date(System.currentTimeMillis() - 1000));
 		submission.setReviewPaper(reviewPaper);
+		System.out.println("HOLAAAAAAAAAAAAA");
 		res = this.submissionRepository.save(submission);
 		Assert.notNull(res);
 		return res;
