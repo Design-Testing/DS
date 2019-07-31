@@ -115,7 +115,7 @@ public class SubmissionAuthorController extends AbstractController {
 
 	// EDIT CAMERA-READY PAPER --------------------------------------------------------
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/editPaper", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int submissionId, @RequestParam final int paperId) {
 		ModelAndView result;
 
@@ -155,7 +155,7 @@ public class SubmissionAuthorController extends AbstractController {
 			try {
 				final Paper paperSaved = this.paperService.save(paper);
 				this.submissionService.sendCameraReadyPaper(Integer.parseInt(submissionId), paperSaved);
-				result = this.mySubmissions();
+				result = this.display(Integer.parseInt(submissionId));
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editCameraReadyPaper");
 				result.addObject("paper", paper);
