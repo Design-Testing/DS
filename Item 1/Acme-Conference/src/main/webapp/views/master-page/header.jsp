@@ -32,6 +32,7 @@
 					<li><a href="conference/administrator/fiveDaysBeginning.do"><spring:message code="master.page.five.days.beginning.conferences" /></a></li>
 				</ul>
 			</li>
+			<li><a class="fNiv" href="submission/administrator/submissions.do"><spring:message code="master.page.submissions" /></a></li>
 			
 			
 		</security:authorize>
@@ -53,6 +54,7 @@
 					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
 				</ul>
 			</li>
+			<li><a class="fNiv" href="submission/author/mySubmissions.do"><spring:message code="master.page.my.submissions" /></a></li>
 			
 		</security:authorize>
 		

@@ -117,7 +117,7 @@ public class SubmissionAuthorController extends AbstractController {
 
 	/** Cuando ha rellenado el papel review y manda la presentación finalmente **/
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "sendPaper")
-	public ModelAndView sendCameraReadyPaper(@Valid final Paper paper, final BindingResult binding, @RequestParam final int submissionId, final HttpServletRequest request) {
+	public ModelAndView sendCameraReadyPaper(@Valid final Paper paper, final BindingResult binding, @RequestParam final String submissionId, final HttpServletRequest request) {
 		ModelAndView result;
 
 		if (binding.hasErrors()) {
@@ -129,7 +129,7 @@ public class SubmissionAuthorController extends AbstractController {
 		} else
 			try {
 				final Paper paperSaved = this.paperService.save(paper);
-				this.submissionService.sendCameraReadyPaper(submissionId, paperSaved);
+				this.submissionService.sendCameraReadyPaper(Integer.parseInt(submissionId), paperSaved);
 				result = this.mySubmissions();
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editCameraReadyPaper");

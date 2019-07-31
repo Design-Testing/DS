@@ -9,6 +9,17 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+
+<jstl:if test="${isAuthor eq true and conference.isDraft eq false  }" >
+			<jstl:if test="${availableToSubmit eq true }" >
+			<acme:button url="submission/author/create.do?conferenceId=${conference.id}" name="display" code="conference.submits"/>
+			</jstl:if>
+			<jstl:if test="${availableToSubmit eq false }" >
+			<h5 style="color: red;"><spring:message code="conference.submission.elapsed"/></h5>
+			</jstl:if>
+
+</jstl:if>
+
 <h3><spring:message code="conference.general.information" /></h3>
 
 <acme:display code="conference.title" value="${conference.title}" />
