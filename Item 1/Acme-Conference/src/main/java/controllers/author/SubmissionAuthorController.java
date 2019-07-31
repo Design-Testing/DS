@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AuthorService;
+import services.PaperService;
 import services.SubmissionService;
 import controllers.AbstractController;
 import domain.Author;
@@ -33,6 +34,9 @@ public class SubmissionAuthorController extends AbstractController {
 	@Autowired
 	private AuthorService		authorService;
 
+	@Autowired
+	private PaperService		paperService;
+
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
@@ -44,8 +48,11 @@ public class SubmissionAuthorController extends AbstractController {
 
 		this.authorService.findByPrincipal();
 
+		final Paper paper = this.paperService.create();
+
 		result = new ModelAndView("submission/editReviewPaper"); //para rellenar el reviw paper
 		result.addObject("conferenceId", conferenceId);
+		result.addObject("paper", paper);
 		result.addObject("lang", this.lang);
 		return result;
 	}
@@ -64,8 +71,9 @@ public class SubmissionAuthorController extends AbstractController {
 			result.addObject("lang", this.lang);
 		} else
 			try {
+				final Paper paperSaved = this.paperService.save(paper);
 				final Submission submission = this.submissionService.create(conferenceId);
-				this.submissionService.submits(submission, paper);
+				this.submissionService.submits(submission, paperSaved);
 				result = this.mySubmissions();
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editReviewPaper");
@@ -93,8 +101,11 @@ public class SubmissionAuthorController extends AbstractController {
 
 		this.authorService.findByPrincipal();
 
+		final Paper paper = this.paperService.create();
+
 		result = new ModelAndView("submission/editCameraReadyPaper"); //para rellenar el camara ready paper
 		result.addObject("submissionId", submissionId);
+		result.addObject("paper", paper);
 		result.addObject("lang", this.lang);
 		return result;
 	}
@@ -113,7 +124,8 @@ public class SubmissionAuthorController extends AbstractController {
 			result.addObject("lang", this.lang);
 		} else
 			try {
-				this.submissionService.sendCameraReadyPaper(submissionId, paper);
+				final Paper paperSaved = this.paperService.save(paper);
+				this.submissionService.sendCameraReadyPaper(submissionId, paperSaved);
 				result = this.mySubmissions();
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editCameraReadyPaper");

@@ -9,10 +9,12 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
+<jstl:if test="${isAdministrator eq true }" >
 
  <input type="button" class="btn btn-danger" name="create"
            value="<spring:message code="conference.create" />"
            onclick="relativeRedir('conference/administrator/create.do');"/>
+</jstl:if>
 
 <display:table name="conferences" id="row"
 		requestURI="${requestURI}" pagesize="5"
@@ -20,7 +22,6 @@
 
 	<display:column property="title" titleKey="conference.title" />
 	
-	<display:column property="acronym" titleKey="conference.acronym" />
 	
 	
 	<jstl:choose>
@@ -59,6 +60,12 @@
 			<acme:button url="conference/display.do?conferenceId=${row.id}" name="display" code="conference.display"/>
 		</jstl:if>
 			
+		</display:column>
+		
+		<display:column>
+		<jstl:if test="${isAuthor eq true and row.isDraft eq false }" >
+			<acme:button url="submission/author/create.do?conferenceId=${row.id}" name="display" code="conference.submits"/>
+		</jstl:if>
 		</display:column>
 		
 	</jstl:when>

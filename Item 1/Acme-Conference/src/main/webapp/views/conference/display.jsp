@@ -107,6 +107,15 @@
 <br>
 
 
-<acme:button url="conference/administrator/myConferences.do" name="back" code="conference.back" />
+<jstl:choose>
+	<jstl:when test="${isAdministrator eq true }">
+		<acme:button url="conference/administrator/myConferences.do" name="back" code="conference.back" />
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:button url="conference/list.do" name="back" code="conference.back" />
+	</jstl:otherwise>
+</jstl:choose>
+
+
 
 

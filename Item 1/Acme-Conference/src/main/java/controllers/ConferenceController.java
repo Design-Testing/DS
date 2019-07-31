@@ -75,9 +75,24 @@ public class ConferenceController extends AbstractController {
 
 		final Collection<Conference> conferences = this.conferenceService.findAll();
 
+		final SecurityContext context = SecurityContextHolder.getContext();
+		final Authentication authentication = context.getAuthentication();
+		final Object principal = authentication.getPrincipal();
+
+		Boolean isAuthor = false;
+		if (!principal.toString().equals("anonymousUser")) {
+			final Actor logged = this.actorService.findByPrincipal();
+			final Authority authAuthor = new Authority();
+			authAuthor.setAuthority("AUTHOR");
+			if (logged.getUserAccount().getAuthorities().contains(authAuthor))
+				isAuthor = true;
+
+		}
+
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", false);
+		result.addObject("isAuthor", isAuthor);
 		result.addObject("requestURI", "conference/list.do");
 
 		return result;
