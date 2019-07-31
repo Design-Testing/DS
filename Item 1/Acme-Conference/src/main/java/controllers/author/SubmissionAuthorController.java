@@ -38,14 +38,14 @@ public class SubmissionAuthorController extends AbstractController {
 	@Autowired
 	private PaperService		paperService;
 
-	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
-
 
 	// CREATE  SUBMISSION (AND REVIEW PAPER)---------------------------------------------------------------
 	/** Cuando pulsa sobre el botón submit al lado de una conference **/
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int conferenceId) {
 		ModelAndView result;
+
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		this.authorService.findByPrincipal();
 
@@ -54,7 +54,7 @@ public class SubmissionAuthorController extends AbstractController {
 		result = new ModelAndView("submission/editReviewPaper"); //para rellenar el reviw paper
 		result.addObject("conferenceId", conferenceId);
 		result.addObject("paper", paper);
-		result.addObject("lang", this.lang);
+		result.addObject("lang", lang);
 		return result;
 	}
 
@@ -65,12 +65,14 @@ public class SubmissionAuthorController extends AbstractController {
 	public ModelAndView submit(@Valid final Paper paper, final BindingResult binding, @RequestParam final String conferenceId, final HttpServletRequest request) {
 		ModelAndView result;
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		if (binding.hasErrors()) {
 			result = new ModelAndView("submission/editReviewPaper");
 			result.addObject("paper", paper);
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("conferenceId", conferenceId);
-			result.addObject("lang", this.lang);
+			result.addObject("lang", lang);
 		} else
 			try {
 				final Submission submission = this.submissionService.create(Integer.parseInt(conferenceId));
@@ -80,14 +82,14 @@ public class SubmissionAuthorController extends AbstractController {
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editReviewPaper");
 				result.addObject("paper", paper);
-				result.addObject("lang", this.lang);
+				result.addObject("lang", lang);
 				result.addObject("conferenceId", conferenceId);
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("submission/editReviewPaper");
 				result.addObject("paper", paper);
 				result.addObject("conferenceId", conferenceId);
-				result.addObject("lang", this.lang);
+				result.addObject("lang", lang);
 				if (oops.getMessage().equals("submission deadline is elapsed"))
 					result.addObject("msgerror", "error.submission.elapsed");
 				result.addObject("errors", binding.getAllErrors());
@@ -103,6 +105,8 @@ public class SubmissionAuthorController extends AbstractController {
 	public ModelAndView createPaper(@RequestParam final int submissionId) {
 		ModelAndView result;
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		this.authorService.findByPrincipal();
 
 		final Paper paper = this.paperService.create();
@@ -110,7 +114,7 @@ public class SubmissionAuthorController extends AbstractController {
 		result = new ModelAndView("submission/editCameraReadyPaper"); //para rellenar el camara ready paper
 		result.addObject("submissionId", submissionId);
 		result.addObject("paper", paper);
-		result.addObject("lang", this.lang);
+		result.addObject("lang", lang);
 		return result;
 	}
 
@@ -119,6 +123,8 @@ public class SubmissionAuthorController extends AbstractController {
 	@RequestMapping(value = "/editPaper", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int submissionId, @RequestParam final int paperId) {
 		ModelAndView result;
+
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		final Author principal = this.authorService.findByPrincipal();
 
@@ -131,7 +137,7 @@ public class SubmissionAuthorController extends AbstractController {
 			result.addObject("submissionId", submissionId);
 			result.addObject("isAuthor", true);
 			result.addObject("paper", paper);
-			result.addObject("lang", this.lang);
+			result.addObject("lang", lang);
 		}
 
 		else
@@ -146,12 +152,14 @@ public class SubmissionAuthorController extends AbstractController {
 	public ModelAndView sendCameraReadyPaper(@Valid final Paper paper, final BindingResult binding, @RequestParam final String submissionId, final HttpServletRequest request) {
 		ModelAndView result;
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		if (binding.hasErrors()) {
 			result = new ModelAndView("submission/editCameraReadyPaper");
 			result.addObject("paper", paper);
 			result.addObject("submissionId", submissionId);
 			result.addObject("errors", binding.getAllErrors());
-			result.addObject("lang", this.lang);
+			result.addObject("lang", lang);
 		} else
 			try {
 				final Paper paperSaved = this.paperService.save(paper);
@@ -160,14 +168,14 @@ public class SubmissionAuthorController extends AbstractController {
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editCameraReadyPaper");
 				result.addObject("paper", paper);
-				result.addObject("lang", this.lang);
+				result.addObject("lang", lang);
 				result.addObject("submissionId", submissionId);
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("submission/editCameraReadyPaper");
 				result.addObject("paper", paper);
 				result.addObject("submissionId", submissionId);
-				result.addObject("lang", this.lang);
+				result.addObject("lang", lang);
 				//if (oops.getMessage().equals("no deadline or date can be null"))
 				//result.addObject("msgerror", "conference.error.empty");
 				result.addObject("errors", binding.getAllErrors());
@@ -201,6 +209,8 @@ public class SubmissionAuthorController extends AbstractController {
 	public ModelAndView display(@RequestParam final int submissionId) {
 		ModelAndView result;
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		final Author principal = this.authorService.findByPrincipal();
 
 		final Submission submission = this.submissionService.findOne(submissionId);
@@ -228,7 +238,7 @@ public class SubmissionAuthorController extends AbstractController {
 			result.addObject("isAuthor", true);
 			result.addObject("availableCameraReadyDeadline", availableCameraReadyDeadline);
 			result.addObject("availableSubmissionStatus", availableSubmissionStatus);
-			result.addObject("lang", this.lang);
+			result.addObject("lang", lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
 
