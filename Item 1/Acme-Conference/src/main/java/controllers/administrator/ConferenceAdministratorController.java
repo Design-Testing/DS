@@ -299,12 +299,18 @@ public class ConferenceAdministratorController extends AbstractController {
 		final Conference conference = this.conferenceService.findOne(conferenceId);
 
 		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
+		final Collection<Submission> acceptedSubmissions = this.submissionService.findAcceptedSubmissionsByConference(conferenceId);
+		final Collection<Submission> rejectedSubmissions = this.submissionService.findRejectedSubmissionsByConference(conferenceId);
+		final Collection<Submission> underReviewedSubmissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 
 		if (conference != null) {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", true);
 			result.addObject("submissions", submissions);
+			result.addObject("acceptedSubmissions", acceptedSubmissions);
+			result.addObject("rejectedSubmissions", rejectedSubmissions);
+			result.addObject("underReviewedSubmissions", underReviewedSubmissions);
 			result.addObject("lang", this.lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");

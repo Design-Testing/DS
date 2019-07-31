@@ -206,6 +206,24 @@ public class SubmissionService {
 		return res;
 	}
 
+	public Collection<Submission> findAcceptedSubmissionsByConference(final int conferenceId) {
+		final Collection<Submission> res = this.submissionRepository.findAcceptedSubmissionsByConference(conferenceId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Submission> findRejectedSubmissionsByConference(final int conferenceId) {
+		final Collection<Submission> res = this.submissionRepository.findRejectedSubmissionsByConference(conferenceId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Submission> findUnderReviewedSubmissionsByConference(final int conferenceId) {
+		final Collection<Submission> res = this.submissionRepository.findUnderReviewedSubmissionsByConference(conferenceId);
+		Assert.notNull(res);
+		return res;
+	}
+
 	public List<Submission> getSubmissionsByAuthor(final int authorId) {
 		final List<Submission> res = this.submissionRepository.getSubmissionsByAuthor(authorId);
 		Assert.notNull(res);
