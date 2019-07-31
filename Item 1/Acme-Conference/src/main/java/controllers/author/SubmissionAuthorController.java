@@ -40,7 +40,7 @@ public class SubmissionAuthorController extends AbstractController {
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
-	// CREATE  ---------------------------------------------------------------
+	// CREATE  SUBMISSION (AND REVIEW PAPER)---------------------------------------------------------------
 	/** Cuando pulsa sobre el botón submit al lado de una conference **/
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int conferenceId) {
@@ -57,7 +57,7 @@ public class SubmissionAuthorController extends AbstractController {
 		return result;
 	}
 
-	// SAVE --------------------------------------------------------
+	// SAVE SUBMISSION (AND REVIEW PAPER)--------------------------------------------------------
 
 	/** Cuando ha rellenado el papel review y manda la presentación finalmente **/
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
@@ -96,7 +96,7 @@ public class SubmissionAuthorController extends AbstractController {
 		return result;
 	}
 
-	// CREATE  ---------------------------------------------------------------
+	// CREATE CAMERA-READY PAPER ---------------------------------------------------------------
 	/** Cuando pulsa sobre el botón enviar camera-ready paper sobre una submission **/
 	@RequestMapping(value = "/createPaper", method = RequestMethod.GET)
 	public ModelAndView createPaper(@RequestParam final int submissionId) {
@@ -113,10 +113,35 @@ public class SubmissionAuthorController extends AbstractController {
 		return result;
 	}
 
-	// SAVE --------------------------------------------------------
+	// EDIT CAMERA-READY PAPER --------------------------------------------------------
 
-	/** Cuando ha rellenado el papel review y manda la presentación finalmente **/
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "sendPaper")
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int submissionId, @RequestParam final int paperId) {
+		ModelAndView result;
+
+		final Author principal = this.authorService.findByPrincipal();
+
+		final Submission submission = this.submissionService.findOne(submissionId);
+
+		final Paper paper = this.paperService.findOne(paperId);
+
+		if (submission.getAuthor().equals(principal) && submission.getStatus().equals("ACCEPTED") && submission.getCameraReadyPaper().equals(paper)) {
+			result = new ModelAndView("submission/editCameraReadyPaper");
+			result.addObject("submissionId", submissionId);
+			result.addObject("isAuthor", true);
+			result.addObject("paper", paper);
+			result.addObject("lang", this.lang);
+		}
+
+		else
+			result = new ModelAndView("redirect:misc/403");
+
+		return result;
+	}
+	// SAVE CAMERA-READY PAPER--------------------------------------------------------
+
+	/** guardar camera ready paper **/
+	@RequestMapping(value = "/editPaper", method = RequestMethod.POST, params = "savePaper")
 	public ModelAndView sendCameraReadyPaper(@Valid final Paper paper, final BindingResult binding, @RequestParam final String submissionId, final HttpServletRequest request) {
 		ModelAndView result;
 
@@ -151,7 +176,7 @@ public class SubmissionAuthorController extends AbstractController {
 		return result;
 	}
 
-	// LIST --------------------------------------------------------
+	// LIST SUBMISSIONS OF AUTHOR PRINCIPAL --------------------------------------------------------
 
 	@RequestMapping(value = "/mySubmissions", method = RequestMethod.GET)
 	public ModelAndView mySubmissions() {
@@ -169,7 +194,7 @@ public class SubmissionAuthorController extends AbstractController {
 		return result;
 	}
 
-	// DISPLAY --------------------------------------------------------
+	// DISPLAY SUBMISSION --------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int submissionId) {

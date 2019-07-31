@@ -624,6 +624,15 @@
 		<property name="author" ref="author2" />
 		<property name="conference" ref="conference1" />
 	</bean>
+	
+	<bean id="submission2" class="domain.Submission">
+		<property name="ticker" value="AUT-BQ28" />
+		<property name="moment" value="2019/07/27 07:25" />
+		<property name="status" value="ACCEPTED" />
+		<property name="reviewPaper" ref="paper4" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference3" />
+	</bean>
 
 
 	<!-- =================================================================== -->
@@ -673,6 +682,29 @@
 				<ref bean="presentation1" />
 				<ref bean="tutorial2" />
 				<ref bean="panel1" />
+			</list>
+		</property>
+		<property name="category" ref="category3" />
+
+	</bean>
+	
+	
+	<bean id="conference2" class="domain.Conference">
+		<!-- CONFERENCE -->
+		<property name="title" value="Conferencia Windows" />
+		<property name="acronym" value="Windows" />
+		<property name="venue" value="Windows" />
+		<property name="submission" value="2019/07/28 00:00" />
+		<property name="notification" value="2019/07/31 00:00" />
+		<property name="cameraReady" value="2019/08/04 00:00" />
+		<property name="startDate" value="2019/08/05 00:00" />
+		<property name="endDate" value="2019/08/06 00:00" />
+		<property name="summary" value="Summary of conference 3" />
+		<property name="fee" value="1520.89" />
+		<property name="isDraft" value="false" />
+		<property name="activities">
+			<list>
+				
 			</list>
 		</property>
 		<property name="category" ref="category3" />
@@ -922,6 +954,17 @@
 		<property name="authors">
 			<list>
 				<value>Author of paper3</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="paper4" class="domain.Paper">
+		<property name="title" value="Title of paper 4" />
+		<property name="summary" value="Summary of paper 4" />
+		<property name="document" value="http://www.documentPaper4.com" />
+		<property name="authors">
+			<list>
+				<value>Author of paper4</value>
 			</list>
 		</property>
 	</bean>
