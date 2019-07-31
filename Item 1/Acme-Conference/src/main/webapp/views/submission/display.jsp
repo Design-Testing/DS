@@ -44,12 +44,27 @@
 <acme:display code="submission.cameraReadyPaper.document" value="${submission.cameraReadyPaper.document}" />
 <acme:display code="submission.cameraReadyPaper.authors" value="${submission.cameraReadyPaper.authors}" />
 
+<br>
+<jstl:if test="${availableCameraReadyDeadline eq true }">
 <acme:button url="submission/author/editPaper.do?submissionId=${submission.id }&paperId=${submission.cameraReadyPaper.id }" name="back" code="submission.edit.paper" />
+</jstl:if>
 </jstl:if>
 
 <jstl:if test="${empty submission.cameraReadyPaper }">
 
+<jstl:choose>
+<jstl:when test="${availableSubmissionStatus eq false }">
+<spring:message code="submission.no.status" />
+</jstl:when>
+<jstl:when test="${availableSubmissionStatus eq true and availableCameraReadyDeadline eq false  }">
+<spring:message code="submission.elapsed.camera.deadline" />
+</jstl:when>
+<jstl:when test="${availableSubmissionStatus eq true and availableCameraReadyDeadline eq true }">
 <acme:button url="submission/author/createPaper.do?submissionId=${submission.id }" name="back" code="submission.create.paper" />
+</jstl:when>
+</jstl:choose>
+
+
 </jstl:if>
 <br>
 <br>

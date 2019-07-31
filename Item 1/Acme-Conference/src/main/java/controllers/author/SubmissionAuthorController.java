@@ -2,6 +2,7 @@
 package controllers.author;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -206,6 +207,17 @@ public class SubmissionAuthorController extends AbstractController {
 
 		Boolean visible = false;
 
+		Boolean availableCameraReadyDeadline = false;
+
+		Boolean availableSubmissionStatus = false;
+
+		final Date now = new Date();
+
+		if (now.before(submission.getConference().getCameraReady()))
+			availableCameraReadyDeadline = true;
+		if (submission.getStatus().equals("ACCEPTED"))
+			availableSubmissionStatus = true;
+
 		if (submission.getAuthor().equals(principal))
 			visible = true;
 
@@ -214,6 +226,8 @@ public class SubmissionAuthorController extends AbstractController {
 			result.addObject("submission", submission);
 			result.addObject("isAdministrator", false);
 			result.addObject("isAuthor", true);
+			result.addObject("availableCameraReadyDeadline", availableCameraReadyDeadline);
+			result.addObject("availableSubmissionStatus", availableSubmissionStatus);
 			result.addObject("lang", this.lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
