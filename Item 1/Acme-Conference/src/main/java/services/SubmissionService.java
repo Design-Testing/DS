@@ -244,7 +244,7 @@ public class SubmissionService {
 	 */
 
 	/** El ticker es ABC-XXXX donde ABC son las inciales del autor y XXXX cuatro letras randoms en mayuscula **/
-	private String generateTicker() {
+	public String generateTicker() {
 		String res = "";
 		final String abecedary = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		final Integer n1 = (int) Math.floor(Math.random() * 25 + 1);
@@ -256,24 +256,20 @@ public class SubmissionService {
 
 		final Character initial1 = author.getName().charAt(0);
 		Character initial2 = null;
-		Character initial3 = null;
-		if (author.getSurname().size() == 1) {
-			initial2 = author.getSurname().get(0).charAt(0);
-			initial3 = 'X';
-		} else {
-			initial2 = author.getSurname().get(0).charAt(0);
-			initial3 = author.getSurname().get(1).charAt(0);
-		}
+		if (author.getMiddleName() != null && author.getMiddleName() != "")
+			initial2 = author.getMiddleName().charAt(0);
+		else
+			initial2 = 'X';
 
-		//res = initial1 + initial2 + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
+		final Character initial3 = author.getSurname().get(0).charAt(0);
 
-		res = "ABC" + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
+		res = "" + initial1 + "" + initial2 + "" + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
+
 		final Collection<Submission> submissions = this.submissionRepository.getSubmissionWithTicker(res);
 		if (!submissions.isEmpty())
-			this.generateTicker();
+			res = this.generateTicker();
 		return res;
 	}
-
 	public Collection<Reviewer> availableReviewers(final int submissionId) {
 		final Collection<Reviewer> reviewers = this.reviewerService.findAll();
 		final Submission submission = this.findOne(submissionId);
