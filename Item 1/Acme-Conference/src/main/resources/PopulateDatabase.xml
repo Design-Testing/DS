@@ -625,8 +625,8 @@
 		<property name="conference" ref="conference1" />
 	</bean>
 	
-	<bean id="submission2" class="domain.Submission">
-		<property name="ticker" value="AUT-BQ28" />
+	<bean id="submission3" class="domain.Submission">
+		<property name="ticker" value="AUX-BQ28" />
 		<property name="moment" value="2019/07/27 07:25" />
 		<property name="status" value="ACCEPTED" />
 		<property name="reviewPaper" ref="paper4" />
@@ -689,7 +689,7 @@
 	</bean>
 	
 	
-	<bean id="conference2" class="domain.Conference">
+	<bean id="conference3" class="domain.Conference">
 		<!-- CONFERENCE -->
 		<property name="title" value="Conferencia Windows" />
 		<property name="acronym" value="Windows" />
