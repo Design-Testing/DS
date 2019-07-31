@@ -22,15 +22,12 @@ import domain.Submission;
 public class SubmissionAdministratorController extends AbstractController {
 
 	@Autowired
-	private AdministratorService				administratorService;
+	private AdministratorService	administratorService;
 
 	@Autowired
-	private SubmissionService					submissionService;
+	private SubmissionService		submissionService;
 
-	@Autowired
-	private ConferenceAdministratorController	conferenceAdministratorController;
-
-	final String								lang	= LocaleContextHolder.getLocale().getLanguage();
+	final String					lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	// LIST --------------------------------------------------------
@@ -119,14 +116,14 @@ public class SubmissionAdministratorController extends AbstractController {
 
 	/** debe estar en el display de conference arriba de todas las submissions **/
 	@RequestMapping(value = "/runAssignation", method = RequestMethod.GET)
-	public ModelAndView runAssignation(@RequestParam final int conferenceId) {
+	public ModelAndView runAssignation() {
 		ModelAndView result;
 
 		this.administratorService.findByPrincipal();
 
 		this.submissionService.runAssignation();
 
-		result = this.conferenceAdministratorController.display(conferenceId);
+		result = this.list();
 
 		return result;
 	}

@@ -10,6 +10,12 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
+<jstl:if test="${isAdministrator eq true }" >
+			<acme:button url="submission/administrator/runAssignation.do" name="display" code="conference.run.assignation"/>
+
+</jstl:if>
+
+
 <jstl:if test="${isAdministrator eq true or isAuthor eq true }" >
 
 <display:table name="submissions" id="row"
