@@ -20,6 +20,8 @@
 
 </jstl:if>
 
+
+
 <h3><spring:message code="conference.general.information" /></h3>
 
 <acme:display code="conference.title" value="${conference.title}" />
@@ -111,6 +113,56 @@
 			value="${conference.endDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
+
+
+<br>
+<br>
+<br>
+
+<jstl:if test="${isAdministrator eq true  }" >
+
+	<h3><spring:message code="conference.submissions" /></h3>
+	
+
+	
+	<jstl:if test="${not empty submissions and conference.isDraft eq false  }" >
+			<acme:button url="submission/administrator/runAssignation.do?conferenceId=${conference.id}" name="display" code="conference.run.assignation"/>
+
+	</jstl:if>
+	
+	
+	<display:table name="submissions" id="row"
+		requestURI="${requestURI}" pagesize="5"
+		class="displaytag">
+		
+	
+	<display:column property="ticker" titleKey="submission.ticker" />
+	
+	
+	<display:column property="status" titleKey="submission.status" />
+	
+	
+	
+
+		
+		<display:column>
+			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
+			
+		</display:column>
+		<display:column>
+			<jstl:if test="${row.status eq 'UNDER-REVIEWED' }" >
+			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
+			</jstl:if>
+		</display:column>
+	
+
+	
+	
+	
+
+</display:table>
+
+</jstl:if>
 
 
 <br>

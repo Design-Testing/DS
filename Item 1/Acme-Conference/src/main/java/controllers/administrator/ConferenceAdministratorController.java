@@ -20,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 import repositories.CategoryRepository;
 import services.AdministratorService;
 import services.ConferenceService;
+import services.SubmissionService;
 import controllers.AbstractController;
 import domain.Conference;
+import domain.Submission;
 import forms.ConferenceForm;
 
 @Controller
@@ -33,6 +35,9 @@ public class ConferenceAdministratorController extends AbstractController {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private SubmissionService		submissionService;
 
 	@Autowired
 	private CategoryRepository		categoryRepository;
@@ -293,10 +298,13 @@ public class ConferenceAdministratorController extends AbstractController {
 
 		final Conference conference = this.conferenceService.findOne(conferenceId);
 
+		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
+
 		if (conference != null) {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", true);
+			result.addObject("submissions", submissions);
 			result.addObject("lang", this.lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
