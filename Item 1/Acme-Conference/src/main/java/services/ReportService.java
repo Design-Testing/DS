@@ -20,9 +20,25 @@ public class ReportService {
 	@Autowired
 	private ReportRepository	reportRepository;
 
+	@Autowired
+	private SubmissionService	submissionService;
 
-	public Report create() {
+	@Autowired
+	private ReviewerService		reviewerService;
+
+
+	public Report create(final int submissionId, final int reviewerId) {
 		final Report res = new Report();
+		res.setOriginality(0);
+		res.setReadability(0);
+		res.setQuality(0);
+		res.setDecision("BORDER-LINE");
+		res.setIsDraft(true);
+		final Submission submission = this.submissionService.findOne(submissionId);
+		Assert.notNull(submission);
+		final Reviewer reviewer = this.reviewerService.findOne(reviewerId);
+		Assert.notNull(reviewer);
+
 		return res;
 	}
 

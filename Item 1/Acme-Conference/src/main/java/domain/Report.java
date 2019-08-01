@@ -21,9 +21,22 @@ public class Report extends DomainEntity {
 	private Integer		quality;
 	private Integer		readability;
 	private String		decision;
+	private Boolean		isDraft;
 
 	//Relaciones
 	private Submission	submission;
+
+
+	@NotNull
+	public Boolean getIsDraft() {
+		return this.isDraft;
+	}
+
+	public void setIsDraft(final Boolean isDraft) {
+		this.isDraft = isDraft;
+	}
+
+
 	private Reviewer	reviewer;
 
 

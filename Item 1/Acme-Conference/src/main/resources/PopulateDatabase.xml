@@ -590,6 +590,7 @@
 		<property name="decision" value="ACCEPT" />
 		<property name="submission" ref="submission1" />
 		<property name="reviewer" ref="reviewer1" />
+		<property name="isDraft" value="false" />
 	</bean>
 
 	<bean id="report2" class="domain.Report">
@@ -600,6 +601,7 @@
 		<property name="decision" value="ACCEPT" />
 		<property name="submission" ref="submission2" />
 		<property name="reviewer" ref="reviewer2" />
+		<property name="isDraft" value="false" />
 	</bean>
 
 	<!-- =================================================================== -->
