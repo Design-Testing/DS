@@ -62,11 +62,7 @@
 			
 		</display:column>
 		
-		<display:column>
-		<jstl:if test="${isAuthor eq true and row.isDraft eq false }" >
-			<acme:button url="submission/author/create.do?conferenceId=${row.id}" name="display" code="conference.submits"/>
-		</jstl:if>
-		</display:column>
+		
 		
 	</jstl:when>
 	</jstl:choose>

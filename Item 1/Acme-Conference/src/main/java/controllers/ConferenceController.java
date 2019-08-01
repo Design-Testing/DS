@@ -2,6 +2,7 @@
 package controllers;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -46,6 +47,13 @@ public class ConferenceController extends AbstractController {
 		final Object principal = authentication.getPrincipal();
 
 		Boolean isAuthor = false;
+		Boolean availableToSubmit = false;
+
+		final Date now = new Date();
+
+		if (now.before(conference.getSubmission()))
+			availableToSubmit = true;
+
 		if (!principal.toString().equals("anonymousUser")) {
 			final Actor logged = this.actorService.findByPrincipal();
 			final Authority authAuthor = new Authority();
@@ -59,6 +67,7 @@ public class ConferenceController extends AbstractController {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", false);
+			result.addObject("availableToSubmit", availableToSubmit);
 			result.addObject("isAuthor", isAuthor);
 			result.addObject("lang", this.lang);
 		} else

@@ -9,6 +9,26 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+
+<!-------------------------------------------------------------------------------------------->
+<!------------------------------- CREATE CONFERENCE BUTTON ----------------------------------->
+<!-------------------------------------------------------------------------------------------->
+
+<jstl:if test="${isAuthor eq true and conference.isDraft eq false  }" >
+			<jstl:if test="${availableToSubmit eq true }" >
+			<acme:button url="submission/author/create.do?conferenceId=${conference.id}" name="display" code="conference.submits"/>
+			</jstl:if>
+			<jstl:if test="${availableToSubmit eq false }" >
+			<h5 style="color: red;"><spring:message code="conference.submission.elapsed"/></h5>
+			</jstl:if>
+
+</jstl:if>
+
+<!--------------------------------------------------------------------------------------->
+<!------------------------------- GENERAL INFORMATION ----------------------------------->
+<!--------------------------------------------------------------------------------------->
+
+
 <h3><spring:message code="conference.general.information" /></h3>
 
 <acme:display code="conference.title" value="${conference.title}" />
@@ -33,6 +53,10 @@
 </jstl:choose>
 
 <br>
+
+<!----------------------------------------------------------------------------->
+<!------------------------------- DEADLINES ----------------------------------->
+<!----------------------------------------------------------------------------->
 
 <h3><spring:message code="conference.deadlines" /></h3>
 
@@ -75,6 +99,10 @@
 
 <br>
 
+<!------------------------------------------------------------------------->
+<!------------------------------- DATES ----------------------------------->
+<!------------------------------------------------------------------------->
+
 <h3><spring:message code="conference.dates" /></h3>
 
 <jstl:choose>
@@ -106,6 +134,140 @@
 <br>
 <br>
 
+
+<!------------------------------------------------------------------------------->
+<!------------------------------- SUBMISSIONS ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+<jstl:if test="${isAdministrator eq true  }" >
+
+	<h3><spring:message code="conference.submissions" /></h3>
+	
+
+	
+	<jstl:if test="${not empty submissions and conference.isDraft eq false  }" >
+			<acme:button url="conference/administrator/decideOnConference.do?conferenceId=${conference.id}" name="display" code="conference.run.decision"/>
+
+	</jstl:if>
+	
+	
+	
+
+
+<!------------------------------- Under-Reviewed submissions ----------------------------------->
+
+<h4><spring:message code="conference.submissions.under.reviewed" /></h4>
+
+<display:table name="underReviewedSubmissions" id="row"
+		requestURI="${requestURI}" pagesize="5"
+		class="displaytag">
+		
+	
+	<display:column property="ticker" titleKey="submission.ticker" />
+	
+	
+	<display:column property="status" titleKey="submission.status" />
+	
+	
+	
+
+		
+		<display:column>
+			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
+			
+		</display:column>
+		<display:column>
+			<jstl:if test="${row.status eq 'UNDER-REVIEWED' }" >
+			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
+			</jstl:if>
+		</display:column>
+	
+
+	
+	
+	
+
+</display:table>
+<!------------------------------- Accepted submissions ----------------------------------->
+
+<h4><spring:message code="conference.submissions.accepted" /></h4>
+
+<display:table name="acceptedSubmissions" id="row"
+		requestURI="${requestURI}" pagesize="5"
+		class="displaytag">
+		
+	
+	<display:column property="ticker" titleKey="submission.ticker" />
+	
+	
+	<display:column property="status" titleKey="submission.status" />
+	
+	
+	
+
+		
+		<display:column>
+			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
+			
+		</display:column>
+		<display:column>
+			<jstl:if test="${row.status eq 'UNDER-REVIEWED' }" >
+			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
+			</jstl:if>
+		</display:column>
+	
+
+	
+	
+	
+
+</display:table>
+<!------------------------------- Rejected submissions ----------------------------------->
+
+<h4><spring:message code="conference.submissions.rejected" /></h4>
+
+<display:table name="rejectedSubmissions" id="row"
+		requestURI="${requestURI}" pagesize="5"
+		class="displaytag">
+		
+	
+	<display:column property="ticker" titleKey="submission.ticker" />
+	
+	
+	<display:column property="status" titleKey="submission.status" />
+	
+	
+	
+
+		
+		<display:column>
+			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
+			
+		</display:column>
+		<display:column>
+			<jstl:if test="${row.status eq 'UNDER-REVIEWED' }" >
+			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
+			</jstl:if>
+		</display:column>
+	
+
+	
+	
+	
+
+</display:table>
+
+</jstl:if>
+
+
+<br>
+<br>
+<br>
+
+
+<!-------------------------------------------------------------------------------->
+<!------------------------------- BACK BUTTONS ----------------------------------->
+<!-------------------------------------------------------------------------------->
 
 <jstl:choose>
 	<jstl:when test="${isAdministrator eq true }">
