@@ -1188,7 +1188,7 @@
 		
 	<bean id="configurationParameters" class="domain.ConfigurationParameters">
 		<property name="sysName" value="Acme Conference" />
-		<property name="banner" value="https://i.ibb.co/W3c4rmh/logo.png" />
+		<property name="banner" value="https://i.ibb.co/QPGwNPJ/conference.png" />
 		<property name="welcomeMessageEn"
 			value="Welcome to Acme Conference! Your scientific event manager" />
 		<property name="welcomeMessageEsp"
