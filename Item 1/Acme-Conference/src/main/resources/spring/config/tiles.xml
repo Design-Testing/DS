@@ -28,6 +28,13 @@
 		<value>/views/profile/tiles.xml</value>
 		<value>/views/conference/tiles.xml</value>
 		<value>/views/submission/tiles.xml</value>
+		<value>/views/finder/tiles.xml</value>
+		<value>/views/section/tiles.xml</value>
+		<value>/views/presentation/tiles.xml</value>
+		<value>/views/comment/tiles.xml</value>
+		<value>/views/panel/tiles.xml</value>
+		<value>/views/register/tiles.xml</value>
+		<value>/views/tutorial/tiles.xml</value>
 	</util:list>
 
 </beans>

@@ -128,6 +128,7 @@
 		
 		
 		<security:authorize access="isAuthenticated()">
+			<li><a href="finder/edit.do"><spring:message code="master.page.finder" /></a></li>
 			<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 
