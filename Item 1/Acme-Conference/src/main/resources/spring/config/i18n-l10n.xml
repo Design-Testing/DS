@@ -28,6 +28,8 @@
 		<value>/views/profile/messages</value>
 		<value>/views/conference/messages</value>
 		<value>/views/submission/messages</value>
+		<value>/views/configurationParameters/messages</value>
+		
 	</util:list>
 
 </beans>

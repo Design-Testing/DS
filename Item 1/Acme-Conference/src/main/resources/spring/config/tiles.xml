@@ -28,6 +28,7 @@
 		<value>/views/profile/tiles.xml</value>
 		<value>/views/conference/tiles.xml</value>
 		<value>/views/submission/tiles.xml</value>
+		<value>/views/configurationParameters/tiles.xml</value>
 	</util:list>
 
 </beans>
