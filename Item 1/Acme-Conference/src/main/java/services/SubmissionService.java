@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -19,7 +20,7 @@ import domain.Reviewer;
 import domain.Submission;
 
 @Service
-@Transactional
+//@Transactional
 public class SubmissionService {
 
 	@Autowired
@@ -36,6 +37,9 @@ public class SubmissionService {
 
 	@Autowired
 	private ReportService			reportService;
+
+	@Autowired
+	private PaperService			paperService;
 
 	@Autowired
 	private ReviewerService			reviewerService;
@@ -80,7 +84,7 @@ public class SubmissionService {
 	 * return res;
 	 * }
 	 */
-
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Submission submits(final Submission submission, final Paper reviewPaper) {
 		Submission res;
 		final Author principal = this.authorService.findByPrincipal();
@@ -91,8 +95,10 @@ public class SubmissionService {
 		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
 		final Date now = new Date();
 		Assert.isTrue(now.before(submission.getConference().getSubmission()), "submission deadline is elapsed");
-		submission.setMoment(new Date());
-		submission.setReviewPaper(reviewPaper);
+		submission.setMoment(new Date(System.currentTimeMillis() - 1000));
+
+		final Paper paperSaved = this.paperService.save(reviewPaper);
+		submission.setReviewPaper(paperSaved);
 		res = this.submissionRepository.save(submission);
 		Assert.notNull(res);
 		return res;
@@ -200,6 +206,24 @@ public class SubmissionService {
 		return res;
 	}
 
+	public Collection<Submission> findAcceptedSubmissionsByConference(final int conferenceId) {
+		final Collection<Submission> res = this.submissionRepository.findAcceptedSubmissionsByConference(conferenceId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Submission> findRejectedSubmissionsByConference(final int conferenceId) {
+		final Collection<Submission> res = this.submissionRepository.findRejectedSubmissionsByConference(conferenceId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Submission> findUnderReviewedSubmissionsByConference(final int conferenceId) {
+		final Collection<Submission> res = this.submissionRepository.findUnderReviewedSubmissionsByConference(conferenceId);
+		Assert.notNull(res);
+		return res;
+	}
+
 	public List<Submission> getSubmissionsByAuthor(final int authorId) {
 		final List<Submission> res = this.submissionRepository.getSubmissionsByAuthor(authorId);
 		Assert.notNull(res);
@@ -220,7 +244,7 @@ public class SubmissionService {
 	 */
 
 	/** El ticker es ABC-XXXX donde ABC son las inciales del autor y XXXX cuatro letras randoms en mayuscula **/
-	private String generateTicker() {
+	public String generateTicker() {
 		String res = "";
 		final String abecedary = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		final Integer n1 = (int) Math.floor(Math.random() * 25 + 1);
@@ -232,23 +256,20 @@ public class SubmissionService {
 
 		final Character initial1 = author.getName().charAt(0);
 		Character initial2 = null;
-		Character initial3 = null;
-		if (author.getSurname().size() == 1) {
-			initial2 = author.getSurname().get(0).charAt(0);
-			initial3 = 'X';
-		} else {
-			initial2 = author.getSurname().get(0).charAt(0);
-			initial3 = author.getSurname().get(1).charAt(0);
-		}
+		if (author.getMiddleName() != null && author.getMiddleName() != "")
+			initial2 = author.getMiddleName().charAt(0);
+		else
+			initial2 = 'X';
 
-		res = initial1 + initial2 + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
+		final Character initial3 = author.getSurname().get(0).charAt(0);
+
+		res = "" + initial1 + "" + initial2 + "" + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
 
 		final Collection<Submission> submissions = this.submissionRepository.getSubmissionWithTicker(res);
 		if (!submissions.isEmpty())
-			this.generateTicker();
+			res = this.generateTicker();
 		return res;
 	}
-
 	public Collection<Reviewer> availableReviewers(final int submissionId) {
 		final Collection<Reviewer> reviewers = this.reviewerService.findAll();
 		final Submission submission = this.findOne(submissionId);

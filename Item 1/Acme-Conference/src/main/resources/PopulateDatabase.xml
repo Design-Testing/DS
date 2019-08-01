@@ -624,6 +624,15 @@
 		<property name="author" ref="author2" />
 		<property name="conference" ref="conference1" />
 	</bean>
+	
+	<bean id="submission3" class="domain.Submission">
+		<property name="ticker" value="AUX-BQ28" />
+		<property name="moment" value="2019/07/27 07:25" />
+		<property name="status" value="ACCEPTED" />
+		<property name="reviewPaper" ref="paper4" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference3" />
+	</bean>
 
 
 	<!-- =================================================================== -->
@@ -642,7 +651,7 @@
 		<property name="endDate" value="2019/06/14 10:11" />
 		<property name="summary" value="2019/06/12 12:34" />
 		<property name="fee" value="140.89" />
-		<property name="isDraft" value="true" />
+		<property name="isDraft" value="false" />
 
 		<property name="activities">
 			<list>
@@ -667,12 +676,35 @@
 		<property name="endDate" value="2019/06/21 12:12" />
 		<property name="summary" value="2019/06/12 12:34" />
 		<property name="fee" value="1520.89" />
-		<property name="isDraft" value="true" />
+		<property name="isDraft" value="false" />
 		<property name="activities">
 			<list>
 				<ref bean="presentation1" />
 				<ref bean="tutorial2" />
 				<ref bean="panel1" />
+			</list>
+		</property>
+		<property name="category" ref="category3" />
+
+	</bean>
+	
+	
+	<bean id="conference3" class="domain.Conference">
+		<!-- CONFERENCE -->
+		<property name="title" value="Conferencia Windows" />
+		<property name="acronym" value="Windows" />
+		<property name="venue" value="Windows" />
+		<property name="submission" value="2019/07/28 00:00" />
+		<property name="notification" value="2019/07/31 00:00" />
+		<property name="cameraReady" value="2019/08/04 00:00" />
+		<property name="startDate" value="2019/08/05 00:00" />
+		<property name="endDate" value="2019/08/06 00:00" />
+		<property name="summary" value="Summary of conference 3" />
+		<property name="fee" value="1520.89" />
+		<property name="isDraft" value="false" />
+		<property name="activities">
+			<list>
+				
 			</list>
 		</property>
 		<property name="category" ref="category3" />
@@ -925,6 +957,17 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="paper4" class="domain.Paper">
+		<property name="title" value="Title of paper 4" />
+		<property name="summary" value="Summary of paper 4" />
+		<property name="document" value="http://www.documentPaper4.com" />
+		<property name="authors">
+			<list>
+				<value>Author of paper4</value>
+			</list>
+		</property>
+	</bean>
 
 	<!-- paper of presentation1 -->
 	<bean id="paper21" class="domain.Paper">
@@ -1145,7 +1188,7 @@
 		
 	<bean id="configurationParameters" class="domain.ConfigurationParameters">
 		<property name="sysName" value="Acme Conference" />
-		<property name="banner" value="https://i.ibb.co/W3c4rmh/logo.png" />
+		<property name="banner" value="https://i.ibb.co/QPGwNPJ/conference.png" />
 		<property name="welcomeMessageEn"
 			value="Welcome to Acme Conference! Your scientific event manager" />
 		<property name="welcomeMessageEsp"

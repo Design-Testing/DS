@@ -27,8 +27,6 @@ public class SubmissionAdministratorController extends AbstractController {
 	@Autowired
 	private SubmissionService		submissionService;
 
-	final String					lang	= LocaleContextHolder.getLocale().getLanguage();
-
 
 	// LIST --------------------------------------------------------
 
@@ -54,6 +52,8 @@ public class SubmissionAdministratorController extends AbstractController {
 	public ModelAndView display(@RequestParam final int submissionId) {
 		ModelAndView result;
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		this.administratorService.findByPrincipal();
 
 		final Submission submission = this.submissionService.findOne(submissionId);
@@ -63,7 +63,7 @@ public class SubmissionAdministratorController extends AbstractController {
 			result.addObject("submission", submission);
 			result.addObject("isAdministrator", true);
 			result.addObject("isAuthor", false);
-			result.addObject("lang", this.lang);
+			result.addObject("lang", lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
 
@@ -81,6 +81,8 @@ public class SubmissionAdministratorController extends AbstractController {
 	public ModelAndView assign(@RequestParam final int submissionId) {
 		ModelAndView result;
 
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		this.administratorService.findByPrincipal();
 
 		final Submission submission = this.submissionService.findOne(submissionId);
@@ -94,7 +96,7 @@ public class SubmissionAdministratorController extends AbstractController {
 			result.addObject("isAdministrator", true);
 			result.addObject("isAuthor", false);
 			result.addObject("toAssign", true);
-			result.addObject("lang", this.lang);
+			result.addObject("lang", lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
 

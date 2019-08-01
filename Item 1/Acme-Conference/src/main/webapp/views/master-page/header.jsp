@@ -4,7 +4,7 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="#"><img src="images/logo.png" alt="Acme-Conference Co., Inc." /></a>
+	<a href="#"><img src="${bannerURL}" alt="Acme-Conference Co., Inc." width="440" height="270"/></a>
 </div>
 
 <div>
@@ -32,6 +32,7 @@
 					<li><a href="conference/administrator/fiveDaysBeginning.do"><spring:message code="master.page.five.days.beginning.conferences" /></a></li>
 				</ul>
 			</li>
+			<li><a class="fNiv" href="submission/administrator/submissions.do"><spring:message code="master.page.submissions" /></a></li>
 			
 			
 		</security:authorize>
@@ -53,6 +54,7 @@
 					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
 				</ul>
 			</li>
+			<li><a class="fNiv" href="submission/author/mySubmissions.do"><spring:message code="master.page.my.submissions" /></a></li>
 			
 		</security:authorize>
 		
@@ -128,6 +130,7 @@
 		
 		
 		<security:authorize access="isAuthenticated()">
+			<li><a href="finder/edit.do"><spring:message code="master.page.finder" /></a></li>
 			<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 
