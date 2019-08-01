@@ -269,18 +269,28 @@ public class SubmissionService {
 			res = this.generateTicker();
 		return res;
 	}
-	public Collection<Reviewer> availableReviewers(final int submissionId) {
-		final Collection<Reviewer> reviewers = this.reviewerService.findAll();
-		final Submission submission = this.findOne(submissionId);
-		Assert.notNull(submission);
-		final Collection<Reviewer> reviewersAssigned = submission.getReviewers();
-		reviewers.removeAll(reviewersAssigned);
-		return reviewers;
+
+	public void runReviewerAssignation() {
+		final Collection<Submission> submissionsToAssign = this.findUnderReviewedSubmissions();
+		for (final Submission s : submissionsToAssign) {
+			final Collection<Report> reports = this.reportService.findReportsBySubmission(s.getId());
+			if (reports.size() < 3) {
+				final Conference conference = s.getConference();
+				final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conference.getId());
+				for(final Reviewer r: reviewers){
+					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), reviewerId);
+					if(existingReport == null && reports.size() < 3){
+						final Report newReport = this.reportService.create(s.getId(), r.getId());
+					}
+				}
+				
+			}
+		}
+
 	}
-
-	public void runAssignation() {
-		// TODO Auto-generated method stub
-
+	private Collection<Submission> findUnderReviewedSubmissions() {
+		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();
+		Assert.notNull(result);
+		return result;
 	}
-
 }
