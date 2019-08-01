@@ -209,7 +209,7 @@ public class ConferenceService {
 		Assert.notNull(retrieved);
 		final Date now = new Date();
 		Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
-		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
+		final Collection<Submission> submissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 		for (final Submission s : submissions)
 			this.submissionService.decideOnSubmission(s.getId());
 

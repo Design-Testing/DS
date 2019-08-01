@@ -141,12 +141,12 @@ public class SubmissionService {
 		Assert.notNull(submission);
 		Assert.notNull(reviewer);
 		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
-		final Collection<Reviewer> reviewers = submission.getReviewers();
-		Assert.isTrue(!reviewers.contains(reviewer), "this reviewer has already been assigned to that submission");
-		Assert.isTrue(reviewers.size() <= 3, "no more than 3 reviewers can be assigned to a submission");
-		reviewers.add(reviewer);
-		submission.setReviewers(reviewers);
-		this.submissionRepository.save(submission);
+		final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(submissionId, reviewerId);
+		Assert.isTrue(existingReport == null, "this reviewer has already been assigned to that submission");
+		//TODO ALBA Assert.isTrue(reviewers.size() <= 3, "no more than 3 reviewers can be assigned to a submission");
+		final Report newReport = this.reportService.create(submissionId, reviewerId);
+		this.reportService.save(newReport, submission, reviewer);
+
 	}
 
 	/**
@@ -173,13 +173,12 @@ public class SubmissionService {
 		Integer numberBorderLine = 0;
 		final Collection<Report> reports = this.reportService.findReportsBySubmission(submissionId);
 		for (final Report r : reports)
-			if (r.getDecision().equals("ACCEPT"))
+			if (r.getDecision().equals("ACCEPT") && r.getIsDraft() == false)
 				numberAccept = numberAccept + 1;
-			else if (r.getDecision().equals("REJECT"))
+			else if (r.getDecision().equals("REJECT") && r.getIsDraft() == false)
 				numberReject = numberReject + 1;
-			else if (r.getDecision().equals("BORDER-LINE"))
+			else if (r.getDecision().equals("BORDER-LINE") && r.getIsDraft() == false)
 				numberBorderLine = numberBorderLine + 1;
-
 		if (numberAccept > numberReject)
 			this.acceptSubmission(submissionId);
 		else if (numberAccept == numberReject) {

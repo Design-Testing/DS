@@ -25,6 +25,7 @@ public class Report extends DomainEntity {
 
 	//Relaciones
 	private Submission	submission;
+	private Reviewer	reviewer;
 
 
 	@NotNull
@@ -35,10 +36,6 @@ public class Report extends DomainEntity {
 	public void setIsDraft(final Boolean isDraft) {
 		this.isDraft = isDraft;
 	}
-
-
-	private Reviewer	reviewer;
-
 
 	@NotNull
 	@Range(min = 0, max = 10)
