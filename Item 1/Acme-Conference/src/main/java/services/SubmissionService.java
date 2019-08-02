@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -143,7 +144,8 @@ public class SubmissionService {
 		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
 		final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(submissionId, reviewerId);
 		Assert.isTrue(existingReport == null, "this reviewer has already been assigned to that submission");
-		//TODO ALBA Assert.isTrue(reviewers.size() <= 3, "no more than 3 reviewers can be assigned to a submission");
+		//TODO dejarlo?
+		Assert.isTrue(this.reportService.findReportsBySubmission(submissionId).size() <= 3, "no more than 3 reviewers can be assigned to a submission");
 		final Report newReport = this.reportService.create(submissionId, reviewerId);
 		this.reportService.save(newReport, submission, reviewer);
 
@@ -300,7 +302,15 @@ public class SubmissionService {
 	}
 
 	public Collection<Reviewer> availableReviewers(final int submissionId) {
-		// TODO Auto-generated method stub
-		return null;
+		final Submission s = this.findOne(submissionId);
+		final Conference conference = s.getConference();
+		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conference.getId());
+		final Collection<Reviewer> result = new ArrayList<Reviewer>();
+		for (final Reviewer r : reviewers) {
+			final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
+			if (existingReport == null)
+				result.add(r);
+		}
+		return result;
 	}
 }
