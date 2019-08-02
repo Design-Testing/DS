@@ -15,5 +15,20 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<p><spring:message code="administrator.action.2" /></p>
+
+<form:form action="topic/edit.do" modelAttribute="topic">
+
+    <form:hidden path="id"/>
+    <form:hidden path="version"/>
+    
+    <acme:textbox path="spanish" code="topic.spanish"/>
+    <acme:textbox path="english" code="topic.english"/>
+
+
+    <button name="save" type="submit" class="button2">
+        <spring:message code="conference.save"/>
+    </button>
+
+</form:form>

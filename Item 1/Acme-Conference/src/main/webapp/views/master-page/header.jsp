@@ -33,6 +33,7 @@
 				</ul>
 			</li>
 			<li><a class="fNiv" href="submission/administrator/submissions.do"><spring:message code="master.page.submissions" /></a></li>
+			<li><a class="fNiv" href="topic/list.do"><spring:message code="master.page.topics" /></a></li>
 			
 			
 		</security:authorize>
