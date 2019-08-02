@@ -125,8 +125,14 @@ public class SubmissionAdministratorController extends AbstractController {
 
 		this.submissionService.assignToReviewer(submissionId, reviewerId);
 
-		result = this.conferenceAdministratorController.display(this.submissionService.findOne(submissionId).getConference().getId());
-		result.addObject("message.success.assign.reviewer", "message.success.assig.reviewer");
+		final Collection<Submission> submissions = this.submissionService.findAll();
+
+		result = new ModelAndView("submission/list");
+		result.addObject("submissions", submissions);
+		result.addObject("isAdministrator", true);
+		result.addObject("isAuthor", false);
+		result.addObject("requestURI", "submission/administrator/submissions.do");
+		result.addObject("messageSuccessAssign", true);
 		return result;
 	}
 	/** debe estar en el display de conference arriba de todas las submissions **/
@@ -138,8 +144,14 @@ public class SubmissionAdministratorController extends AbstractController {
 
 		this.submissionService.runReviewerAssignation();
 
-		result = this.list();
-		result.addObject("message.success.run.assignation", "message.success.run.assignation");
+		final Collection<Submission> submissions = this.submissionService.findAll();
+
+		result = new ModelAndView("submission/list");
+		result.addObject("submissions", submissions);
+		result.addObject("isAdministrator", true);
+		result.addObject("isAuthor", false);
+		result.addObject("requestURI", "submission/administrator/submissions.do");
+		result.addObject("messageSuccessRunAssignation", true);
 
 		return result;
 	}

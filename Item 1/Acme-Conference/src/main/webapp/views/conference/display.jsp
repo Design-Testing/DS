@@ -158,6 +158,10 @@
 
 <h4><spring:message code="conference.submissions.under.reviewed" /></h4>
 
+<jstl:if test="${not empty message.success.assign.reviewer}">
+    	<h5 style="color: red;"><spring:message code="message.success.assign.reviewer"/></h5>
+</jstl:if>
+
 <display:table name="underReviewedSubmissions" id="row"
 		requestURI="${requestURI}" pagesize="5"
 		class="displaytag">
