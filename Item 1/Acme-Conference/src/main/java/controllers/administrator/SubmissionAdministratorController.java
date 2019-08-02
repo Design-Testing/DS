@@ -123,7 +123,7 @@ public class SubmissionAdministratorController extends AbstractController {
 
 		this.administratorService.findByPrincipal();
 
-		this.submissionService.runAssignation();
+		this.submissionService.runReviewerAssignation();
 
 		result = this.list();
 
