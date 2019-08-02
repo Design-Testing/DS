@@ -158,4 +158,9 @@ public class ReviewerService {
 		Assert.notNull(result);
 		return result;
 	}
+
+	public Collection<Reviewer> findReviewersAccordingToConference(final int conferenceId) {
+		final Collection<Reviewer> result = this.reviewerRepository.findReviewersAccordingToConference(conferenceId);
+		return result;
+	}
 }

@@ -4,7 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -21,11 +21,21 @@ public class Report extends DomainEntity {
 	private Integer		quality;
 	private Integer		readability;
 	private String		decision;
+	private Boolean		isDraft;
 
 	//Relaciones
 	private Submission	submission;
 	private Reviewer	reviewer;
 
+
+	@NotNull
+	public Boolean getIsDraft() {
+		return this.isDraft;
+	}
+
+	public void setIsDraft(final Boolean isDraft) {
+		this.isDraft = isDraft;
+	}
 
 	@NotNull
 	@Range(min = 0, max = 10)
@@ -67,7 +77,7 @@ public class Report extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Submission getSubmission() {
 		return this.submission;
 	}
@@ -77,7 +87,7 @@ public class Report extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Reviewer getReviewer() {
 		return this.reviewer;
 	}
