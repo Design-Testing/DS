@@ -108,6 +108,7 @@
 		
 		
 		<security:authorize access="isAnonymous()">
+			<li><a href="finder/searching.do"><spring:message code="master.page.finder" /></a></li>
 			<li><a class="fNiv"><spring:message	code="master.page.conferences" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -130,7 +131,7 @@
 		
 		
 		<security:authorize access="isAuthenticated()">
-			<li><a href="finder/edit.do"><spring:message code="master.page.finder" /></a></li>
+			<li><a href="finder/actor/edit.do"><spring:message code="master.page.finder" /></a></li>
 			<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 

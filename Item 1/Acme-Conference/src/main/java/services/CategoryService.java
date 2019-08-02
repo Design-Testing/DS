@@ -60,4 +60,15 @@ public class CategoryService {
 		Assert.notNull(categoryId);
 		this.categoryRepository.delete(categoryId);
 	}
+
+	public Collection<String> findCategoriesName(final String lang) {
+		Assert.notNull(lang);
+		Collection<String> res;
+		if (lang == "en")
+			res = this.categoryRepository.findCategoriesNameEn();
+		else
+			res = this.categoryRepository.findCategoriesNameEs();
+		Assert.notNull(res);
+		return res;
+	}
 }

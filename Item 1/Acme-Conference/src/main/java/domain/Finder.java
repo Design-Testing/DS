@@ -11,7 +11,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -77,7 +76,6 @@ public class Finder extends DomainEntity {
 		this.maximumFee = maximumFee;
 	}
 
-	@NotNull
 	@ManyToMany
 	public Collection<Conference> getConferences() {
 		return this.conferences;

@@ -35,28 +35,23 @@
 	<br>
 </form>
 
-<jstl:if test="${not empty postions}">
 <spring:message code="finder.results" />
 <br>
-<security:authorize access="hasRole('COMPANY')">
-<jstl:set var="rolURL" value="/company"/>
+<security:authorize access="hasRole('AUTHOR')">
+<jstl:set var="rolURL" value="/author"/>
 </security:authorize>
-<display:table name="${postions}" id="row" pagesize="15" class="displaytag">
-	<display:column property="title" titleKey="position.title" />
-	
-	<display:column property="ticker" titleKey="position.ticker" />
-
-	<acme:dataTableColumn code="position.deadline" property="deadline" />
-	
-	<display:column titleKey="position.company">
-		<jstl:out value="${row.company.commercialName}" />
-	</display:column>
+<display:table name="${conferences}" requestURI="/finder/search.do" id="row" pagesize="15" class="displaytag">
+	<display:column property="title" titleKey="conference.title" />
+	<display:column property="acronym" titleKey="conference.acronym" />
+	<display:column property="startDate" titleKey="conference.startDate" />
+	<display:column property="endDate" titleKey="conference.endDate" />
 	
 	<display:column>
-		<acme:link url="position${rolURL}/display.do?positionId=${row.id}"
-			code="position.display" />
+		<acme:link url="conference${rolURL}/display.do?conferenceId=${row.id}"
+			code="conference.display" />
 	</display:column>
+	
+	
 </display:table>
-</jstl:if>
 </jstl:otherwise>
 </jstl:choose>
