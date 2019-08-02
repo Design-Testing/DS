@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AdministratorService;
+import services.ReportService;
 import services.SubmissionService;
 import controllers.AbstractController;
 import domain.Reviewer;
@@ -22,10 +23,16 @@ import domain.Submission;
 public class SubmissionAdministratorController extends AbstractController {
 
 	@Autowired
-	private AdministratorService	administratorService;
+	private AdministratorService				administratorService;
 
 	@Autowired
-	private SubmissionService		submissionService;
+	private SubmissionService					submissionService;
+
+	@Autowired
+	private ReportService						reportService;
+
+	@Autowired
+	private ConferenceAdministratorController	conferenceAdministratorController;
 
 
 	// LIST --------------------------------------------------------
@@ -89,20 +96,27 @@ public class SubmissionAdministratorController extends AbstractController {
 
 		final Collection<Reviewer> reviewers = this.submissionService.availableReviewers(submissionId);
 
+		Boolean alreadyAssignThree = false;
+
+		if (this.reportService.findReportsBySubmission(submissionId).size() >= 3)
+			alreadyAssignThree = true;
+
 		if (submission != null) {
 			result = new ModelAndView("submission/listReviewers");
 			result.addObject("submissionId", submissionId);
 			result.addObject("reviewers", reviewers);
 			result.addObject("isAdministrator", true);
 			result.addObject("isAuthor", false);
+			result.addObject("alreadyAssignThree", alreadyAssignThree);
 			result.addObject("toAssign", true);
+			result.addObject("conferenceId", submission.getConference().getId());
+			result.addObject("requestURI", "submission/administrator/assign.do");
 			result.addObject("lang", lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 	}
-
 	@RequestMapping(value = "/assignToReviewer", method = RequestMethod.GET)
 	public ModelAndView assignToReviewer(@RequestParam final int submissionId, @RequestParam final int reviewerId) {
 		ModelAndView result;
@@ -111,11 +125,10 @@ public class SubmissionAdministratorController extends AbstractController {
 
 		this.submissionService.assignToReviewer(submissionId, reviewerId);
 
-		result = this.display(submissionId);
-
+		result = this.conferenceAdministratorController.display(this.submissionService.findOne(submissionId).getConference().getId());
+		result.addObject("message.success.assign.reviewer", "message.success.assig.reviewer");
 		return result;
 	}
-
 	/** debe estar en el display de conference arriba de todas las submissions **/
 	@RequestMapping(value = "/runAssignation", method = RequestMethod.GET)
 	public ModelAndView runAssignation() {
@@ -126,6 +139,7 @@ public class SubmissionAdministratorController extends AbstractController {
 		this.submissionService.runReviewerAssignation();
 
 		result = this.list();
+		result.addObject("message.success.run.assignation", "message.success.run.assignation");
 
 		return result;
 	}

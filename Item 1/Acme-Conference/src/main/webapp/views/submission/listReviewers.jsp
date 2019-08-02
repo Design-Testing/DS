@@ -9,3 +9,49 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+
+<jstl:choose>
+
+<jstl:when test="${alreadyAssignThree eq true }">
+<h3><spring:message code="submission.alreadyAssignThree" /></h3>
+</jstl:when>
+
+<jstl:when test="${alreadyAssignThree eq false }">
+<jstl:choose>
+
+<jstl:when test="${empty reviewers}">
+<h3><spring:message code="submission.noReviewersKeywords" /></h3>
+</jstl:when>
+
+<jstl:when test="${not empty empty reviewers}">
+
+<display:table name="reviewers" id="row"
+		requestURI="${requestURI}" pagesize="5"
+		class="displaytag">
+		
+	
+	<display:column property="name" titleKey="submission.reviewer.name" />
+	
+	<display:column property="keywords" titleKey="submission.reviewer.keywords" />
+	
+	
+	
+
+		<display:column>
+			<acme:button url="submission/administrator/assignToReviewer.do?submissionId=${submissionId}&reviewerId=${row.id }" name="display" code="submission.assign.reviewer"/>
+		</display:column>
+
+	
+	
+
+</display:table>
+
+</jstl:when>
+</jstl:choose>
+
+
+</jstl:when>
+</jstl:choose>
+
+<acme:button url="conference/administrator/display.do?conferenceId=${conferenceId }" name="back" code="submission.back" />
