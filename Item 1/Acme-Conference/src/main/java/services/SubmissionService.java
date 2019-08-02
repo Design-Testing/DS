@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -141,12 +142,13 @@ public class SubmissionService {
 		Assert.notNull(submission);
 		Assert.notNull(reviewer);
 		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
-		final Collection<Reviewer> reviewers = submission.getReviewers();
-		Assert.isTrue(!reviewers.contains(reviewer), "this reviewer has already been assigned to that submission");
-		Assert.isTrue(reviewers.size() <= 3, "no more than 3 reviewers can be assigned to a submission");
-		reviewers.add(reviewer);
-		submission.setReviewers(reviewers);
-		this.submissionRepository.save(submission);
+		final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(submissionId, reviewerId);
+		Assert.isTrue(existingReport == null, "this reviewer has already been assigned to that submission");
+		//TODO dejarlo?
+		Assert.isTrue(this.reportService.findReportsBySubmission(submissionId).size() <= 3, "no more than 3 reviewers can be assigned to a submission");
+		final Report newReport = this.reportService.create(submissionId, reviewerId);
+		this.reportService.save(newReport, submission, reviewer);
+
 	}
 
 	/**
@@ -173,13 +175,12 @@ public class SubmissionService {
 		Integer numberBorderLine = 0;
 		final Collection<Report> reports = this.reportService.findReportsBySubmission(submissionId);
 		for (final Report r : reports)
-			if (r.getDecision().equals("ACCEPT"))
+			if (r.getDecision().equals("ACCEPT") && r.getIsDraft() == false)
 				numberAccept = numberAccept + 1;
-			else if (r.getDecision().equals("REJECT"))
+			else if (r.getDecision().equals("REJECT") && r.getIsDraft() == false)
 				numberReject = numberReject + 1;
-			else if (r.getDecision().equals("BORDER-LINE"))
+			else if (r.getDecision().equals("BORDER-LINE") && r.getIsDraft() == false)
 				numberBorderLine = numberBorderLine + 1;
-
 		if (numberAccept > numberReject)
 			this.acceptSubmission(submissionId);
 		else if (numberAccept == numberReject) {
@@ -270,18 +271,46 @@ public class SubmissionService {
 			res = this.generateTicker();
 		return res;
 	}
+
+	public void runReviewerAssignation() {
+		final Collection<Submission> submissionsToAssign = this.findUnderReviewedSubmissions();
+		for (final Submission s : submissionsToAssign) {
+			final Collection<Report> reports = this.reportService.findReportsBySubmission(s.getId());
+			if (reports.size() < 3) {
+				final Conference conference = s.getConference();
+				final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conference.getId());
+				System.out.println("REVIEWERS " + reviewers);
+				for (final Reviewer r : reviewers) {
+					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
+					System.out.println("existingReport" + existingReport);
+					if (existingReport == null && reports.size() < 3) {
+						System.out.println("holaaa");
+						System.out.println("submisison" + s);
+						Report newReport = this.reportService.create(s.getId(), r.getId());
+						newReport = this.reportService.save(newReport, s, r);
+					}
+				}
+
+			}
+		}
+
+	}
+	private Collection<Submission> findUnderReviewedSubmissions() {
+		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();
+		Assert.notNull(result);
+		return result;
+	}
+
 	public Collection<Reviewer> availableReviewers(final int submissionId) {
-		final Collection<Reviewer> reviewers = this.reviewerService.findAll();
-		final Submission submission = this.findOne(submissionId);
-		Assert.notNull(submission);
-		final Collection<Reviewer> reviewersAssigned = submission.getReviewers();
-		reviewers.removeAll(reviewersAssigned);
-		return reviewers;
+		final Submission s = this.findOne(submissionId);
+		final Conference conference = s.getConference();
+		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conference.getId());
+		final Collection<Reviewer> result = new ArrayList<Reviewer>();
+		for (final Reviewer r : reviewers) {
+			final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
+			if (existingReport == null)
+				result.add(r);
+		}
+		return result;
 	}
-
-	public void runAssignation() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

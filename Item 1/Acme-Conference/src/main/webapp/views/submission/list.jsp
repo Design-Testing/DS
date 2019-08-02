@@ -15,7 +15,14 @@
 
 </jstl:if>
 
+<jstl:if test="${messageSuccessRunAssignation eq true}">
+    	<h5 style="color: red;"><spring:message code="message.success.run.assignation"/></h5>
+</jstl:if>
 
+<jstl:if test="${messageSuccessAssign eq true}">
+    	<h5 style="color: red;"><spring:message code="message.success.assign"/></h5>
+</jstl:if>
+    
 <jstl:if test="${isAdministrator eq true or isAuthor eq true }" >
 
 <display:table name="submissions" id="row"
