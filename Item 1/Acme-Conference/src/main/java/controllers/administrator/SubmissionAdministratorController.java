@@ -126,7 +126,7 @@ public class SubmissionAdministratorController extends AbstractController {
 		this.submissionService.assignToReviewer(submissionId, reviewerId);
 
 		result = this.conferenceAdministratorController.display(this.submissionService.findOne(submissionId).getConference().getId());
-		result.addObject("message.success.assign.reviewer", "message.success.assig.reviewer");
+		result.addObject("message.success.assign.reviewer", "message.success.assign.reviewer");
 		return result;
 	}
 	/** debe estar en el display de conference arriba de todas las submissions **/
