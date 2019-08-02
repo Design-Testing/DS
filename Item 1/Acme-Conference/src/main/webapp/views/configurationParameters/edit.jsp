@@ -45,19 +45,13 @@
     <br/>
     <br/>
 
-    
-	
-
-
-    <!---------------------------- BOTONES -------------------------->
-
 
     <button name="save" type="submit" class="button2">
-        <spring:message code="conference.save"/>
+        <spring:message code="configurationParameters.save"/>
     </button>
 
-    <input type="button" class="btn btn-danger" name="cancel"
-           value="<spring:message code="conference.cancel" />"
-           onclick="relativeRedir('conference/administrator/myConferences.do');"/>
+    <input type="button" class="btn btn-danger" name="cancell"
+           value="<spring:message code="configurationParameters.cancell" />"
+           onclick="relativeRedir('configurationParameters/administrator/display.do');"/>
 
 </form:form>
