@@ -29,6 +29,8 @@
 		<value>/views/conference/messages</value>
 		<value>/views/submission/messages</value>
 		<value>/views/configurationParameters/messages</value>
+		<value>/views/category/messages</value>
+		<value>/views/sponsorship/messages</value>
 		
 		<value>/views/finder/messages</value>
 		<value>/views/section/messages</value>

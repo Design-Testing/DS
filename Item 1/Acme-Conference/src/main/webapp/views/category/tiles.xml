@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+
+	<definition name="category/display" extends="master.page">	
+		<put-attribute name="title" value="Category: display" />
+		<put-attribute name="body" value="/views/category/display.jsp" />
+	</definition>
+	
+	<definition name="category/edit" extends="master.page">	
+		<put-attribute name="title" value="Category: edit" />
+		<put-attribute name="body" value="/views/category/edit.jsp" />
+	</definition>
+	
+	<definition name="category/list" extends="master.page">	
+		<put-attribute name="title" value="Category: list" />
+		<put-attribute name="body" value="/views/category/list.jsp" />
+	</definition>
+	
+</tiles-definitions>
