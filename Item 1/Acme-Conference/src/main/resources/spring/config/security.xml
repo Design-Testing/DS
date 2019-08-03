@@ -67,6 +67,8 @@
 		<!-- FINDER -->
 		<security:intercept-url pattern="/finder/**" access="isAuthenticated()" /> 
 		 
+		<!-- TOPIC -->
+		<security:intercept-url pattern="/topic/list" access="hasRole('ADMIN')" />
 
 		<security:form-login 
 			login-page="/security/login.do"
