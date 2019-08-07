@@ -69,7 +69,12 @@
 		 
 		<!-- TOPIC -->
 		<security:intercept-url pattern="/topic/list" access="hasRole('ADMIN')" />
-
+		
+		
+		<!-- MESSAGE -->
+		<security:intercept-url pattern="/message/**" access="isAuthenticated()" /> 
+		
+		
 		<security:form-login 
 			login-page="/security/login.do"
 			password-parameter="password" 
