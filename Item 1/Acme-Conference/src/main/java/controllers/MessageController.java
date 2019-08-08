@@ -119,4 +119,18 @@ public class MessageController {
 		return result;
 	}
 
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int messageId) {
+		ModelAndView result;
+		final Actor principal = this.actorService.findByPrincipal();
+		final Message message = this.messageService.findOne(messageId);
+		this.messageService.delete(message);
+		result = new ModelAndView("message/list");
+
+		result.addObject("topics", this.topicService.findAll());
+
+		result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
+		return result;
+	}
+
 }

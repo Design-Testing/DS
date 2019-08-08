@@ -24,7 +24,7 @@
 function deleteMessage(id, text){
 	var confirma = confirm(text);
 	if(confirma){
-		window.location.href = "topic/delete.do?messageId=" + id;
+		window.location.href = "message/delete.do?messageId=" + id;
 	}
 }
 </script>

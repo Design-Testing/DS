@@ -4,6 +4,7 @@ package services;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -214,6 +215,17 @@ public class MessageService {
 		final Collection<Message> res = this.messageRepository.findAllByRecipient(recipientId);
 		Assert.notNull(res);
 		return res;
+	}
+
+	public void delete(Message message) {
+		message = this.messageRepository.findOne(message.getId());
+		final Actor principal = this.actorService.findByPrincipal();
+		final Folder inbox = this.folderService.findInboxByUserId(principal.getId());
+		final List<Message> messages = new ArrayList<>(inbox.getMessages());
+		if (messages.contains(message))
+			this.deleteFromFolder(message, this.folderService.findInboxByUserId(principal.getId()));
+		else
+			this.deleteFromFolder(message, this.folderService.findOutboxByUserId(principal.getId()));
 	}
 
 }
