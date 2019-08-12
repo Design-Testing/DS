@@ -126,8 +126,38 @@ public class ConferenceService {
 	}
 
 	//OTRO METODOS
+	/**
+	 * Method designed for the correct operation of the finder
+	 * 
+	 * @param keyword
+	 *            Single keyword that must appear somewhere in its title, its venue, or its summary.
+	 * @param categoryName
+	 *            A category to which the conference must belong
+	 * @param fromDate
+	 *            A range of dates for the conference
+	 * @param toDate
+	 *            A range of dates for the conference
+	 * @param maximumFee
+	 *            A maximum fee for the conference
+	 * @return Collection of conferences that meet the restrictions given as parameters
+	 * @author a8081
+	 * */
 	public Collection<Conference> findConferences(final String keyword, final String categoryName, final Date fromDate, final Date toDate, final Double maximumFee) {
 		final Collection<Conference> res = this.conferenceRepository.findConferences(keyword, categoryName, fromDate, toDate, maximumFee);
+		Assert.notNull(res);
+		return res;
+	}
+
+	/**
+	 * Method designed for the correct operation of the searching
+	 * 
+	 * @param keyword
+	 *            Single keyword that must appear somewhere in its title, its venue, or its summary.
+	 * @return Collection of conferences that meet the restrictions given as keyword
+	 * @author a8081
+	 * */
+	public Collection<Conference> findConferences(final String keyword) {
+		final Collection<Conference> res = this.conferenceRepository.findConferences(keyword);
 		Assert.notNull(res);
 		return res;
 	}

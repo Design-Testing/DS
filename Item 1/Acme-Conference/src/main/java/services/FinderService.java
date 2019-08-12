@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,16 +19,13 @@ import domain.Finder;
 public class FinderService {
 
 	@Autowired
-	private FinderRepository				finderRepository;
+	private FinderRepository	finderRepository;
 
 	@Autowired
-	private ConfigurationParametersService	configParamService;
+	private ActorService		actorService;
 
 	@Autowired
-	private ActorService					actorService;
-
-	@Autowired
-	private ConferenceService				conferenceService;
+	private ConferenceService	conferenceService;
 
 
 	/**
@@ -84,7 +80,7 @@ public class FinderService {
 	// Antes de guardar tengo que pasar por este metodo para setearle las nuevas procesiones segun los nuevos parametros
 	public Finder find(final Finder finder) {
 		this.actorService.findByPrincipal();
-		final List<Conference> result = new ArrayList<>(this.conferenceService.findConferences(finder.getKeyword(), finder.getCategoryName(), finder.getFromDate(), finder.getToDate(), finder.getMaximumFee()));
+		final Collection<Conference> result = new ArrayList<>(this.conferenceService.findConferences(finder.getKeyword(), finder.getCategoryName(), finder.getFromDate(), finder.getToDate(), finder.getMaximumFee()));
 		//final int maxResults = this.configParamService.find().getMaxFinderResults();
 		//if (result.size() > maxResults) {
 		//		Collections.shuffle(result);
