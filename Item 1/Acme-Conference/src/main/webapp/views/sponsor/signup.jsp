@@ -8,29 +8,31 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="sponsorship/sponsor/create.do" modelAttribute="sponsorship">
+<form:form action="sponsor/save.do" modelAttribute="sponsor">
      
     
     <form:hidden path="id"/>
     <form:hidden path="version"/>     
+	
+	<acme:display code ="sponsor.name" value="${errors}"/>    
     
-    <acme:textbox path="banner" code="sponsorship.banner"/>
+    <acme:textbox path="userAccountuser" code="sponsor.userAccount.username"/>
     <br/>
-    
-    <acme:textbox path="targetPage" code="sponsorship.targetPage"/>
+    <acme:textbox path="userAccountpassword" code="sponsor.userAccount.password"/>
     <br/>
-    
-    <acme:textbox path="creditCard.holderName" code="sponsorship.creditCard.holderName"/>
+    <acme:textbox path="name" code="sponsor.name"/>
     <br/>
-    <acme:textbox path="creditCard.make" code="sponsorship.creditCard.make"/>
+    <acme:textbox path="middleName" code="sponsor.middleName"/>
     <br/>
-    <acme:textbox path="creditCard.number" code="sponsorship.creditCard.number"/>
+    <acme:textbox path="surname" code="sponsor.surname"/>
     <br/>
-    <acme:textbox path="creditCard.cvv" code="sponsorship.creditCard.cvv"/>
+    <acme:textbox path="photo" code="sponsor.photo"/>
     <br/>
-    <acme:textbox path="creditCard.expirationMonth" code="sponsorship.creditCard.expirationMonth"/>
+    <acme:textbox path="email" code="sponsor.email"/>
     <br/>
-    <acme:textbox path="creditCard.expirationYear" code="sponsorship.creditCard.expirationYear"/>
+    <acme:textbox path="phone" code="sponsor.phone"/>
+    <br/>
+    <acme:textbox path="address" code="sponsor.address"/>
     <br/>
     
     <jstl:if test="${not empty msgerror  }">
@@ -43,11 +45,11 @@
 
 
     <button name="save" type="submit" class="button2">
-        <spring:message code="sponsorship.save"/>
+        <spring:message code="sponsor.save"/>
     </button>
 
     <input type="button" class="btn btn-danger" name="cancell"
-           value="<spring:message code="sponsorship.cancell" />"
-           onclick="relativeRedir('sponsorship/sponsor/display.do?sponsorshipId=${sponsorship.id}');"/>
+           value="<spring:message code="sponsor.cancell" />"
+           onclick="relativeRedir('sponsor/display.do?sponsorId=${sponsor.id}');"/>
 
 </form:form>

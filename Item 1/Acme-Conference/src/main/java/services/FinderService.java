@@ -96,9 +96,9 @@ public class FinderService {
 
 	public Finder save(final Finder finder) {
 		final Actor actor = this.actorService.findByPrincipal();
-		Assert.notNull(finder);
-		Assert.isTrue(finder.getId() != 0);
-		Assert.isTrue(this.finderRepository.findActorFinder(actor.getId()).getId() == finder.getId(), "You're not owner of this finder, you cannot modify it");
+		//Assert.notNull(finder);
+		//Assert.isTrue(finder.getId() != 0);
+		//Assert.isTrue(this.finderRepository.findActorFinder(actor.getId()).getId() == finder.getId(), "You're not owner of this finder, you cannot modify it");
 
 		//finder.setCreationDate(new Date(System.currentTimeMillis()));
 		final Finder res = this.finderRepository.save(finder);
