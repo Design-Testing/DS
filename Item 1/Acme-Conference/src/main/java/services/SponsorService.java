@@ -84,7 +84,7 @@ public class SponsorService {
 			result = this.sponsorRepository.save(s);
 		} else {
 			final Actor principal = this.actorService.findByPrincipal();
-			Assert.isTrue(principal.getId() == s.getId(), "You only can edit your info");
+			//Assert.isTrue(principal.getId() == s.getId(), "You only can edit your info");
 			result = (Sponsor) this.actorService.save(s);
 		}
 		return result;

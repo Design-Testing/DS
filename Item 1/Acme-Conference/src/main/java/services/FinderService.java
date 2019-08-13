@@ -102,7 +102,7 @@ public class FinderService {
 
 		//finder.setCreationDate(new Date(System.currentTimeMillis()));
 		final Finder res = this.finderRepository.save(finder);
-		Assert.notNull(res);
+		//Assert.notNull(res);
 
 		actor.setFinder(finder);
 		this.actorService.save(actor);

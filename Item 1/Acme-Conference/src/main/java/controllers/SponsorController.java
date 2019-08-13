@@ -101,11 +101,10 @@ public class SponsorController extends AbstractController {
 
 		} else
 			try {
-				final Sponsor sponsor = this.sponsorService.reconstruct(actorForm, binding);
+				Sponsor sponsor = this.sponsorService.reconstruct(actorForm, binding);
 				final Finder finder = this.finderService.createForNewActor();
-				this.finderService.save(finder);
 				sponsor.setFinder(finder);
-				this.sponsorService.save(sponsor);
+				sponsor = this.sponsorService.save(sponsor);
 				result = this.viewSponsor(sponsor.getId());
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("sponsor/signup");
