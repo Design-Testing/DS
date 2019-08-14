@@ -60,8 +60,6 @@
 			
 		</display:column>
 		
-		
-		
 	</jstl:when>
 	</jstl:choose>
 	
