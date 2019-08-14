@@ -29,13 +29,12 @@ public class CommentController extends AbstractController {
 	// CREATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int entityId, @RequestParam final String entity) {
 		ModelAndView result;
-		final Comment comment = this.commentService.create();
+		final Comment comment = this.commentService.create(entity, entityId);
 		result = this.createEditModelAndView(comment);
 		return result;
 	}
-
 	// LIST  ---------------------------------------------------------------		
 
 	// Sustituir "ClassName" por el nombre de la nueva clase sobre la que se quiere redactar los comentarios

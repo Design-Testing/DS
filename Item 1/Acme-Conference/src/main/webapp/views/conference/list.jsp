@@ -22,8 +22,6 @@
 
 	<display:column property="title" titleKey="conference.title" />
 	
-	
-	
 	<jstl:choose>
 	<jstl:when test="${isAdministrator eq true }">
 		
@@ -67,8 +65,8 @@
 	</jstl:when>
 	</jstl:choose>
 	
-	
-	
+	<display:column><acme:button url="comment/listConference.do?conferenceId=${row.id}" name="list" code="comments"/></display:column>
+	<display:column><acme:button url="comment/create.do?entityId=${row.id}&entity=conference" name="new" code="add.comment"/></display:column>
 
 </display:table>
 

@@ -27,9 +27,42 @@ public class CommentService {
 	@Autowired
 	private ActorService		actorService;
 
+	@Autowired
+	private ConferenceService	conferenceService;
+
+	@Autowired
+	private PanelService		panelService;
+
+	@Autowired
+	private PresentationService	presentationService;
+
+	@Autowired
+	private TutorialService		tutorialService;
+
 
 	public Comment create() {
 		return new Comment();
+	}
+
+	public Comment create(final String entity, final int entityId) {
+		final Comment comment = new Comment();
+		switch (entity) {
+		case "panel":
+			comment.setPanel(this.panelService.findOne(entityId));
+			break;
+		case "presentation":
+			comment.setPresentation(this.presentationService.findOne(entityId));
+			break;
+		case "tutorial":
+			comment.setTutorial(this.tutorialService.findOne(entityId));
+			break;
+		case "conference":
+			comment.setConference(this.conferenceService.findOne(entityId));
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid entity relationship while creating the comment");
+		}
+		return comment;
 	}
 
 	public Comment save(final Comment comment) {
