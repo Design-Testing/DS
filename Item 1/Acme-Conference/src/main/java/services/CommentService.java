@@ -25,19 +25,18 @@ public class CommentService {
 	private CommentRepository	commentRepository;
 
 	@Autowired
-	private AuthorService		authorService;
+	private ActorService		actorService;
 
 
 	public Comment create() {
-		final Comment res = new Comment();
-		return res;
+		return new Comment();
 	}
 
 	public Comment save(final Comment comment) {
 		Assert.notNull(comment);
 		Assert.isTrue(this.checkAssociation(comment));
 		if (SecurityContextHolder.getContext().getAuthentication() != null)
-			comment.setAuthor(this.authorService.findByPrincipal());
+			comment.setAuthor(this.actorService.findByPrincipal());
 		final Date moment = new Date(System.currentTimeMillis() - 1000);
 		comment.setMoment(moment);
 		final Comment res = this.commentRepository.save(comment);
@@ -45,8 +44,15 @@ public class CommentService {
 		return res;
 	}
 
+	/**
+	 * Este metodo recorre todas las relaciones que comment tiene con otras entidades a comentar y comprueba que todas sean nulas menos una. Esto se hace para comprobar que la relación que se construye es correcta.
+	 * 
+	 * @param comment
+	 *            El comentario a evaluar
+	 * @return Devuelve un boolean que es true si las relaciones del comment pasado como parametro son correctas y false en caso contrario.
+	 * */
 	private boolean checkAssociation(final Comment comment) {
-		boolean res = true;
+		int acum = 0;
 		final Collection<Object> aux = new ArrayList<>();
 
 		aux.add(comment.getConference());
@@ -54,14 +60,13 @@ public class CommentService {
 		aux.add(comment.getPresentation());
 		aux.add(comment.getReport());
 		aux.add(comment.getTutorial());
-		// Add the new association class as a comment.get"ClassName"()
+		// Para futuras relaciones de la entidad comentario con una nueva entidad de nombre 'EntityName', agregar una nueva linea:
+		// aux.add(comment.get'EntityName'());
 
 		for (final Object o : aux)
-			if (o == null) {
-				res = false;
-				break;
-			}
-		return res;
+			if (o != null)
+				acum++;
+		return acum == 1;
 	}
 
 	public Comment findOne(final Integer commentId) {

@@ -84,11 +84,9 @@ public class CommentController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit() {
-		ModelAndView result;
 		final Comment comment = this.commentService.create();
 		Assert.notNull(comment);
-		result = this.createEditModelAndView(comment);
-		return result;
+		return this.createEditModelAndView(comment);
 	}
 
 	// SAVE  ---------------------------------------------------------------		
@@ -96,7 +94,6 @@ public class CommentController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Comment comment, final BindingResult binding) {
 		ModelAndView result;
-
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(comment);
 		else
@@ -114,11 +111,7 @@ public class CommentController extends AbstractController {
 	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Comment comment) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(comment, null);
-
-		return result;
+		return this.createEditModelAndView(comment, null);
 	}
 
 	protected ModelAndView createEditModelAndView(final Comment comment, final String messageCode) {

@@ -57,3 +57,5 @@ Item 1/Acme-Madruga/target/m2e-wtp/web-resources/META-INF/maven/Acme.com/Acme-Ma
 
 # Entities map
 *.map
+
+Item 1/Acme-Conference/src/main/resources/Entities.map
