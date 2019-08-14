@@ -16,13 +16,14 @@
     <form:hidden path="presentation"/>
     <form:hidden path="tutorial"/>
     <form:hidden path="panel"/>
+    <form:hidden path="report"/>
     <form:hidden path="moment"/>
     <form:hidden path="author"/>
     
-    <acme:textbox path="title" code="conmment.title"/>
+    <acme:textbox path="title" code="comment.title"/>
     <br/>
     
-    <acme:textbox path="text" code="conmment.text"/>
+    <acme:textbox path="text" code="comment.text"/>
     <br/>
     <br/>
     
@@ -30,7 +31,7 @@
 
 
     <button name="save" type="submit" class="button">
-        <spring:message code="conmment.save"/>
+        <spring:message code="comment.save"/>
     </button>
 
 </form:form>

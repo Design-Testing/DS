@@ -63,7 +63,7 @@
 	</jstl:when>
 	</jstl:choose>
 	
-	<display:column><acme:button url="comment/listConference.do?conferenceId=${row.id}" name="list" code="comments"/></display:column>
+	<display:column><acme:button url="comment/list.do?entity=conference&id=${row.id}" name="list" code="comments"/></display:column>
 	<display:column><acme:button url="comment/create.do?entityId=${row.id}&entity=conference" name="new" code="add.comment"/></display:column>
 
 </display:table>

@@ -5,6 +5,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
 import services.CommentService;
 import domain.Comment;
 
@@ -22,6 +26,9 @@ public class CommentController extends AbstractController {
 
 	@Autowired
 	private CommentService	commentService;
+
+	@Autowired
+	private ActorService	actorService;
 
 	final String			lang	= LocaleContextHolder.getLocale().getLanguage();
 
@@ -47,35 +54,45 @@ public class CommentController extends AbstractController {
 	//		return result;
 	//	}
 
-	@RequestMapping(value = "/listPresentation", method = RequestMethod.GET)
-	public ModelAndView listPresentation(@RequestParam final int activityId) {
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView listConference(@RequestParam final String entity, @RequestParam final int id) {
 		ModelAndView result;
 		result = new ModelAndView("comment/list");
-		result.addObject("comments", this.commentService.findByPresentation(activityId));
+		switch (entity) {
+		case "panel":
+			result.addObject("comments", this.commentService.findByPanel(id));
+			break;
+		case "presentation":
+			result.addObject("comments", this.commentService.findByPresentation(id));
+			break;
+		case "tutorial":
+			result.addObject("comments", this.commentService.findByTutorial(id));
+			break;
+		case "conference":
+			result.addObject("comments", this.commentService.findByConference(id));
+			break;
+		}
+		result.addObject("id", id);
+		result.addObject("entity", "conference");
+
+		final SecurityContext context = SecurityContextHolder.getContext();
+		final Authentication authentication = context.getAuthentication();
+		final Object principal = authentication.getPrincipal();
+
+		if (principal != "anonymousUser")
+			result.addObject("principalId", this.actorService.findByPrincipal().getId());
 		return result;
 	}
 
-	@RequestMapping(value = "/listTutorial", method = RequestMethod.GET)
-	public ModelAndView listTutorial(@RequestParam final int activityId) {
-		ModelAndView result;
-		result = new ModelAndView("comment/list");
-		result.addObject("comments", this.commentService.findByTutorial(activityId));
-		return result;
-	}
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int commentId, @RequestParam final String entity, @RequestParam final int entityId) {
 
-	@RequestMapping(value = "/listPanel", method = RequestMethod.GET)
-	public ModelAndView listPanel(@RequestParam final int activityId) {
-		ModelAndView result;
-		result = new ModelAndView("comment/list");
-		result.addObject("comments", this.commentService.findByPanel(activityId));
-		return result;
-	}
+		final ModelAndView result;
+		final Comment comment = this.commentService.findOne(commentId);
+		result = new ModelAndView("comment/display");
+		result.addObject("comment", comment);
+		result.addObject("lastURL", "comment/" + entity + "/list.do?id=" + entityId);
 
-	@RequestMapping(value = "/listConference", method = RequestMethod.GET)
-	public ModelAndView listConference(@RequestParam final int conferenceId) {
-		ModelAndView result;
-		result = new ModelAndView("comment/list");
-		result.addObject("comments", this.commentService.findByConference(conferenceId));
 		return result;
 	}
 

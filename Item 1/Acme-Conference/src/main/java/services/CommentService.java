@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +70,10 @@ public class CommentService {
 	public Comment save(final Comment comment) {
 		Assert.notNull(comment);
 		Assert.isTrue(this.checkAssociation(comment));
-		if (SecurityContextHolder.getContext().getAuthentication() != null)
+		final SecurityContext context = SecurityContextHolder.getContext();
+		final Authentication authentication = context.getAuthentication();
+		final Object principal = authentication.getPrincipal();
+		if (principal != "anonymousUser")
 			comment.setAuthor(this.actorService.findByPrincipal());
 		final Date moment = new Date(System.currentTimeMillis() - 1000);
 		comment.setMoment(moment);
