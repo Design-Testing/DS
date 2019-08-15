@@ -18,18 +18,20 @@
 <acme:display code="comment.author" value="${comment.author}" />
 
 <jstl:if test="${not empty comment.conference}">
-	<acme:display code="comment.conference" value="${comment.conference}" url="conference/display.do?conferenceId=${comment.conference.id}"/>
+	<acme:display code="comment.conference" value="${comment.conference.title}" url="conference/display.do?conferenceId=${comment.conference.id}"/>
 </jstl:if>
 <jstl:if test="${not empty comment.presentation}">
-	<acme:display code="comment.presentation" value="${comment.presentation}" url="presentation/display.do?presentationId=${comment.presentation.id}"/>
+	<acme:display code="comment.presentation" value="${comment.presentation.title}" url="presentation/display.do?presentationId=${comment.presentation.id}"/>
 </jstl:if>
 <jstl:if test="${not empty comment.panel}">
-	<acme:display code="comment.panel" value="${comment.panel}" url="panel/display.do?panelId=${comment.panel.id}"/>
+	<acme:display code="comment.panel" value="${comment.panel.title}" url="panel/display.do?panelId=${comment.panel.id}"/>
 </jstl:if>
 <jstl:if test="${not empty comment.tutorial}">
-	<acme:display code="comment.tutorial" value="${comment.tutorial}" url="tutorial/display.do?tutorialId=${comment.tutorial.id}"/>
+	<acme:display code="comment.tutorial" value="${comment.tutorial.title}" url="tutorial/display.do?tutorialId=${comment.tutorial.id}"/>
 </jstl:if>
-
+<jstl:if test="${not empty comment.report}">
+	<acme:display code="comment.report" value="${comment.report.title}" url="report/display.do?tutorialId=${comment.report.id}"/>
+</jstl:if>
 
 <acme:button url="${lastURL}" name="back" code="comment.back" />
 

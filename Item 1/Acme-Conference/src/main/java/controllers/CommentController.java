@@ -1,6 +1,8 @@
 
 package controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,7 @@ public class CommentController extends AbstractController {
 	//	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView listConference(@RequestParam final String entity, @RequestParam final int id) {
+	public ModelAndView list(@RequestParam final String entity, @RequestParam final int id) {
 		ModelAndView result;
 		result = new ModelAndView("comment/list");
 		switch (entity) {
@@ -74,6 +76,7 @@ public class CommentController extends AbstractController {
 		}
 		result.addObject("id", id);
 		result.addObject("entity", "conference");
+		result.addObject("lang", this.lang);
 
 		final SecurityContext context = SecurityContextHolder.getContext();
 		final Authentication authentication = context.getAuthentication();
@@ -91,7 +94,7 @@ public class CommentController extends AbstractController {
 		final Comment comment = this.commentService.findOne(commentId);
 		result = new ModelAndView("comment/display");
 		result.addObject("comment", comment);
-		result.addObject("lastURL", "comment/" + entity + "/list.do?id=" + entityId);
+		result.addObject("lastURL", "comment/list.do?id=" + entityId + "&entity=" + entity);
 
 		return result;
 	}
@@ -115,15 +118,13 @@ public class CommentController extends AbstractController {
 		else
 			try {
 				final Comment saved = this.commentService.save(comment);
-				result = this.createEditModelAndView(saved);
-				result.addObject("lang", this.lang);
-				result.addObject("requestURI", "comment/edit.do");
+				final List<Object> info = this.commentService.findRelationEntity(comment);
+				result = this.list((String) info.get(0), (int) info.get(1));
 			} catch (final Throwable e) {
 				result = this.createEditModelAndView(comment, "comment.commit.error");
 			}
 		return result;
 	}
-
 	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Comment comment) {

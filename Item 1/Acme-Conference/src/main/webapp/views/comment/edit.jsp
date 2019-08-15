@@ -21,10 +21,7 @@
     <form:hidden path="author"/>
     
     <acme:textbox path="title" code="comment.title"/>
-    <br/>
-    
-    <acme:textbox path="text" code="comment.text"/>
-    <br/>
+    <acme:textarea path="text" code="comment.text"/>
     <br/>
     
     <!---------------------------- BOTONES -------------------------->

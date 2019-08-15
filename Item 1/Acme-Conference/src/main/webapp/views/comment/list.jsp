@@ -33,4 +33,4 @@
 	</h3>
 </jstl:if>
 
-<acme:button url="comment/create.do" name="create" code="comment.create" />
+<acme:button url="comment/create.do?entity=${entity}&entityId=${id}" name="create" code="comment.create" />
