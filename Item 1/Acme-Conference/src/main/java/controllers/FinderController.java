@@ -1,6 +1,8 @@
 
 package controllers;
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,13 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CategoryService;
+import services.ConferenceService;
 import services.FinderService;
+import domain.Conference;
 import domain.Finder;
 
 @Controller
@@ -20,12 +26,45 @@ import domain.Finder;
 public class FinderController extends AbstractController {
 
 	@Autowired
-	private FinderService	finderService;
+	private FinderService		finderService;
 
+	@Autowired
+	private ConferenceService	conferenceService;
+
+	@Autowired
+	private CategoryService		categoryService;
+
+	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
+
+
+	// SEARCH  ---------------------------------------------------------------
+
+	@RequestMapping(value = "/searching", method = RequestMethod.GET)
+	public ModelAndView search() {
+		ModelAndView result;
+		result = new ModelAndView("finder/search");
+		result.addObject("lang", this.lang);
+		return result;
+	}
+
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public ModelAndView search(@RequestParam final String keyword) {
+		ModelAndView result;
+		try {
+			final Collection<Conference> conferences = this.conferenceService.findConferences(keyword);
+			result = new ModelAndView("finder/search");
+			result.addObject("lang", this.lang);
+			result.addObject("conferences", conferences);
+		} catch (final Throwable e) {
+			result = new ModelAndView("finder/search");
+			result.addObject("errortrace", "finder.commit.error");
+		}
+		return result;
+	}
 
 	// CREATE  ---------------------------------------------------------------		
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	@RequestMapping(value = "/actor/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
 		final Finder finder = this.finderService.create();
@@ -35,7 +74,7 @@ public class FinderController extends AbstractController {
 
 	// UPDATE  ---------------------------------------------------------------		
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/actor/edit", method = RequestMethod.GET)
 	public ModelAndView edit() {
 		ModelAndView result;
 		final Finder finder;
@@ -46,7 +85,7 @@ public class FinderController extends AbstractController {
 	}
 	// CLEAR  ---------------------------------------------------------------		
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "clear")
+	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST, params = "clear")
 	public ModelAndView clear(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors())
@@ -63,7 +102,7 @@ public class FinderController extends AbstractController {
 
 	// SAVE  ---------------------------------------------------------------		
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
 
@@ -72,10 +111,8 @@ public class FinderController extends AbstractController {
 		else
 			try {
 				final Finder saved = this.finderService.find(finder);
-				final String lang = LocaleContextHolder.getLocale().getLanguage();
 				result = this.createEditModelAndView(saved);
-				result.addObject("lang", lang);
-				result.addObject("requestURI", "finder/edit.do");
+				result.addObject("requestURI", "finder/actor/edit.do");
 			} catch (final Throwable e) {
 				result = this.createEditModelAndView(finder, "finder.commit.error");
 			}
@@ -103,6 +140,8 @@ public class FinderController extends AbstractController {
 		result.addObject("finder", finder);
 		result.addObject("message", messageCode);
 		result.addObject("deadnul", deadnul);
+		result.addObject("lang", this.lang);
+		result.addObject("categories", this.categoryService.findCategoriesName(this.lang));
 
 		return result;
 	}

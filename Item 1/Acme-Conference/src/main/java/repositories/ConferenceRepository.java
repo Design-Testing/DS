@@ -25,4 +25,7 @@ public interface ConferenceRepository extends JpaRepository<Conference, Integer>
 	@Query("select c from Conference c where c.endDate > CURRENT_TIMESTAMP and c.startDate < CURRENT_TIMESTAMP")
 	Collection<Conference> findRunningConferences();
 
+	@Query("select distinct p from Conference p join p.category c where (?1='' OR p.acronym LIKE CONCAT('%',?1,'%') OR p.title LIKE CONCAT('%',?1,'%') OR p.venue LIKE CONCAT('%',?1,'%') OR p.summary LIKE CONCAT('%',?1,'%'))")
+	Collection<Conference> findConferences(String keyword);
+
 }
