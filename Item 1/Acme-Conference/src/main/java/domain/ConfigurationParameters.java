@@ -25,6 +25,7 @@ public class ConfigurationParameters extends DomainEntity {
 	private String				welcomeMessageEn;
 	private String				countryPhoneCode;
 	private Collection<String>	creditCardMake;
+	private Collection<String>	voidWords;
 
 
 	@NotBlank
@@ -85,6 +86,16 @@ public class ConfigurationParameters extends DomainEntity {
 
 	public void setCreditCardMake(final Collection<String> creditCardMake) {
 		this.creditCardMake = creditCardMake;
+	}
+
+	@ElementCollection
+	@EachNotBlank
+	public Collection<String> getVoidWords() {
+		return this.voidWords;
+	}
+
+	public void setVoidWords(final Collection<String> voidWords) {
+		this.voidWords = voidWords;
 	}
 
 }
