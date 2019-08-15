@@ -10,7 +10,7 @@
 
 
 
-	<acme:display code="sponsor.name" value="${sponsor.name}" />
+	<acme:display code="sponsor.name" value="${sponsor.userAccount}" />
 	<acme:display code="sponsor.middleName" value="${sponsor.middleName}" />
 	<acme:display code="sponsor.surname" value="${sponsor.surname}" />
 	<acme:display code="sponsor.photo" value="${sponsor.photo}" />

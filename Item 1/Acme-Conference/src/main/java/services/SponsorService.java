@@ -17,6 +17,7 @@ import repositories.SponsorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import utilities.HashPassword;
 import domain.Actor;
 import domain.Sponsor;
 import forms.ActorForm;
@@ -80,7 +81,11 @@ public class SponsorService {
 		Sponsor result;
 		//this.actorService.checkForSpamWords(s);
 		if (s.getId() == 0) {
+			final String username = s.getUserAccount().getUsername();
+			final String password = HashPassword.hashPassword(s.getUserAccount().getPassword());
 			this.actorService.setAuthorityUserAccount(Authority.SPONSOR, s);
+			s.getUserAccount().setUsername(username);
+			s.getUserAccount().setPassword(password);
 			result = this.sponsorRepository.save(s);
 		} else {
 			final Actor principal = this.actorService.findByPrincipal();

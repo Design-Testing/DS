@@ -19,6 +19,20 @@ import utilities.internal.ThrowablePrinter;
 
 public class HashPassword {
 
+	public static String hashPassword(final String password) {
+		Md5PasswordEncoder encoder;
+		String line, hash = null;
+
+		try {
+			encoder = new Md5PasswordEncoder();
+			line = password;
+			hash = encoder.encodePassword(line, null);
+		} catch (final Throwable oops) {
+			ThrowablePrinter.print(oops);
+		}
+		return hash;
+	}
+
 	public static void main(final String[] args) throws IOException {
 		Md5PasswordEncoder encoder;
 		ConsoleReader reader;
