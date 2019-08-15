@@ -1027,14 +1027,14 @@
 		<property name="title" value="Title of comment 4" />
 		<property name="moment" value="2019/04/15 13:00" />
 		<property name="text" value="This is a comment" />
-		<property name="tutorial" ref="tutorial1" />
+		<property name="activity" ref="tutorial1" />
 	</bean>
 	
 	<bean id="comment5" class="domain.Comment">
 		<property name="title" value="Title of comment 5" />
 		<property name="moment" value="2019/04/15 13:00" />
 		<property name="text" value="This is a comment" />
-		<property name="panel" ref="panel1" />
+		<property name="activity" ref="panel1" />
 	</bean>
 	<!-- =================================================================== -->
 	<!-- ========================== REGISTER =============================== -->

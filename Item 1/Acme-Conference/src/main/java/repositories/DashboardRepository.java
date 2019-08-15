@@ -35,7 +35,7 @@ public interface DashboardRepository extends JpaRepository<DomainEntity, Integer
 	Double[] getNumberCommentsPerConference();
 
 	/** Average, minimum, maximum and standard deviation of the number of comments per activity. */
-	@Query("select avg(1.0+ (select count(p) from Comment p where p.panel.id=c.id OR p.tutorial.id=c.id OR p.presentation.id=c.id) -1.0), min(1.0+ (select count(p) from Comment p where p.panel.id=c.id OR p.tutorial.id=c.id OR p.presentation.id=c.id) -1.0), max(1.0+ (select count(p) from Comment p where p.panel.id=c.id OR p.tutorial.id=c.id OR p.presentation.id=c.id) -1.0), stddev(1.0+ (select count(p) from Comment p where p.panel.id=c.id OR p.tutorial.id=c.id OR p.presentation.id=c.id) -1.0) from Activity c")
+	@Query("select avg(1.0+ (select count(p) from Comment p where p.activity.id=c.id) -1.0), min(1.0+ (select count(p) from Comment p where p.activity.id=c.id) -1.0), max(1.0+ (select count(p) from Comment p where p.activity.id=c.id) -1.0), stddev(1.0+ (select count(p) from Comment p where p.activity.id=c.id) -1.0) from Activity c")
 	Double[] getNumberCommentsPerActivity();
 
 }

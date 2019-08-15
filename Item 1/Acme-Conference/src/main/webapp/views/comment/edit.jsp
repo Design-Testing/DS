@@ -12,13 +12,13 @@
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
-    <form:hidden path="conference"/>
-    <form:hidden path="presentation"/>
-    <form:hidden path="tutorial"/>
-    <form:hidden path="panel"/>
-    <form:hidden path="report"/>
     <form:hidden path="moment"/>
     <form:hidden path="author"/>
+    <form:hidden path="conference"/>
+    <form:hidden path="activity"/>
+    <form:hidden path="report"/>
+    <!-- TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo -->
+    <!-- form:hidden path="quolet" --> 
     
     <acme:textbox path="title" code="comment.title"/>
     <acme:textarea path="text" code="comment.text"/>
