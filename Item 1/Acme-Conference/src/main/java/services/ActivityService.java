@@ -10,9 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ActivityRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 import domain.Activity;
 import domain.Actor;
 import domain.Panel;
@@ -24,19 +21,19 @@ import domain.Tutorial;
 public class ActivityService {
 
 	@Autowired
-	private ActivityRepository	activityRepository;
+	private ActivityRepository		activityRepository;
+
+	@Autowired
+	private AdministratorService	administratorService;
+
+	@Autowired
+	private ConferenceService		conferenceService;
 
 
 	//METODOS CRUD
 
 	public Activity create() {
-
-		final UserAccount usuario = LoginService.getPrincipal();
-		Assert.notNull(usuario, "Debes estar logueado - create");
-
-		final Authority admin = new Authority();
-		admin.setAuthority(Authority.ADMIN);
-		Assert.isTrue(usuario.getAuthorities().contains(admin), "Debes ser admin - create");
+		this.administratorService.findByPrincipal();
 
 		final Activity res = new Activity();
 		res.setTitle("");
@@ -54,27 +51,24 @@ public class ActivityService {
 
 		return res;
 	}
-
 	public Activity findOne(final int idActivity) {
+		this.administratorService.findByPrincipal();
+
 		Assert.isTrue(idActivity != 0, "El idActivity debe ser distinto de 0");
 		final Activity res = this.activityRepository.findOne(idActivity);
 		Assert.notNull(res);
 		return res;
 	}
-
 	public Collection<Activity> findAll() {
+		this.administratorService.findByPrincipal();
+
 		final Collection<Activity> res = this.activityRepository.findAll();
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Activity save(final Activity activity) {
-		final UserAccount usuario = LoginService.getPrincipal();
-		Assert.notNull(usuario, "Debes estar logueado - save");
-
-		final Authority admin = new Authority();
-		admin.setAuthority(Authority.ADMIN);
-		Assert.isTrue(usuario.getAuthorities().contains(admin), "Debes ser admin - save");
+		this.administratorService.findByPrincipal();
 
 		Assert.notEmpty(activity.getSpeakers());
 

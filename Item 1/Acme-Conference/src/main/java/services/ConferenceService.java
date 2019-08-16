@@ -293,4 +293,8 @@ public class ConferenceService {
 		return result;
 	}
 
+	public Conference findConference(final int activityId) {
+		return this.conferenceRepository.findConference(activityId);
+	}
+
 }
