@@ -8,5 +8,9 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 	<acme:showActivity value="${tutorial}"/>
 	<acme:button url="tutorial/list.do" name="back" code="tutorial.back" />
+	
+	<!-- LIssta de sections dentro del tutorial -->
+	

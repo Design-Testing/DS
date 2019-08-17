@@ -9,7 +9,7 @@ import repositories.PanelRepository;
 
 @Service
 @Transactional
-public class PanelService {
+public class PanelService extends ActivityService {
 
 	@Autowired
 	private PanelRepository	panelRepository;

@@ -26,9 +26,6 @@ public class ActivityService {
 	@Autowired
 	private AdministratorService	administratorService;
 
-	@Autowired
-	private ConferenceService		conferenceService;
-
 
 	//METODOS CRUD
 

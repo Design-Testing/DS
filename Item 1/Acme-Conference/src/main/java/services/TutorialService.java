@@ -9,7 +9,7 @@ import repositories.TutorialRepository;
 
 @Service
 @Transactional
-public class TutorialService {
+public class TutorialService extends ActivityService {
 
 	@Autowired
 	private TutorialRepository	tutorialRepository;

@@ -44,7 +44,6 @@ public class ConferenceService {
 
 
 	//METODOS CRUD
-	//TODO JMSX
 	public Conference create() {
 		final UserAccount usuario = LoginService.getPrincipal();
 		Assert.notNull(usuario, "Debes estar logueado - create");

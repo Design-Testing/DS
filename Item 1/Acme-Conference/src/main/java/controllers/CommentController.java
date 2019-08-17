@@ -64,12 +64,12 @@ public class CommentController extends AbstractController {
 		case "conference":
 			result.addObject("comments", this.commentService.findByConference(id));
 			break;
-
+		}
 		// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo
 		//		case "quolet":
 		//			result.addObject("comments", this.commentService.findByQuolet(id));
 		//			break;
-		}
+
 		result.addObject("id", id);
 		result.addObject("entity", "conference");
 		result.addObject("lang", this.lang);
