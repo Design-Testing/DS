@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -100,10 +99,19 @@ public class CommentController extends AbstractController {
 	// UPDATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit() {
-		final Comment comment = this.commentService.create();
-		Assert.notNull(comment);
-		return this.createEditModelAndView(comment);
+	public ModelAndView edit(@RequestParam final int commentId) {
+		ModelAndView result;
+		Comment comment;
+		comment = this.commentService.findOne(commentId);
+		if (comment != null) {
+			result = this.createEditModelAndView(comment);
+			result.addObject("comment", comment);
+
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+
 	}
 
 	// SAVE  ---------------------------------------------------------------		

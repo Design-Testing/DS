@@ -13,6 +13,10 @@
 <acme:display code="section.summary" value="${section.title}" />
 <acme:img code="section.picture" url="${section.picture}" alt="<spring:message code='section.img'/>"/>
 
+<security:authorize access="hasRole('ADMIN')">
+	<acme:button url="section/edit.do?sectionId=${section.id}&tutorialId=${tutorialId}" name="edit" code="section.edit" />
+</security:authorize>
+
 <acme:button url="section/list.do" name="back" code="section.back" />
 
 

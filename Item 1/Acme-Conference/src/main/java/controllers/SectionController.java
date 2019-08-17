@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,10 +39,11 @@ public class SectionController extends AbstractController {
 	// CREATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int tutorialId) {
 		ModelAndView result;
 		final Section section = this.sectionService.create();
 		result = this.createEditModelAndView(section);
+		result.addObject("tutorialId", tutorialId);
 		return result;
 	}
 	// LIST  ---------------------------------------------------------------		
@@ -58,8 +58,6 @@ public class SectionController extends AbstractController {
 		result.addObject("tutorialId", tutorialId);
 		result.addObject("lang", this.lang);
 
-		this.addAdminIfLogged(result);
-
 		return result;
 	}
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -71,19 +69,26 @@ public class SectionController extends AbstractController {
 		result.addObject("section", section);
 		result.addObject("tutorialId", tutorialId);
 
-		this.addAdminIfLogged(result);
-
 		return result;
 	}
 
 	// UPDATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int tutorialId) {
-		final Section section = this.sectionService.create();
-		Assert.notNull(section);
-		final ModelAndView result = this.createEditModelAndView(section);
-		result.addObject("tutorialId", tutorialId);
+	public ModelAndView edit(@RequestParam final int sectionId, @RequestParam final int tutorialId) {
+		ModelAndView result;
+		Section section;
+
+		section = this.sectionService.findOne(sectionId);
+
+		if (section != null) {
+			result = this.createEditModelAndView(section);
+			result.addObject("tutorialId", tutorialId);
+			result.addObject("section", section);
+
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
 		return result;
 	}
 
@@ -118,6 +123,8 @@ public class SectionController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Section section, final String messageCode) {
 		final ModelAndView result;
 
+		this.administratorService.findByPrincipal();
+
 		result = new ModelAndView("section/edit");
 		result.addObject("section", section);
 		result.addObject("message", messageCode);
@@ -125,6 +132,7 @@ public class SectionController extends AbstractController {
 		return result;
 	}
 
+	// TODO: Pueden editar todos los admin o solo el suyo??
 	/**
 	 * Este metodo comprueba que haya un actor logeado y si dicho actor corresponde con un administrador añade al ModelAnView pasado como parametro un objeto "isAdmin" a true para indicar en la vista que es un administrador el que va a acceder a ella.
 	 * 
