@@ -16,9 +16,13 @@
 
 <%@ attribute name="value" required="true"%>
 <%@ attribute name="code" required="true"%>
+<%@ attribute name="url" required="false"%>
 
 <%-- Definition --%>
 
 <spring:message code="${code}" />:
-<jstl:out value="${value}" />
+<jstl:choose>
+<jstl:when test="${url == null}"><jstl:out value="${value}" /></jstl:when>
+<jstl:otherwise><a href="${url}"><jstl:out value="${value}" /></a></jstl:otherwise>
+</jstl:choose>
 <br />

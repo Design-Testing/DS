@@ -23,8 +23,43 @@
 			<bean class="converters.Class1ToClass2" /> 
 		-->
 		
-		<bean class="converters.CategoryToStringConverter" /> 
-		<bean class="converters.StringToCategoryConverter" /> 
+		<bean class="converters.CategoryToStringConverter" />
+		<bean class="converters.ActivityToStringConverter" />
+		<bean class="converters.ActorToStringConverter" />
+		<bean class="converters.AdministratorToStringConverter" />
+		<bean class="converters.ConfigurationParametersToStringConverter" />
+		<bean class="converters.CreditCardToStringConverter" />
+		<bean class="converters.FinderToStringConverter" />
+		<bean class="converters.PanelToStringConverter" />
+		<bean class="converters.PaperToStringConverter" />
+		<bean class="converters.PresentationToStringConverter" />
+		<bean class="converters.RegisterToStringConverter" />
+		<bean class="converters.SectionToStringConverter" />
+		<bean class="converters.SponsorToStringConverter" />
+		<bean class="converters.SponsorshipToStringConverter" />
+		<bean class="converters.SubmissionToStringConverter" />
+		<bean class="converters.TutorialToStringConverter" />
+		<bean class="converters.ConferenceToStringConverter" />
+		<bean class="converters.ReportToStringConverter" />
+		 
+		<bean class="converters.StringToCategoryConverter" />
+		<bean class="converters.StringToActivityConverter" /> 
+		<bean class="converters.StringToActorConverter" /> 
+		<bean class="converters.StringToAdministratorConverter" /> 
+		<bean class="converters.StringToConfigurationParametersConverter" /> 
+		<bean class="converters.StringToCreditCardConverter" /> 
+		<bean class="converters.StringToFinderConverter" /> 
+		<bean class="converters.StringToPanelConverter" />
+		<bean class="converters.StringToPaperConverter" />
+		<bean class="converters.StringToPresentationConverter" />
+		<bean class="converters.StringToRegisterConverter" />
+		<bean class="converters.StringToReportConverter" />
+		<bean class="converters.StringToConferenceConverter" />
+		<bean class="converters.StringToSectionConverter" />
+		<bean class="converters.StringToSponsorConverter" />
+		<bean class="converters.StringToSponsorshipConverter" />
+		<bean class="converters.StringToSubmissionConverter" />
+		<bean class="converters.StringToTutorialConverter" /> 
 	</util:list>
 	
 </beans>
