@@ -2,6 +2,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import services.MessageService;
 import services.TopicService;
 import domain.Actor;
 import domain.Message;
+import domain.Topic;
 
 @Controller
 @RequestMapping("/message")
@@ -42,7 +44,12 @@ public class MessageController {
 	public ModelAndView create() {
 		ModelAndView result;
 		result = new ModelAndView("message/edit");
+		final Collection<Actor> recivers = this.actorService.findAll();
+		final Collection<Topic> topics = this.topicService.findAll();
+
 		final Message message = this.messageService.create();
+		result.addObject("recivers", recivers);
+		result.addObject("topics", topics);
 		result.addObject("message", message);
 		return result;
 	}

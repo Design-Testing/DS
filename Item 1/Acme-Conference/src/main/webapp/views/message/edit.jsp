@@ -18,17 +18,42 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 
-<form:form action="topic/edit.do" modelAttribute="topic">
+<form:form action="message/edit.do" modelAttribute="message">
 
-    <form:hidden path="id"/>
+ 	<form:hidden path="id"/>
     <form:hidden path="version"/>
+    <form:hidden path="moment"/>
+    <form:hidden path="sender"/>
     
-    <acme:textbox path="spanish" code="topic.spanish"/>
-    <acme:textbox path="english" code="topic.english"/>
+	<form:label path="recivers">
+        <spring:message code="message.recivers"/>:
+    </form:label>
+    <form:select path="recivers" code="message.recivers">
+    	<jstl:forEach items="${recivers}" var="r">
+    		<form:option value="${r.id}" label="${r.name}"/>
+    	</jstl:forEach>
+    </form:select>
+    <br/>
+    <br/>
+
+    <acme:textbox path="subject" code="message.subject"/>
+    <br/>
+
+    <acme:textarea path="body" code="message.body"/>
+    <br/>
 
 
+    <form:label path="topic">
+        <spring:message code="message.topic"/>:
+    </form:label>
+    <form:select path="topic" code="message.topic">
+        <form:options items="${topics}"/>
+    </form:select>
+    <br/>
+    <br/>
+   
     <button name="save" type="submit" class="button2">
-        <spring:message code="conference.save"/>
+        <spring:message code="message.send"/>
     </button>
 
 </form:form>
