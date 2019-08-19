@@ -27,6 +27,12 @@ public class TutorialService extends ActivityService {
 		return res;
 	}
 
+	public Collection<Tutorial> findTutorials() {
+		final Collection<Tutorial> res = this.tutorialRepository.findAll();
+		Assert.notNull(res);
+		return res;
+	}
+
 	public Collection<Tutorial> findTutorialsByConference(final int conferenceId) {
 		Assert.isTrue(conferenceId != 0);
 		final Collection<Tutorial> tutorials = this.tutorialRepository.findTutorialsByConference(conferenceId);

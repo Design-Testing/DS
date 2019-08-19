@@ -16,19 +16,20 @@
 	class="displaytag">
 
 	<display:column property="title" titleKey="section.title" />
-	<display:column>
-		<security:authorize access="hasRole('ADMIN')">
-			<acme:button
-				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorial.id}"
-				name="edit" code="section.edit" />
-		</security:authorize>
-	</display:column>
+	
 	<display:column>
 	<security:authorize access="hasRole('ADMIN')">
 	<acme:button
 		url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorial.id}"
 		name="edit" code="section.edit" />	
 	</security:authorize>
+	</display:column>
+	<display:column>
+		<security:authorize access="hasRole('ADMIN')">
+			<acme:button
+				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorial.id}"
+				name="edit" code="section.edit" />
+		</security:authorize>
 	</display:column>
 	</display:table>
 	<security:authorize access="hasRole('ADMIN')">

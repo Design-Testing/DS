@@ -32,6 +32,7 @@
 	</display:column>
 	<display:column property="hours" titleKey="activity.hours" />
 	<display:column property="room" titleKey="activity.room" />
+	<jstl:if test="${not empty conferenceId}">
 	<display:column>
 			<acme:button
 				url="tutorial/display.do?conferenceId=${conferenceId}&tutorialId=${row.id}"
@@ -44,5 +45,5 @@
 				name="edit" code="activity.edit" />
 		</security:authorize>
 	</display:column>
-
+	</jstl:if>
 </display:table>
