@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
 import services.AdministratorService;
 import services.TutorialService;
 import domain.Tutorial;
@@ -30,6 +31,9 @@ public class TutorialController extends AbstractController {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private ActorService			actorService;
 
 
 	// CREATE  ---------------------------------------------------------------		
@@ -124,6 +128,7 @@ public class TutorialController extends AbstractController {
 		result = new ModelAndView("tutorial/edit");
 		result.addObject("tutorial", tutorial);
 		result.addObject("message", messageCode);
+		result.addObject("actors", this.actorService.findAll());
 
 		return result;
 	}

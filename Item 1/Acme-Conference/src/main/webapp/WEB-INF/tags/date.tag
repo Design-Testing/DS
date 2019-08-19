@@ -25,6 +25,7 @@
 
 <%@ attribute name="value" required="true"%>
 <%@ attribute name="code" required="true"%>
+<%@ attribute name="lang" required="true"%>
 
 
 <%-- Definition --%>

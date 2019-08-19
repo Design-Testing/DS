@@ -32,5 +32,17 @@
 	</display:column>
 	<display:column property="hours" titleKey="activity.hours" />
 	<display:column property="room" titleKey="activity.room" />
+	<display:column>
+			<acme:button
+				url="tutorial/display.do?conferenceId=${conferenceId}&tutorialId=${row.id}"
+				name="display" code="activity.display" />
+	</display:column>
+	<display:column>
+		<security:authorize access="hasRole('ADMIN')">
+			<acme:button
+				url="tutorial/edit.do?conferenceId=${conferenceId}&tutorialId=${row.id}"
+				name="edit" code="activity.edit" />
+		</security:authorize>
+	</display:column>
 
 </display:table>

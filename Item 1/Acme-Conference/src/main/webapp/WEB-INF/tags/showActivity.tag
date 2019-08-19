@@ -34,5 +34,5 @@
 <acme:display code="room" value="${value.room}" />
 <acme:display code="summary" value="${value.summary}" />
 <acme:ulist code="attachments" items="${value.attachments}" />
-<acme:ulist code="attachments" items="${value.speakers}" />
+<acme:ulist code="speakers" items="${value.speakers}" />
 <br />

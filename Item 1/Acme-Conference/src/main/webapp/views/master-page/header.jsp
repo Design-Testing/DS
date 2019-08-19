@@ -38,8 +38,6 @@
 			
 		</security:authorize>
 		
-		
-		
 		<!------------------------------------------------------------>
 		<!------------------------ AUTHOR ---------------------------->
 		<!------------------------------------------------------------>
@@ -110,6 +108,17 @@
 		
 		<security:authorize access="isAnonymous()">
 			<li><a href="finder/searching.do"><spring:message code="master.page.finder" /></a></li>
+			<li>
+				<a class="fNiv"> 
+					<spring:message code="master.page.activity" />
+				</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="tutorial/list.do"><spring:message code="master.page.list.tutorial" /></a></li>
+					<li><a href="panel/list.do"><spring:message code="master.page.list.panel" /></a></li>					
+					<li><a href="presentation/list.do"><spring:message code="master.page.list.presentation" /> </a></li>
+				</ul>
+			</li>
 			<li><a class="fNiv"><spring:message	code="master.page.conferences" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -133,6 +142,17 @@
 		
 		<security:authorize access="isAuthenticated()">
 			<li><a href="finder/actor/edit.do"><spring:message code="master.page.finder" /></a></li>
+			<li>
+				<a class="fNiv"> 
+					<spring:message code="master.page.activity" />
+				</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="tutorial/list.do"><spring:message code="master.page.list.tutorial" /></a></li>
+					<li><a href="panel/list.do"><spring:message code="master.page.list.panel" /></a></li>					
+					<li><a href="presentation/list.do"><spring:message code="master.page.list.presentation" /> </a></li>
+				</ul>
+			</li>
 			<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 
