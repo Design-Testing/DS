@@ -9,7 +9,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-	<acme:showActivity value="${panel}"/>
+	<acme:showActivity value="${panel}" lang="${lang}"/>
 	<acme:button url="panel/list.do" name="back" code="panel.back" />
 
 

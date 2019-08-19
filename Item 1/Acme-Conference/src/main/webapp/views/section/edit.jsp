@@ -9,7 +9,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 
-<form:form action="section/edit.do" modelAttribute="section">
+<form:form action="section/edit.do?tutorialId=${tutorialId}" modelAttribute="section">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>

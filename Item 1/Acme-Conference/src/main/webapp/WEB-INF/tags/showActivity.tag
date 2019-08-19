@@ -15,6 +15,7 @@
 <%-- Attributes --%>
 
 <%@ attribute name="value" required="true"%>
+<%@ attribute name="lang" required="true"%>
 
 <acme:display code="title" value="${value.title}" />
 <jstl:choose>
