@@ -54,7 +54,7 @@ public class MessageController {
 		return result;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(@Valid final Message message, final BindingResult binding) {
 		ModelAndView result;
 
