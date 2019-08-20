@@ -712,6 +712,50 @@
 		<property name="category" ref="category3" />
 
 	</bean>
+	
+	<bean id="conference4" class="domain.Conference">
+		<!-- CONFERENCE -->
+		<property name="title" value="Conferencia Csif" />
+		<property name="acronym" value="Windows" />
+		<property name="venue" value="Windows" />
+		<property name="submission" value="2019/07/16 00:00" />
+		<property name="notification" value="2019/07/31 00:00" />
+		<property name="cameraReady" value="2019/08/03 00:00" />
+		<property name="startDate" value="2019/08/05 00:00" />
+		<property name="endDate" value="2019/08/06 00:00" />
+		<property name="summary" value="Summary of conference 4" />
+		<property name="fee" value="1520.89" />
+		<property name="isDraft" value="false" />
+		<property name="activities">
+			<list>
+
+			</list>
+		</property>
+		<property name="category" ref="category3" />
+
+	</bean>
+	
+	<bean id="conference5" class="domain.Conference">
+		<!-- CONFERENCE -->
+		<property name="title" value="Conferencia Allevyn" />
+		<property name="acronym" value="Windows" />
+		<property name="venue" value="Windows" />
+		<property name="submission" value="2019/08/16 00:00" />
+		<property name="notification" value="2019/08/31 00:00" />
+		<property name="cameraReady" value="2019/09/04 00:00" />
+		<property name="startDate" value="2019/09/05 00:00" />
+		<property name="endDate" value="2019/09/06 00:00" />
+		<property name="summary" value="Summary of conference 5" />
+		<property name="fee" value="1520.89" />
+		<property name="isDraft" value="false" />
+		<property name="activities">
+			<list>
+
+			</list>
+		</property>
+		<property name="category" ref="category3" />
+
+	</bean>
 
 	<!-- =================================================================== -->
 	<!-- ========================== CATEGORY =============================== -->
