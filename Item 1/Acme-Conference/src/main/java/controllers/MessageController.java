@@ -50,7 +50,7 @@ public class MessageController {
 		final Message message = this.messageService.create();
 		result.addObject("recivers", recivers);
 		result.addObject("topics", topics);
-		result.addObject("message", message);
+		result.addObject("m", message);
 		return result;
 	}
 

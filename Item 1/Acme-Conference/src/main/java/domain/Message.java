@@ -96,4 +96,9 @@ public class Message extends DomainEntity {
 		this.topic = topic;
 	}
 
+	@Override
+	public String toString() {
+		return "Message [sender=" + this.sender + "]";
+	}
+
 }
