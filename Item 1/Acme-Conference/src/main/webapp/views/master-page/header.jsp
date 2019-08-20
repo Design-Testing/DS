@@ -131,6 +131,14 @@
 		
 		<security:authorize access="isAuthenticated()">
 			<li><a href="finder/actor/edit.do"><spring:message code="master.page.finder" /></a></li>
+			<li><a class="fNiv"><spring:message	code="master.page.message" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="message/inbox.do"><spring:message code="master.page.message.inbox" /></a></li>
+					<li><a href="message/outbox.do"><spring:message code="master.page.message.outbox" /></a></li>
+					<li><a href="message/create.do"><spring:message code="master.page.message.new" /></a></li>
+				</ul>
+			</li>
 			<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 

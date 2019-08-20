@@ -50,11 +50,11 @@ public class MessageController {
 		final Message message = this.messageService.create();
 		result.addObject("recivers", recivers);
 		result.addObject("topics", topics);
-		result.addObject("message", message);
+		result.addObject("m", message);
 		return result;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView edit(@Valid final Message message, final BindingResult binding) {
 		ModelAndView result;
 
@@ -66,15 +66,15 @@ public class MessageController {
 		} else {
 			result = new ModelAndView("message/edit");
 			result.addObject("errors", binding.getAllErrors());
-			result.addObject("message", message);
+			result.addObject("m", message);
 		}
 
 		return result;
 
 	}
 
-	@RequestMapping(value = "/output", method = RequestMethod.GET)
-	public ModelAndView output() {
+	@RequestMapping(value = "/outbox", method = RequestMethod.GET)
+	public ModelAndView outbox() {
 		ModelAndView result;
 		final Actor principal = this.actorService.findByPrincipal();
 
