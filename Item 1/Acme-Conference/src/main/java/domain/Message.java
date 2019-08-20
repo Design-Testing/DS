@@ -7,8 +7,8 @@ import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -67,7 +67,7 @@ public class Message extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Actor getSender() {
 		return this.sender;
 	}
@@ -77,7 +77,7 @@ public class Message extends DomainEntity {
 	}
 
 	@Valid
-	@OneToMany
+	@ManyToMany
 	public Collection<Actor> getRecivers() {
 		return this.recivers;
 	}
@@ -87,7 +87,7 @@ public class Message extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Topic getTopic() {
 		return this.topic;
 	}
@@ -96,9 +96,11 @@ public class Message extends DomainEntity {
 		this.topic = topic;
 	}
 
-	@Override
-	public String toString() {
-		return "Message [sender=" + this.sender + "]";
-	}
+	/*
+	 * @Override
+	 * public String toString() {
+	 * return "Message [sender=" + this.sender + "]";
+	 * }
+	 */
 
 }
