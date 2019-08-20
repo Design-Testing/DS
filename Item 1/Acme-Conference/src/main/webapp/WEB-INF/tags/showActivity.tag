@@ -14,25 +14,87 @@
 
 <%-- Attributes --%>
 
-<%@ attribute name="activity" required="true"%>
+<%@ attribute name="title" required="true"%>
+<%@ attribute name="room" required="true"%>
+<%@ attribute name="hours" required="true"%>
+<%@ attribute name="minutes" required="true"%>
+<%@ attribute name="summary" required="true"%>
+<%@ attribute name="attachments" required="true"%>
+<%@ attribute name="speakers" required="true"%>
 <%@ attribute name="lang" required="true"%>
 
-<acme:display code="activity.title" value="${value.title}" />
 <jstl:choose>
-	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="activity.startMoment" />: <fmt:formatDate
-			value="${value.startMoment}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	<jstl:when test="${not empty title}">
+		<acme:display code="activity.title" value="${title}" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="activity.startMoment" />: <fmt:formatDate
-			value="${value.startMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="activity.title" /> <spring:message code="empty" />
+		<br />
 	</jstl:otherwise>
 </jstl:choose>
-<br/>
-<acme:display code="activity.hours" value="${value.hours}" />
-<acme:display code="activity.minutes" value="${value.minutes}" />
-<acme:display code="activity.room" value="${value.room}" />
-<acme:display code="activity.summary" value="${value.summary}" />
-<acme:ulist code="activity.attachments" items="${value.attachments}" />
-<acme:ulist code="activity.speakers" items="${value.speakers}" />
+
+<jstl:choose>
+	<jstl:when test="${not empty hours}">
+		<acme:display code="activity.hours" value="${hours}" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.hours" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+<jstl:choose>
+	<jstl:when test="${not empty summary}">
+		<acme:display code="activity.summary" value="${summary}" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.summary" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+<jstl:choose>
+	<jstl:when test="${not empty room}">
+		<acme:display code="activity.room" value="${room}" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.room" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+<jstl:choose>
+	<jstl:when test="${not empty minutes}">
+		<acme:display code="activity.minutes" value="${minutes}" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.minutes" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+<jstl:choose>
+	<jstl:when test="${not empty attachments}">
+		<spring:message code="activity.attachments"/>
+		<jstl:forEach items="${attachments}" var="line">
+		<ul>
+			<li><jstl:out value="${line}"/></li>
+		</ul>
+		</jstl:forEach>
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.attachments" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+<jstl:choose>
+	<jstl:when test="${not empty speakers}">
+		<spring:message code="activity.speakers"/>
+		<jstl:forEach items="${speakers}" var="line">
+		<ul>
+			<li><jstl:out value="${line}"/></li>
+		</ul>
+		</jstl:forEach>
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.speakers" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
 <br />

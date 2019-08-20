@@ -139,4 +139,9 @@ public class Actor extends DomainEntity {
 		this.finder = finder;
 	}
 
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
 }

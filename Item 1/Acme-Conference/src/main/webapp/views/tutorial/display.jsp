@@ -11,10 +11,34 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<acme:showActivity activity="${tutorial}" lang="${lang}" />
+<acme:showActivity title="${tutorial.title}"
+	attachments="${tutorial.attachments}" hours="${tutorial.hours}"
+	minutes="${tutorial.minutes}" room="${tutorial.minutes}"
+	speakers="${tutorial.speakers}" summary="${tutorial.summary}"
+	lang="${lang}" />
+
+<jstl:choose>
+	<jstl:when test="${not empty tutorial.startMoment}">
+		<jstl:choose>
+			<jstl:when test="${lang eq 'en' }">
+				<spring:message code="activity.startMoment" />: <fmt:formatDate
+					value="${tutorial.startMoment}" type="both" pattern="yyyy/MM/dd HH:mm" />
+			</jstl:when>
+			<jstl:otherwise>
+				<spring:message code="activity.startMoment" />: <fmt:formatDate
+					value="${tutorial.startMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
+			</jstl:otherwise>
+		</jstl:choose>
+		<br />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.startMoment" />
+		<spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
 
 <!-- Lista de sections dentro del tutorial -->
-<jstl:out value="${lang}"/>
 <display:table name="${tutorial.sections}" id="row"
 	requestURI="section/list.do?tutorialId=${tutorial.id}" pagesize="5"
 	class="displaytag">
@@ -41,6 +65,7 @@
 		name="edit" code="tutorial.section.create" />
 </security:authorize>
 
-<acme:button url="tutorial/list.do?conferenceId=${conferenceId}" name="back" code="activity.back" />
+<acme:button url="tutorial/list.do?conferenceId=${conferenceId}"
+	name="back" code="activity.back" />
 
 
