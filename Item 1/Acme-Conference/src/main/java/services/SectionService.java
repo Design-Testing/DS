@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.SectionRepository;
+import repositories.TutorialRepository;
 import domain.Section;
 import domain.Tutorial;
 
@@ -21,10 +22,10 @@ public class SectionService {
 	private SectionRepository		sectionRepository;
 
 	@Autowired
-	private AdministratorService	administratorService;
+	private TutorialRepository		tutorialRepository;
 
 	@Autowired
-	private TutorialService			tutorialService;
+	private AdministratorService	administratorService;
 
 
 	//	@Autowired
@@ -55,13 +56,13 @@ public class SectionService {
 		//	TODO: Decidir si section se anyade solo en draft mode o siempre
 		//	final Conference c = this.conferenceService.findConference(tutorial.getId());
 		//	Assert.isTrue(c.getIsDraft(), "La conferencia asociada al tutorial sobre el que escribimos la seccion tiene que estar en modo draft");
-		final Tutorial tutorial = (Tutorial) this.tutorialService.findOne(tutorialId);
+		final Tutorial tutorial = this.tutorialRepository.findOne(tutorialId);
 		Assert.notNull(tutorial);
 		final Section res = this.sectionRepository.save(section);
 		final Collection<Section> sections = tutorial.getSections();
 		sections.add(res);
 		tutorial.setSections(sections);
-		this.tutorialService.save(tutorial);
+		this.tutorialRepository.save(tutorial);
 		return res;
 	}
 	public Collection<Section> findByTutorial(final int tutorialId) {

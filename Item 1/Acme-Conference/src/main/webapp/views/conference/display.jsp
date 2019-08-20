@@ -273,6 +273,10 @@
 <!------------------------------- BACK BUTTONS ----------------------------------->
 <!-------------------------------------------------------------------------------->
 
+<acme:button url="tutorial/list.do?conferenceId=${conference.id}" name="tutorials" code="conference.tutorials" />
+<acme:button url="panel/list.do?conferenceId=${conference.id}" name="panels" code="conference.panels" />
+<acme:button url="presentation/list.do?conferenceId=${conference.id}" name="presentations" code="conference.presentations" />
+<br/><br/>
 <jstl:choose>
 	<jstl:when test="${isAdministrator eq true }">
 		<acme:button url="conference/administrator/myConferences.do" name="back" code="conference.back" />

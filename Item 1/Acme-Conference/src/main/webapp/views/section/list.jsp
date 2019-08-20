@@ -11,20 +11,9 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<security:authorize access="hasRole('ADMIN')">
-	<acme:button
-		url="section/edit.do?sectionId=${section.id}&tutorialId=${tutorialId}"
-		name="edit" code="section.edit" />
-</security:authorize>
 
-<jstl:if test="${isAdministrator eq true }">
 
-	<input type="button" class="btn btn-danger" name="create"
-		value="<spring:message code="conference.create" />"
-		onclick="relativeRedir('conference/administrator/create.do');" />
-</jstl:if>
-
-<display:table name="conferences" id="row"
+<display:table name="sections" id="row"
 	requestURI="section/list.do?tutorialId=${tutorialId}" pagesize="5"
 	class="displaytag">
 
@@ -35,6 +24,13 @@
 				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorialId}"
 				name="edit" code="section.edit" />
 		</security:authorize>
+	</display:column>
+	<display:column>
+	<security:authorize access="hasRole('ADMIN')">
+	<acme:button
+		url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorialId}"
+		name="edit" code="section.edit" />	
+	</security:authorize>
 	</display:column>
 </display:table>
 <security:authorize access="hasRole('ADMIN')">

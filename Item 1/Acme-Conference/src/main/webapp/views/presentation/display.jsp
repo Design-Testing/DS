@@ -9,6 +9,6 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-	<acme:showActivity value="${presentation}"/>
+	<acme:showActivity value="${presentation}" lang="${lang}"/>
 	<acme:display code="presentation.camera.ready.paper" value="${presentation.cameraReadyPaper}"/>
 	<acme:button url="presentation/list.do" name="back" code="presentation.back" />

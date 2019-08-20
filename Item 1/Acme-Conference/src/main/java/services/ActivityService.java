@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 import repositories.ActivityRepository;
 import domain.Activity;
 import domain.Actor;
+import domain.Conference;
 import domain.Panel;
 import domain.Presentation;
 import domain.Tutorial;
@@ -25,6 +26,9 @@ public class ActivityService {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private ConferenceService		conferenceService;
 
 
 	//METODOS CRUD
@@ -64,12 +68,20 @@ public class ActivityService {
 		return res;
 	}
 
-	public Activity save(final Activity activity) {
+	public Activity save(final Activity activity, final int conferenceId) {
+		Assert.isTrue(conferenceId != 0);
 		this.administratorService.findByPrincipal();
-
+		Assert.notNull(activity, "Activity is null - save");
+		final Conference conference = this.conferenceService.findOne(conferenceId);
+		//		TODO: Decidir si la actividad se anyade solo en draft mode o siempre
+		//	Assert.isTrue(conference.getIsDraft(), "La conferencia asociada a la actividad que estar en modo draft");
+		Assert.notNull(conference);
 		Assert.notEmpty(activity.getSpeakers());
-
 		final Activity res = this.activityRepository.save(activity);
+		final Collection<Activity> activities = conference.getActivities();
+		activities.add(res);
+		conference.setActivities(activities);
+		this.conferenceService.save(conference);
 		return res;
 	}
 
@@ -84,4 +96,12 @@ public class ActivityService {
 
 		return res;
 	}
+
+	public Collection<Activity> findByConference(final int conferenceId) {
+		Assert.isTrue(conferenceId != 0);
+		final Collection<Activity> tutorials = this.activityRepository.findByConference(conferenceId);
+		Assert.notNull(tutorials);
+		return tutorials;
+	}
+
 }
