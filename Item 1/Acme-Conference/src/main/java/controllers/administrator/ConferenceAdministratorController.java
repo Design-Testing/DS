@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -200,8 +199,6 @@ public class ConferenceAdministratorController extends AbstractController {
 	public ModelAndView create() {
 		ModelAndView result;
 
-		final String lang = LocaleContextHolder.getLocale().getLanguage();
-
 		this.administratorService.findByPrincipal();
 
 		final Conference conference = this.conferenceService.create();
@@ -211,7 +208,6 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/edit");
 		result.addObject("conferenceForm", conferenceForm); //this.constructPruned(position)
 		result.addObject("isAdministrator", true);
-		result.addObject("lang", lang);
 		result.addObject("categories", this.categoryRepository.findAll());
 		result.addObject("message", null);
 		return result;
@@ -223,8 +219,6 @@ public class ConferenceAdministratorController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int conferenceId) {
 		ModelAndView result;
 
-		final String lang = LocaleContextHolder.getLocale().getLanguage();
-
 		this.administratorService.findByPrincipal();
 
 		final Conference conference = this.conferenceService.findOne(conferenceId);
@@ -234,7 +228,6 @@ public class ConferenceAdministratorController extends AbstractController {
 			result.addObject("conferenceForm", this.conferenceService.constructPruned(conference)); //this.constructPruned(position)
 			result.addObject("isAdministrator", true);
 			result.addObject("categories", this.categoryRepository.findAll());
-			result.addObject("lang", lang);
 		}
 
 		else
@@ -248,15 +241,12 @@ public class ConferenceAdministratorController extends AbstractController {
 	public ModelAndView save(@ModelAttribute("conferenceForm") @Valid final ConferenceForm conferenceForm, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 
-		final String lang = LocaleContextHolder.getLocale().getLanguage();
-
 		if (binding.hasErrors()) {
 			result = new ModelAndView("conference/edit");
 			result.addObject("conferenceForm", conferenceForm);
 			result.addObject("isAdministrator", true);
 			result.addObject("categories", this.categoryRepository.findAll());
 			result.addObject("errors", binding.getAllErrors());
-			result.addObject("lang", lang);
 		} else
 			try {
 				Conference conference = this.conferenceService.reconstruct(conferenceForm, binding);
@@ -266,7 +256,6 @@ public class ConferenceAdministratorController extends AbstractController {
 				result = new ModelAndView("conference/edit");
 				result.addObject("conferenceForm", conferenceForm);
 				result.addObject("isAdministrator", true);
-				result.addObject("lang", lang);
 				result.addObject("categories", this.categoryRepository.findAll());
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable oops) {
@@ -274,7 +263,6 @@ public class ConferenceAdministratorController extends AbstractController {
 				result.addObject("conferenceForm", conferenceForm);
 				result.addObject("isAdministrator", true);
 				result.addObject("categories", this.categoryRepository.findAll());
-				result.addObject("lang", lang);
 				if (oops.getMessage().equals("no deadline or date can be null"))
 					result.addObject("msgerror", "conference.error.empty");
 				if (oops.getMessage().equals("submission before notification"))
@@ -298,8 +286,6 @@ public class ConferenceAdministratorController extends AbstractController {
 	public ModelAndView display(@RequestParam final int conferenceId) {
 		ModelAndView result;
 
-		final String lang = LocaleContextHolder.getLocale().getLanguage();
-
 		this.administratorService.findByPrincipal();
 
 		final Conference conference = this.conferenceService.findOne(conferenceId);
@@ -317,7 +303,6 @@ public class ConferenceAdministratorController extends AbstractController {
 			result.addObject("acceptedSubmissions", acceptedSubmissions);
 			result.addObject("rejectedSubmissions", rejectedSubmissions);
 			result.addObject("underReviewedSubmissions", underReviewedSubmissions);
-			result.addObject("lang", lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
 

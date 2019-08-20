@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +22,6 @@ import domain.Tutorial;
 @Controller
 @RequestMapping("/tutorial")
 public class TutorialController extends AbstractController {
-
-	final String					lang	= LocaleContextHolder.getLocale().getLanguage();
 
 	@Autowired
 	private TutorialService			tutorialService;
@@ -56,7 +53,6 @@ public class TutorialController extends AbstractController {
 		final Collection<Tutorial> tutorials = this.tutorialService.findTutorialsByConference(conferenceId);
 		result.addObject("tutorials", tutorials);
 		result.addObject("conferenceId", conferenceId);
-		result.addObject("lang", this.lang);
 
 		return result;
 	}
