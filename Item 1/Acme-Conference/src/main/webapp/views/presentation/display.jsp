@@ -10,5 +10,5 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 	<acme:showActivity activity="${presentation}" lang="${lang}"/>
-	<acme:display code="presentation.camera.ready.paper" value="${presentation.cameraReadyPaper}"/>
+	<acme:display code="presentation.camera.ready.paper" value="${presentation.cameraReadyPaper.title}"/><br/>
 	<acme:button url="presentation/list.do?conferenceId=${conferenceId}" name="back" code="activity.back" />

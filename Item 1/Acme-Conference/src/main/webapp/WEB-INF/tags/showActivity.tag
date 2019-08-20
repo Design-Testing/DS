@@ -28,7 +28,7 @@
 			value="${value.startMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
-
+<br/>
 <acme:display code="activity.hours" value="${value.hours}" />
 <acme:display code="activity.minutes" value="${value.minutes}" />
 <acme:display code="activity.room" value="${value.room}" />

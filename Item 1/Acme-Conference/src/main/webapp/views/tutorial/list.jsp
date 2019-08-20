@@ -19,10 +19,12 @@
 	<display:column titleKey="activity.startMoment">
 		<jstl:choose>
 			<jstl:when test="${lang eq 'en' }">
-				<fmt:formatDate value="${row.startMoment}" type="both" pattern="yyyy/MM/dd HH:mm" />
+				<fmt:formatDate value="${row.startMoment}" type="both"
+					pattern="yyyy/MM/dd HH:mm" />
 			</jstl:when>
 			<jstl:otherwise>
-				<fmt:formatDate value="${row.startMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
+				<fmt:formatDate value="${row.startMoment}" type="both"
+					pattern="dd/MM/yyyy HH:mm" />
 			</jstl:otherwise>
 		</jstl:choose>
 	</display:column>
@@ -43,3 +45,5 @@
 		</display:column>
 	</jstl:if>
 </display:table>
+<acme:button url="conference/display.do?conferenceId=${conferenceId}"
+	name="edit" code="back.to.conference" />
