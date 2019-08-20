@@ -11,6 +11,7 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +43,12 @@ public class AbstractController {
 	public String getBannerURL() {
 		final String result = this.configurationParametersService.findBanner();
 		return result;
+	}
+
+	@ModelAttribute(value = "lang")
+	public String getLang() {
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		return lang;
 	}
 
 	//	@ModelAttribute(value = "sysName")

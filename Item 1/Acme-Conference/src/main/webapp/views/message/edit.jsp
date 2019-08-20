@@ -1,5 +1,5 @@
 <%--
- * action-2.jsp
+ * edit.jsp
  *
  * Copyright (C) 2018 Universidad de Sevilla
  * 
@@ -67,5 +67,4 @@
 	<button name="save" type="submit" class="button">
 		<spring:message code="send" />
 	</button>
-
 </form:form>

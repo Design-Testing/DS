@@ -40,13 +40,15 @@
 		<bean class="converters.SubmissionToStringConverter" />
 		<bean class="converters.TutorialToStringConverter" />
 		<bean class="converters.ConferenceToStringConverter" />
+		<bean class="converters.MessageToStringConverter" />
 		<bean class="converters.ReportToStringConverter" />
 		<bean class="converters.MessageToStringConverter" />
 		<bean class="converters.TopicToStringConverter" />
 		
 		 
 		<bean class="converters.StringToCategoryConverter" />
-		<bean class="converters.StringToActivityConverter" /> 
+		<bean class="converters.StringToActivityConverter" />
+		<bean class="converters.StringToMessageConverter" /> 
 		<bean class="converters.StringToActorConverter" /> 
 		<bean class="converters.StringToAdministratorConverter" /> 
 		<bean class="converters.StringToConfigurationParametersConverter" /> 
