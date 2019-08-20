@@ -41,6 +41,7 @@
 		<bean class="converters.TutorialToStringConverter" />
 		<bean class="converters.ConferenceToStringConverter" />
 		<bean class="converters.ReportToStringConverter" />
+		<bean class="converters.MessageToStringConverter" />
 		 
 		<bean class="converters.StringToCategoryConverter" />
 		<bean class="converters.StringToActivityConverter" /> 
@@ -60,6 +61,7 @@
 		<bean class="converters.StringToSponsorshipConverter" />
 		<bean class="converters.StringToSubmissionConverter" />
 		<bean class="converters.StringToTutorialConverter" /> 
+		<bean class="converters.StringToMessageConverter" /> 
 	</util:list>
 	
 </beans>
