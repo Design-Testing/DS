@@ -14,7 +14,7 @@
 <acme:showActivity activity="${tutorial}" lang="${lang}" />
 
 <!-- Lista de sections dentro del tutorial -->
-
+<jstl:out value="${lang}"/>
 <display:table name="${tutorial.sections}" id="row"
 	requestURI="section/list.do?tutorialId=${tutorial.id}" pagesize="5"
 	class="displaytag">

@@ -62,12 +62,10 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.submission" />: <fmt:formatDate
-			value="${conference.submission}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.submission" />: <fmt:formatDate value="${conference.submission}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.submission" />: <fmt:formatDate
-			value="${conference.submission}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.submission" />: <fmt:formatDate value="${conference.submission}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -75,12 +73,10 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.notification" />: <fmt:formatDate
-			value="${conference.notification}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.notification" />: <fmt:formatDate value="${conference.notification}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.notification" />: <fmt:formatDate
-			value="${conference.notification}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.notification" />: <fmt:formatDate value="${conference.notification}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -88,12 +84,10 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.cameraReady" />: <fmt:formatDate
-			value="${conference.cameraReady}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.cameraReady" />: <fmt:formatDate value="${conference.cameraReady}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.cameraReady" />: <fmt:formatDate
-			value="${conference.cameraReady}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.cameraReady" />: <fmt:formatDate value="${conference.cameraReady}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -107,12 +101,12 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.startDate" />: <fmt:formatDate
-			value="${conference.startDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.startDate" />: 
+		<fmt:formatDate value="${conference.startDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.startDate" />: <fmt:formatDate
-			value="${conference.startDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.startDate" />: 
+		<fmt:formatDate value="${conference.startDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -120,12 +114,10 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.endDate" />: <fmt:formatDate
-			value="${conference.endDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.endDate" />: <fmt:formatDate value="${conference.endDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.endDate" />: <fmt:formatDate
-			value="${conference.endDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.endDate" />: <fmt:formatDate value="${conference.endDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 

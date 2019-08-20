@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,8 +29,6 @@ public class ConferenceController extends AbstractController {
 
 	@Autowired
 	private ActorService		actorService;
-
-	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	// DISPLAY --------------------------------------------------------
@@ -69,7 +66,6 @@ public class ConferenceController extends AbstractController {
 			result.addObject("isAdministrator", false);
 			result.addObject("availableToSubmit", availableToSubmit);
 			result.addObject("isAuthor", isAuthor);
-			result.addObject("lang", this.lang);
 		} else
 			result = new ModelAndView("redirect:misc/403");
 
