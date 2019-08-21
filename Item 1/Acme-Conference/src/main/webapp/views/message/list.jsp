@@ -29,10 +29,46 @@ function deleteMessage(id, text){
 }
 </script>
 
-
 <button onclick="location.href = 'message/create.do'">
 	<spring:message code="new" />
 </button>
+<br>
+
+<form action="message/listByTopic.do" method="get">
+	<select name="topicId">
+		<jstl:forEach items="${topics}" var="rt">
+			<jstl:choose>
+				<jstl:when test="${lang eq 'en' }">
+					<option value="${rt.id}" >${rt.english}</option>
+				</jstl:when>
+				<jstl:otherwise>
+					<option value="${rt.id}">${rt.spanish}</option>
+				</jstl:otherwise>
+			</jstl:choose>
+		</jstl:forEach>
+	</select>
+	
+	<button name="share" type="submit" class="button">
+		<spring:message code="listByTopic" />
+	</button>
+</form>
+
+<form action="message/listBySender.do" method="get">
+	<select name="actorId">
+		<jstl:forEach items="${actors}" var="ra">
+				<option value="${ra.id}" >${ra.name}</option>
+		</jstl:forEach>
+	</select>
+	
+	<button type="submit" class="button">
+		<spring:message code="listBySender" />
+	</button>
+		<button type="submit" formaction="message/listByRecipient.do" class="button">
+		<spring:message code="listByRecipient" />
+	</button>
+</form>
+
+
 <display:table name="messages" id="row"
 		requestURI="${requestURI}" pagesize="5"
 		class="displaytag">
