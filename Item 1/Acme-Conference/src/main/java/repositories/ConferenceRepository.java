@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import domain.Activity;
 import domain.Conference;
 
 @Repository
@@ -42,5 +43,8 @@ public interface ConferenceRepository extends JpaRepository<Conference, Integer>
 
 	@Query("select c from Conference c WHERE ((month(c.startDate) - month(CURRENT_TIMESTAMP) = 0 AND day(c.startDate) - day(CURRENT_TIMESTAMP) <=5 AND day(c.startDate) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.startDate) - month(CURRENT_TIMESTAMP) = 1 OR month(c.startDate) - month(CURRENT_TIMESTAMP) = -11) AND day(c.startDate) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.startDate) - day(CURRENT_TIMESTAMP) >=-30)) ")
 	Collection<Conference> findFiveDaysForBeginningConferences();
+
+	@Query("select ac from Conference c join c.activities ac WHERE c.id=?1")
+	Collection<Activity> findConferenceActivities(int conferenceId);
 
 }

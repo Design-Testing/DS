@@ -9,7 +9,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 
-<form:form action="section/edit.do?tutorialId=${tutorialId}" modelAttribute="section">
+<form:form action="section/edit.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" modelAttribute="section">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
@@ -20,7 +20,7 @@
     <acme:textarea path="summary" code="section.summary"/>
     <br/>
 
-    <acme:textbox path="picture" code="section.picture"/>
+    <acme:textarea path="pictures" code="section.picture"/>
     <br/>
     <br/>
 
@@ -28,7 +28,7 @@
     <button name="save" type="submit" class="button">
         <spring:message code="section.save"/>
     </button>
-
-	<acme:button url="section/list.do?tutorialId=${tutorialId}" name="back" code="section.back"/>
-
+	<jstl:if test="${not empty tutorialId}">
+		<acme:button url="section/list.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="back" code="section.back"/>
+	</jstl:if>
 </form:form>

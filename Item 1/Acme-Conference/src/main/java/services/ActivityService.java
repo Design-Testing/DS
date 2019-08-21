@@ -58,21 +58,21 @@ public class ActivityService {
 		this.administratorService.findByPrincipal();
 		Assert.notNull(activity, "Activity is null - save");
 		final Conference conference = this.conferenceService.findOne(conferenceId);
-		//		TODO: Decidir si la actividad se anyade solo en draft mode o siempre
+		//	TODO: Decidir si la actividad se anyade solo en draft mode o siempre
 		//	Assert.isTrue(conference.getIsDraft(), "La conferencia asociada a la actividad que estar en modo draft");
 		Assert.notNull(conference);
 		Assert.notEmpty(activity.getSpeakers());
-		final Activity res = this.activityRepository.save(activity);
 		final Collection<Activity> activities = conference.getActivities();
+		if (activity.getId() != 0)
+			Assert.isTrue(activities.contains(activity));
+		final Activity res = this.activityRepository.save(activity);
 		if (activity.getId() == 0) {
 			activities.add(res);
 			conference.setActivities(activities);
-		} else
-			Assert.isTrue(activities.contains(activity));
+		}
 		this.conferenceService.save(conference);
 		return res;
 	}
-
 	public String identifyActivity(final Activity activity) {
 		String res = "error";
 		if (activity instanceof Panel)

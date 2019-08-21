@@ -21,20 +21,21 @@
 	<display:column>
 		<security:authorize access="hasRole('ADMIN')">
 			<acme:button
-				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorialId}"
+				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorialId}&conferenceId=${conferenceId}"
 				name="edit" code="section.edit" />
 		</security:authorize>
 	</display:column>
 	<display:column>
 	<security:authorize access="hasRole('ADMIN')">
 	<acme:button
-		url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorialId}"
-		name="edit" code="section.edit" />	
+		url="section/display.do?sectionId=${row.id}&tutorialId=${tutorialId}&conferenceId=${conferenceId}"
+		name="edit" code="section.display" />	
 	</security:authorize>
 	</display:column>
 </display:table>
 <security:authorize access="hasRole('ADMIN')">
 			<acme:button
-				url="section/create.do?tutorialId=${tutorialId}"
+				url="section/create.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}"
 				name="edit" code="section.create" />
 		</security:authorize>
+		<acme:button url="tutorial/display.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="back" code="section.back" />

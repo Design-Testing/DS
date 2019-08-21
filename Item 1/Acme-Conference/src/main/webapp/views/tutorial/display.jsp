@@ -48,27 +48,21 @@
 	<display:column>
 		<security:authorize access="hasRole('ADMIN')">
 			<acme:button
-				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorial.id}"
-				name="edit" code="tutorial.section.edit" />
-		</security:authorize>
-	</display:column>
-	<display:column>
-		<security:authorize access="hasRole('ADMIN')">
-			<acme:button
-				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorial.id}"
+				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorial.id}&conferenceId=${conferenceId}"
 				name="edit" code="tutorial.section.edit" />
 		</security:authorize>
 	</display:column>
 </display:table>
 <security:authorize access="hasRole('ADMIN')">
 	<jstl:if test="${isDraft}">
-	<acme:button url="section/create.do?tutorialId=${tutorial.id}"
-		name="edit" code="tutorial.section.create" />
+	<acme:button url="section/create.do?tutorialId=${tutorial.id}&conferenceId=${conferenceId}"
+		name="edit" code="tutorial.section.create" /><br/>
 	</jstl:if>
 </security:authorize>
 
 <security:authorize access="hasRole('ADMIN')">
 	<jstl:if test="${isDraft}">
+	<br/>
 	<acme:button url="tutorial/delete.do?tutorialId=${tutorial.id}&conferenceId=${conferenceId}"
 		name="edit" code="activity.delete" /><br/>
 	</jstl:if>

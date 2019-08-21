@@ -17,6 +17,7 @@ import repositories.ConferenceRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Activity;
 import domain.Category;
 import domain.Conference;
 import domain.Submission;
@@ -278,8 +279,12 @@ public class ConferenceService {
 		return result;
 	}
 
-	public Conference findConference(final int activityId) {
+	Conference findConference(final int activityId) {
 		return this.conferenceRepository.findConference(activityId);
+	}
+
+	Collection<Activity> findConferenceActivities(final int conferenceId) {
+		return this.conferenceRepository.findConferenceActivities(conferenceId);
 	}
 
 	//	public void delete(final Conference conference) {

@@ -11,7 +11,6 @@ import org.springframework.util.Assert;
 import repositories.TutorialRepository;
 import domain.Activity;
 import domain.Conference;
-import domain.Section;
 import domain.Tutorial;
 
 @Service
@@ -62,18 +61,17 @@ public class TutorialService extends ActivityService {
 		Assert.notNull(tutorial);
 		Assert.isTrue(tutorial.getId() != 0);
 		this.administratorService.findByPrincipal();
-		Assert.isTrue(this.tutorialRepository.findOne(tutorial.getId()).equals(tutorial), "No se puede borrar un tutorial que no existe");
+		final Tutorial retrieved = this.tutorialRepository.findOne(tutorial.getId());
+		Assert.isTrue(retrieved.equals(tutorial), "No se puede borrar un tutorial que no existe");
 		final Conference conference = this.conferenceService.findOne(conferenceId);
-		final Collection<Activity> acs = conference.getActivities();
-		Assert.isTrue(acs.contains(tutorial));
+		Collection<Activity> acs = conference.getActivities();
+		acs = this.conferenceService.findConferenceActivities(conferenceId);
+		Assert.isTrue(acs.contains(tutorial), "La conferencia sobre la que se va a eliminar el tutorial debe de contener a este entre sus actividades");
 		acs.remove(tutorial);
+		conference.setActivities(acs);
 		this.conferenceService.save(conference);
-		this.tutorialRepository.delete(tutorial);
-		this.sectionService.deleteAll(tutorial.getSections());
-	}
-
-	public void deleteFromConference(final Section toDelete, final Tutorial tutorial) {
-
+		this.tutorialRepository.delete(retrieved);
+		this.sectionService.deleteAll(retrieved.getSections());
 	}
 
 }

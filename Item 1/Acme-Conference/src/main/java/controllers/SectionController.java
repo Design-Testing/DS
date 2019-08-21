@@ -42,35 +42,36 @@ public class SectionController extends AbstractController {
 	// CREATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int tutorialId) {
+	public ModelAndView create(@RequestParam final int tutorialId, final int conferenceId) {
 		ModelAndView result;
 		final Section section = this.sectionService.create();
-		result = this.createEditModelAndView(section);
-		result.addObject("tutorialId", tutorialId);
+		result = this.createEditModelAndView(section, tutorialId, conferenceId);
+
 		return result;
 	}
 	// LIST  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam final int tutorialId) {
+	public ModelAndView list(@RequestParam final int tutorialId, final int conferenceId) {
 		ModelAndView result;
 		result = new ModelAndView("section/list");
 
 		final Collection<Section> sections = this.sectionService.findByTutorial(tutorialId);
 		result.addObject("sections", sections);
 		result.addObject("tutorialId", tutorialId);
-		result.addObject("lang", this.lang);
+		result.addObject("conferenceId", conferenceId);
 
 		return result;
 	}
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int sectionId, @RequestParam final int tutorialId) {
+	public ModelAndView display(@RequestParam final int sectionId, @RequestParam final int tutorialId, final int conferenceId) {
 
 		final ModelAndView result;
 		final Section section = this.sectionService.findOne(sectionId);
 		result = new ModelAndView("section/display");
 		result.addObject("section", section);
 		result.addObject("tutorialId", tutorialId);
+		result.addObject("conferenceId", conferenceId);
 
 		return result;
 	}
@@ -78,18 +79,15 @@ public class SectionController extends AbstractController {
 	// UPDATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int sectionId, @RequestParam final int tutorialId) {
+	public ModelAndView edit(@RequestParam final int sectionId, @RequestParam final int tutorialId, final int conferenceId) {
 		ModelAndView result;
 		Section section;
 
 		section = this.sectionService.findOne(sectionId);
 
-		if (section != null) {
-			result = this.createEditModelAndView(section);
-			result.addObject("tutorialId", tutorialId);
-			result.addObject("section", section);
-
-		} else
+		if (section != null)
+			result = this.createEditModelAndView(section, tutorialId, conferenceId);
+		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
@@ -102,18 +100,22 @@ public class SectionController extends AbstractController {
 		ModelAndView result;
 		String paramTutorialId;
 		Integer tutorialId;
+		String paramConferenceId;
+		final Integer conferenceId;
 
 		paramTutorialId = request.getParameter("tutorialId");
 		tutorialId = paramTutorialId.isEmpty() ? null : Integer.parseInt(paramTutorialId);
+		paramConferenceId = request.getParameter("conferenceId");
+		conferenceId = paramConferenceId.isEmpty() ? null : Integer.parseInt(paramConferenceId);
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(section);
+			result = this.createEditModelAndView(section, tutorialId, conferenceId);
 		else
 			try {
 				this.sectionService.save(section, tutorialId);
-				result = this.list(tutorialId);
+				result = this.tutorialController.display(tutorialId, conferenceId);
 			} catch (final Throwable e) {
-				result = this.createEditModelAndView(section, "section.commit.error");
+				result = this.createEditModelAndView(section, tutorialId, conferenceId, "section.commit.error");
 			}
 		return result;
 	}
@@ -139,17 +141,19 @@ public class SectionController extends AbstractController {
 
 	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final Section section) {
-		return this.createEditModelAndView(section, null);
+	protected ModelAndView createEditModelAndView(final Section section, final int tutorialId, final int conferenceId) {
+		return this.createEditModelAndView(section, tutorialId, conferenceId, null);
 	}
 
-	protected ModelAndView createEditModelAndView(final Section section, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Section section, final int tutorialId, final int conferenceId, final String messageCode) {
 		final ModelAndView result;
 
 		this.administratorService.findByPrincipal();
 
 		result = new ModelAndView("section/edit");
 		result.addObject("section", section);
+		result.addObject("tutorialId", tutorialId);
+		result.addObject("conferenceId", conferenceId);
 		result.addObject("message", messageCode);
 
 		return result;
