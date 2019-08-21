@@ -750,7 +750,7 @@
 		<property name="endDate" value="2019/10/06 00:00" />
 		<property name="summary" value="Summary of conference 5" />
 		<property name="fee" value="1520.89" />
-		<property name="isDraft" value="false" />
+		<property name="isDraft" value="true" />
 		<property name="activities">
 			<list>
 

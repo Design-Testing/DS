@@ -1,7 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.util.Assert;
 
 import repositories.ActivityRepository;
 import domain.Activity;
-import domain.Actor;
 import domain.Conference;
 import domain.Panel;
 import domain.Presentation;
@@ -37,19 +35,6 @@ public class ActivityService {
 		this.administratorService.findByPrincipal();
 
 		final Activity res = new Activity();
-		res.setTitle("");
-		res.setStartMoment(null);
-		res.setHours(0);
-		res.setMinutes(0);
-		res.setRoom("");
-		res.setSummary("");
-
-		final Collection<String> attachment = new ArrayList<>();
-		res.setAttachments(attachment);
-
-		final Collection<Actor> speakers = new ArrayList<>();
-		res.setSpeakers(speakers);
-
 		return res;
 	}
 	public Activity findOne(final int idActivity) {

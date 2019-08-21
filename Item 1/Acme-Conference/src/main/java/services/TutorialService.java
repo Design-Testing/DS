@@ -16,8 +16,17 @@ import domain.Tutorial;
 public class TutorialService extends ActivityService {
 
 	@Autowired
-	private TutorialRepository	tutorialRepository;
+	private TutorialRepository		tutorialRepository;
 
+	@Autowired
+	private AdministratorService	administratorService;
+
+
+	@Override
+	public Tutorial create() {
+		this.administratorService.findByPrincipal();
+		return new Tutorial();
+	}
 
 	@Override
 	public Tutorial findOne(final int tutorialId) {

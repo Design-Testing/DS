@@ -18,6 +18,15 @@ public class PresentationService extends ActivityService {
 	@Autowired
 	private PresentationRepository	presentationRepository;
 
+	@Autowired
+	private AdministratorService	administratorService;
+
+
+	@Override
+	public Presentation create() {
+		this.administratorService.findByPrincipal();
+		return new Presentation();
+	}
 
 	@Override
 	public Presentation findOne(final int presentationId) {

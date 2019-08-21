@@ -39,11 +39,12 @@ public class PresentationController extends AbstractController {
 	// CREATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int conferenceId) {
+	public ModelAndView create(@RequestParam final int conferenceId, final String fromConferenceDisplay) {
 		ModelAndView result;
-		final Presentation presentation = (Presentation) this.presentationService.create();
+		final Presentation presentation = this.presentationService.create();
 		result = this.createEditModelAndView(presentation);
 		result.addObject("conferenceId", conferenceId);
+		result.addObject("fromConferenceDisplay", fromConferenceDisplay);
 		return result;
 	}
 	// LIST  ---------------------------------------------------------------		

@@ -53,6 +53,9 @@
 			url="tutorial/create.do?conferenceId=${conferenceId}&tutorialId=${row.id}"
 			name="edit" code="activity.create" /><br/><br/>
 	</jstl:if>
+	<jstl:set value="/administrator" var="autorize"/>
 </security:authorize>
-<acme:button url="conference/display.do?conferenceId=${conferenceId}"
+<jstl:if test="${not empty conferenceId}">
+<acme:button url="conference${autorize}/display.do?conferenceId=${conferenceId}"
 	name="edit" code="back.to.conference" />
+</jstl:if>

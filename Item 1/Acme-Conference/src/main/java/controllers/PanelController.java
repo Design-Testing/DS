@@ -39,11 +39,12 @@ public class PanelController extends AbstractController {
 	// CREATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int conferenceId) {
+	public ModelAndView create(@RequestParam final int conferenceId, final String fromConferenceDisplay) {
 		ModelAndView result;
 		final Panel panel = (Panel) this.panelService.create();
 		result = this.createEditModelAndView(panel);
 		result.addObject("conferenceId", conferenceId);
+		result.addObject("fromConferenceDisplay", fromConferenceDisplay);
 		return result;
 	}
 	// LIST  ---------------------------------------------------------------		

@@ -49,10 +49,13 @@
 <security:authorize access="hasRole('ADMIN')">
 	<jstl:if test="${isDraft}">
 		<acme:button
-			url="panel/create.do?conferenceId=${conferenceId}&tutorialId=${row.id}"
+			url="panel/create.do?conferenceId=${conferenceId}&panelId=${row.id}"
 			name="edit" code="activity.create" /><br/><br/>
 	</jstl:if>
+	<jstl:set value="/administrator" var="autorize"/>
 </security:authorize>
+<jstl:if test="${not empty conferenceId}">
 <acme:button
-	url="conference/display.do?conferenceId=${conferenceId}"
+	url="conference${autorize}/display.do?conferenceId=${conferenceId}"
 	name="edit" code="back.to.conference" />
+</jstl:if>

@@ -8,7 +8,11 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-${conferenceId}
+
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:set value="/administrator" var="autorize"/>
+</security:authorize>
+
 <form:form action="tutorial/edit.do?conferenceId=${conferenceId}" modelAttribute="tutorial">
 
     <form:hidden path="id"/>
@@ -37,10 +41,11 @@ ${conferenceId}
     <acme:textarea path="attachments" code="activity.attachments"/>
     <br/>
     
+    <form:label path="speakers">
+        <spring:message code="activity.speakers"/>:
+    </form:label>
     <form:select path="speakers" code="activity.speakers">
-    	<jstl:forEach items="${actors}" var="r">
-    		<form:option value="${r.id}" label="${r.name}"/>
-    	</jstl:forEach>
+    	<form:options items="${actors}" itemLabel="name"/>
     </form:select>
     <br/>
 
@@ -51,6 +56,13 @@ ${conferenceId}
         <spring:message code="activity.save"/>
     </button>
 
-    <acme:button url="tutorial/list.do" name="back" code="activity.back"/>
+<jstl:choose>
+<jstl:when test="${fromConferenceDisplay eq 'fromConferenceDisplay'}">
+	<acme:button url="conference${autorize}/display.do?conferenceId=${conferenceId}" name="back" code="activity.back"/>
+</jstl:when>
+<jstl:otherwise>
+	<acme:button url="tutorial/list.do?conferenceId=${conferenceId}" name="back" code="activity.back"/>
+</jstl:otherwise>
+</jstl:choose>    
 
 </form:form>

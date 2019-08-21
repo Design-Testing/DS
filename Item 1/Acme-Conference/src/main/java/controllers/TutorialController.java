@@ -40,11 +40,11 @@ public class TutorialController extends AbstractController {
 	// CREATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int conferenceId) {
+	public ModelAndView create(@RequestParam final int conferenceId, final String fromConferenceDisplay) {
 		ModelAndView result;
-		final Tutorial tutorial = (Tutorial) this.tutorialService.create();
+		final Tutorial tutorial = this.tutorialService.create();
 		result = this.createEditModelAndView(tutorial, conferenceId);
-		result.addObject("conferenceId", conferenceId);
+		result.addObject("fromConferenceDisplay", fromConferenceDisplay);
 		return result;
 	}
 	// LIST  ---------------------------------------------------------------		

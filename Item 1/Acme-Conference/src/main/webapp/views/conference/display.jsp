@@ -266,8 +266,29 @@
 <!-------------------------------------------------------------------------------->
 
 <acme:button url="tutorial/list.do?conferenceId=${conference.id}" name="tutorials" code="conference.tutorials" />
-<acme:button url="panel/list.do?conferenceId=${conference.id}" name="panels" code="conference.panels" />
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${conference.isDraft}">
+		<acme:button
+			url="tutorial/create.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay"
+			name="edit" code="activity.create" /><br/><br/>
+	</jstl:if>
+</security:authorize>
+<acme:button url="panel/list.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay" name="panels" code="conference.panels" />
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${conference.isDraft}">
+		<acme:button
+			url="panel/create.do?conferenceId=${conference.id}"
+			name="edit" code="activity.create" /><br/><br/>
+	</jstl:if>
+</security:authorize>
 <acme:button url="presentation/list.do?conferenceId=${conference.id}" name="presentations" code="conference.presentations" />
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${conference.isDraft}">
+		<acme:button
+			url="presentation/create.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay"
+			name="edit" code="activity.create" /><br/><br/>
+	</jstl:if>
+</security:authorize>
 <br/><br/>
 <jstl:choose>
 	<jstl:when test="${isAdministrator eq true }">

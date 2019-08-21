@@ -16,8 +16,17 @@ import domain.Panel;
 public class PanelService extends ActivityService {
 
 	@Autowired
-	private PanelRepository	panelRepository;
+	private PanelRepository			panelRepository;
 
+	@Autowired
+	private AdministratorService	administratorService;
+
+
+	@Override
+	public Panel create() {
+		this.administratorService.findByPrincipal();
+		return new Panel();
+	}
 
 	@Override
 	public Panel findOne(final int panelId) {
