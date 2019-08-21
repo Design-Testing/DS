@@ -45,11 +45,14 @@ public class MessageController {
 	public ModelAndView create() {
 		ModelAndView result;
 		result = new ModelAndView("message/edit");
-		final Collection<Actor> recivers = this.actorService.findAll();
+
 		final Collection<Topic> topics = this.topicService.findAll();
 
 		final Message message = this.messageService.create();
-		result.addObject("recivers", recivers);
+
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
+
 		result.addObject("topics", topics);
 		result.addObject("m", message);
 		return result;
@@ -63,6 +66,10 @@ public class MessageController {
 		if (!binding.hasErrors()) {
 			this.messageService.send(message);
 			result = new ModelAndView("message/list");
+			result.addObject("topics", this.topicService.findAll());
+			final Collection<Actor> actors = this.actorService.findAll();
+			result.addObject("actors", actors);
+
 			result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
 		} else {
 			result = new ModelAndView("message/edit");
@@ -83,6 +90,9 @@ public class MessageController {
 
 		result.addObject("topics", this.topicService.findAll());
 
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
+
 		result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
 		return result;
 	}
@@ -95,6 +105,9 @@ public class MessageController {
 		result = new ModelAndView("message/list");
 		result.addObject("topics", this.topicService.findAll());
 
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
+
 		result.addObject("messages", this.messageService.findAllByRecipient(principal.getId()));
 		return result;
 	}
@@ -104,6 +117,9 @@ public class MessageController {
 		ModelAndView result;
 		final Actor principal = this.actorService.findByPrincipal();
 		result = new ModelAndView("message/list");
+
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
 
 		result.addObject("topics", this.topicService.findAll());
 
@@ -116,14 +132,47 @@ public class MessageController {
 	}
 
 	@RequestMapping(value = "/listByTopic", method = RequestMethod.GET)
-	public ModelAndView listAll(@RequestParam final int topicId) {
+	public ModelAndView listByTopic(@RequestParam final int topicId) {
 		ModelAndView result;
-		//final Actor principal = this.actorService.findByPrincipal();
+
 		result = new ModelAndView("message/list");
 
 		result.addObject("topics", this.topicService.findAll());
 
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
+
 		result.addObject("messages", this.messageService.findAllByTopic(topicId));
+		return result;
+	}
+
+	@RequestMapping(value = "/listBySender", method = RequestMethod.GET)
+	public ModelAndView listBySender(@RequestParam final int actorId) {
+		ModelAndView result;
+
+		result = new ModelAndView("message/list");
+
+		result.addObject("topics", this.topicService.findAll());
+
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
+
+		result.addObject("messages", this.messageService.findAllBySender(actorId));
+		return result;
+	}
+
+	@RequestMapping(value = "/listByRecipient", method = RequestMethod.GET)
+	public ModelAndView listByRecipient(@RequestParam final int actorId) {
+		ModelAndView result;
+
+		result = new ModelAndView("message/list");
+
+		result.addObject("topics", this.topicService.findAll());
+
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
+
+		result.addObject("messages", this.messageService.findAllByRecipient(actorId));
 		return result;
 	}
 
@@ -134,6 +183,9 @@ public class MessageController {
 		final Message message = this.messageService.findOne(messageId);
 		this.messageService.delete(message);
 		result = new ModelAndView("message/list");
+
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
 
 		result.addObject("topics", this.topicService.findAll());
 

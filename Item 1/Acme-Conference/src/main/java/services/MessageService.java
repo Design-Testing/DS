@@ -220,12 +220,11 @@ public class MessageService {
 	public void delete(Message message) {
 		message = this.messageRepository.findOne(message.getId());
 		final Actor principal = this.actorService.findByPrincipal();
-		final Folder inbox = this.folderService.findInboxByUserId(principal.getId());
+		final Folder inbox = this.folderService.findInboxByUserId(principal.getUserAccount().getId());
 		final List<Message> messages = new ArrayList<>(inbox.getMessages());
 		if (messages.contains(message))
-			this.deleteFromFolder(message, this.folderService.findInboxByUserId(principal.getId()));
+			this.deleteFromFolder(message, this.folderService.findInboxByUserId(principal.getUserAccount().getId()));
 		else
-			this.deleteFromFolder(message, this.folderService.findOutboxByUserId(principal.getId()));
+			this.deleteFromFolder(message, this.folderService.findOutboxByUserId(principal.getUserAccount().getId()));
 	}
-
 }

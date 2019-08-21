@@ -38,6 +38,7 @@ public class TopicController extends AbstractController {
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int topicId) {
 		ModelAndView result;
+
 		final Topic topic = this.topicService.findOne(topicId);
 		this.topicService.delete(topic);
 
