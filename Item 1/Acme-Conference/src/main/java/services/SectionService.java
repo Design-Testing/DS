@@ -70,4 +70,25 @@ public class SectionService {
 		Assert.notNull(res);
 		return res;
 	}
+	public void deleteFromTutorial(final Section toDelete, final Tutorial folder) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void delete(final Section section, final int tutorialId) {
+		this.administratorService.findByPrincipal();
+		Assert.isTrue(this.sectionRepository.findOne(section.getId()).equals(section), "No se puede borrar una section que no existe");
+		Assert.notNull(section);
+		Assert.isTrue(section.getId() != 0);
+		final Tutorial tutorial = this.tutorialRepository.findOne(tutorialId);
+		final Collection<Section> sections = tutorial.getSections();
+		sections.remove(section);
+		this.tutorialRepository.save(tutorial);
+		this.sectionRepository.delete(section.getId());
+	}
+
+	void deleteAll(final Collection<Section> sections) {
+		this.sectionRepository.deleteInBatch(sections);
+	}
+
 }

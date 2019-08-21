@@ -31,8 +31,8 @@
 
 <div>
 	<form:label path="${path}">
-		<spring:message code="${code}" />
-	</form:label>	
+		<spring:message code="${code}" />:
+	</form:label> 
 	<form:input path="${path}" readonly="${readonly}" placeholder="${placeholder}" pattern="${pattern}" size="${size}"/>	
 	<form:errors path="${path}" cssClass="error" />
 </div>	

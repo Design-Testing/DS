@@ -21,6 +21,9 @@ public class TutorialService extends ActivityService {
 	@Autowired
 	private AdministratorService	administratorService;
 
+	@Autowired
+	private SectionService			sectionService;
+
 
 	@Override
 	public Tutorial create() {
@@ -47,6 +50,15 @@ public class TutorialService extends ActivityService {
 		final Collection<Tutorial> tutorials = this.tutorialRepository.findTutorialsByConference(conferenceId);
 		Assert.notNull(tutorials);
 		return tutorials;
+	}
+
+	public void delete(final Tutorial tutorial) {
+		Assert.notNull(tutorial);
+		Assert.isTrue(tutorial.getId() != 0);
+		this.administratorService.findByPrincipal();
+		Assert.isTrue(this.tutorialRepository.findOne(tutorial.getId()).equals(tutorial), "No se puede borrar un tutorial que no existe");
+		this.tutorialRepository.delete(tutorial);
+		this.sectionService.deleteAll(tutorial.getSections());
 	}
 
 }

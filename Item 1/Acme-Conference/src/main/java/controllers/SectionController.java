@@ -21,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import security.UserAccount;
 import services.AdministratorService;
 import services.SectionService;
+import services.TutorialService;
 import domain.Section;
+import domain.Tutorial;
 
 @Controller
 @RequestMapping("/section")
@@ -34,6 +36,9 @@ public class SectionController extends AbstractController {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private TutorialService			tutorialService;
 
 
 	// CREATE  ---------------------------------------------------------------		
@@ -114,6 +119,28 @@ public class SectionController extends AbstractController {
 			}
 		return result;
 	}
+
+	// DELETE -----------------------------------------------------------
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int sectionId, @RequestParam final int tutorialId) {
+
+		ModelAndView res;
+		final Section toDelete = this.sectionService.findOne(sectionId);
+		final Tutorial folder = this.tutorialService.findOne(tutorialId);
+
+		try {
+			this.sectionService.deleteFromTutorial(toDelete, folder);
+			res = new ModelAndView("redirect: list.do?folderId=" + tutorialId);
+			res.addObject("folder", folder);
+		} catch (final Throwable oops) {
+			res = new ModelAndView("redirect: display.do?sectionId=" + sectionId + "&tutorialId=" + tutorialId);
+			final String error = "Cannot delete this message";
+			res.addObject("error", error);
+		}
+		return res;
+	}
+
 	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Section section) {

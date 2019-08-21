@@ -29,7 +29,7 @@
 
 <div>
 	<form:label path="${path}">
-		<spring:message code="${code}" />
+		<spring:message code="${code}" />:
 	</form:label>
 	<form:password path="${path}"/>
 	<form:errors path="${path}" cssClass="error" />

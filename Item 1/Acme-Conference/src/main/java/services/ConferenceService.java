@@ -38,6 +38,9 @@ public class ConferenceService {
 	@Autowired
 	private AdministratorService	administratorService;
 
+	//	@Autowired
+	//	private ActivityService			activityService;
+
 	@Autowired
 	private Validator				validator;
 
@@ -278,5 +281,14 @@ public class ConferenceService {
 	public Conference findConference(final int activityId) {
 		return this.conferenceRepository.findConference(activityId);
 	}
+
+	//	public void delete(final Conference conference) {
+	//		Assert.notNull(conference);
+	//		Assert.isTrue(conference.getId() != 0);
+	//		this.administratorService.findByPrincipal();
+	//		Assert.isTrue(this.conferenceRepository.findOne(conference.getId()).equals(conference), "No se puede borrar una actividad que no existe");
+	//		this.conferenceRepository.delete(conference);
+	//		this.activityService.deleteAll(conference.getActivities());
+	//	}
 
 }

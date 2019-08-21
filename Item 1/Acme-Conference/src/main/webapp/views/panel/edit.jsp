@@ -45,7 +45,8 @@
     <form:select path="speakers" code="activity.speakers">
     	<form:options items="${actors}" itemLabel="name"/>
     </form:select>
-    <br/>
+    <form:errors path="speakers" cssClass="error" />
+    <br/><br/>
     
     <!---------------------------- BOTONES -------------------------->
 
