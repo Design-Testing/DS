@@ -7,6 +7,7 @@ package services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,9 @@ import org.springframework.util.Assert;
 
 import repositories.CommentRepository;
 import domain.Comment;
+import domain.Conference;
+import domain.Panel;
+import domain.Report;
 
 @Service
 @Transactional
@@ -33,34 +37,37 @@ public class CommentService {
 	private ConferenceService	conferenceService;
 
 	@Autowired
-	private PanelService		panelService;
+	private ActivityService		activityService;
 
 	@Autowired
-	private PresentationService	presentationService;
-
-	@Autowired
-	private TutorialService		tutorialService;
+	private ReportService		reportService;
 
 
 	public Comment create() {
-		return new Comment();
+		final Comment res = new Comment();
+		final Date moment = new Date(System.currentTimeMillis() - 1000);
+		res.setMoment(moment);
+		return res;
 	}
 
 	public Comment create(final String entity, final int entityId) {
-		final Comment comment = new Comment();
+		final Comment comment = this.create();
 		switch (entity) {
-		case "panel":
-			comment.setPanel(this.panelService.findOne(entityId));
-			break;
-		case "presentation":
-			comment.setPresentation(this.presentationService.findOne(entityId));
-			break;
-		case "tutorial":
-			comment.setTutorial(this.tutorialService.findOne(entityId));
+		case "activity":
+			comment.setActivity(this.activityService.findOne(entityId));
 			break;
 		case "conference":
 			comment.setConference(this.conferenceService.findOne(entityId));
 			break;
+		case "report":
+			comment.setReport(this.reportService.findOne(entityId));
+			break;
+		// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo
+
+		//		 case "quolet":
+		//		 comment.setQuolet(this.quoletService.findOne(entityId));
+		//		 break;
+
 		default:
 			throw new IllegalArgumentException("Invalid entity relationship while creating the comment");
 		}
@@ -94,17 +101,58 @@ public class CommentService {
 		final Collection<Object> aux = new ArrayList<>();
 
 		aux.add(comment.getConference());
-		aux.add(comment.getPanel());
-		aux.add(comment.getPresentation());
 		aux.add(comment.getReport());
-		aux.add(comment.getTutorial());
-		// Para futuras relaciones de la entidad comentario con una nueva entidad de nombre 'EntityName', agregar una nueva linea:
-		// aux.add(comment.get'EntityName'());
+		aux.add(comment.getActivity());
+		// Para futuras relaciones de la entidad comentario con una nueva entidad de nombre Quolet, agregar una nueva linea:
+		// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo
+		// aux.add(comment.getQuolet());
 
 		for (final Object o : aux)
 			if (o != null)
 				acum++;
 		return acum == 1;
+	}
+
+	/**
+	 * Este metodo sirve para dado un comentario, poder obtener a que entidad se esta comentando y cual es el id de esa entidad
+	 * 
+	 * @param comment
+	 *            Comentario cuya relacion va a estudiarse
+	 * @return Se devuelve una lista en la que la primera posicion alberga un String con el nombre de la entidad con la que el comentario esta relacionado y en la segunda posicion el id de dicha entidad (se comporta como una tupla).
+	 * @author a8081
+	 * */
+	public List<Object> findRelationEntity(final Comment comment) {
+		final List<Object> res = new ArrayList<>();
+		final Collection<Object> aux = new ArrayList<>();
+
+		aux.add(comment.getConference());
+		aux.add(comment.getReport());
+		aux.add(comment.getActivity());
+		// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo
+		// aux.add(comment.getQuolet());
+
+		for (final Object o : aux)
+			if (o != null) {
+				if (o instanceof Conference) {
+					res.add("conference");
+					res.add(comment.getConference().getId());
+				} else if (o instanceof Panel) {
+					res.add("activity");
+					res.add(comment.getActivity().getId());
+				} else if (o instanceof Report) {
+					res.add("report");
+					res.add(comment.getReport().getId());
+				}
+
+				// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo
+				//	else if (o instanceof Quolet) {
+				//		res.add("quolet");
+				//		res.add(comment.getQuolet().getId());
+				//	}
+				break;
+			}
+
+		return res;
 	}
 
 	public Comment findOne(final Integer commentId) {
@@ -128,31 +176,33 @@ public class CommentService {
 		this.commentRepository.delete(commentId);
 	}
 
-	public Collection<Comment> findByPresentation(final int activityId) {
-		Assert.isTrue(activityId != 0);
-		final Collection<Comment> res = this.commentRepository.findByPresentation(activityId);
-		Assert.notNull(res);
-		return res;
-	}
-
-	public Collection<Comment> findByPanel(final int activityId) {
-		Assert.isTrue(activityId != 0);
-		final Collection<Comment> res = this.commentRepository.findByPanel(activityId);
-		Assert.notNull(res);
-		return res;
-	}
-
-	public Collection<Comment> findByTutorial(final int activityId) {
-		Assert.isTrue(activityId != 0);
-		final Collection<Comment> res = this.commentRepository.findByTutorial(activityId);
-		Assert.notNull(res);
-		return res;
-	}
-
 	public Collection<Comment> findByConference(final int conferenceId) {
 		Assert.isTrue(conferenceId != 0);
 		final Collection<Comment> res = this.commentRepository.findByConference(conferenceId);
 		Assert.notNull(res);
 		return res;
 	}
+
+	public Collection<Comment> findByActivity(final int id) {
+		Assert.isTrue(id != 0);
+		final Collection<Comment> res = this.commentRepository.findByActivity(id);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Comment> findByReport(final int id) {
+		Assert.isTrue(id != 0);
+		final Collection<Comment> res = this.commentRepository.findByReport(id);
+		Assert.notNull(res);
+		return res;
+	}
+
+	// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo
+
+	//	public Collection<Comment> findByQuolet(int id) {
+	//		Assert.isTrue(id != 0);
+	//		final Collection<Comment> res = this.commentRepository.findByQuolet(id);
+	//		Assert.notNull(res);
+	//		return res;
+	//	}
 }

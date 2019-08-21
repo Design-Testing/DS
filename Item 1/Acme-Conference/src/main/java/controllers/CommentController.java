@@ -1,6 +1,8 @@
 
 package controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +11,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActivityService;
 import services.ActorService;
 import services.CommentService;
 import domain.Comment;
@@ -32,6 +34,9 @@ public class CommentController extends AbstractController {
 
 	final String			lang	= LocaleContextHolder.getLocale().getLanguage();
 
+	@Autowired
+	private ActivityService	activityService;
+
 
 	// CREATE  ---------------------------------------------------------------		
 
@@ -44,36 +49,29 @@ public class CommentController extends AbstractController {
 	}
 	// LIST  ---------------------------------------------------------------		
 
-	// Sustituir "ClassName" por el nombre de la nueva clase sobre la que se quiere redactar los comentarios
-	// 
-	//	@RequestMapping(value = "/listClassName", method = RequestMethod.GET)
-	//	public ModelAndView listPresentation(@RequestParam final int classNameId) {
-	//		ModelAndView result;
-	//		result = new ModelAndView("comment/list");
-	//		result.addObject("comments", this.commentService.findByClassName(classNameId));
-	//		return result;
-	//	}
-
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView listConference(@RequestParam final String entity, @RequestParam final int id) {
+	public ModelAndView list(@RequestParam final String entity, @RequestParam final int id) {
 		ModelAndView result;
 		result = new ModelAndView("comment/list");
 		switch (entity) {
-		case "panel":
-			result.addObject("comments", this.commentService.findByPanel(id));
+		case "activity":
+			result.addObject("comments", this.commentService.findByActivity(id));
 			break;
-		case "presentation":
-			result.addObject("comments", this.commentService.findByPresentation(id));
-			break;
-		case "tutorial":
-			result.addObject("comments", this.commentService.findByTutorial(id));
+		case "report":
+			result.addObject("comments", this.commentService.findByReport(id));
 			break;
 		case "conference":
 			result.addObject("comments", this.commentService.findByConference(id));
 			break;
 		}
+		// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo
+		//		case "quolet":
+		//			result.addObject("comments", this.commentService.findByQuolet(id));
+		//			break;
+
 		result.addObject("id", id);
 		result.addObject("entity", "conference");
+		result.addObject("lang", this.lang);
 
 		final SecurityContext context = SecurityContextHolder.getContext();
 		final Authentication authentication = context.getAuthentication();
@@ -91,7 +89,9 @@ public class CommentController extends AbstractController {
 		final Comment comment = this.commentService.findOne(commentId);
 		result = new ModelAndView("comment/display");
 		result.addObject("comment", comment);
-		result.addObject("lastURL", "comment/" + entity + "/list.do?id=" + entityId);
+		if (entity == "activity")
+			result.addObject("entity", this.activityService.identifyActivity(comment.getActivity()));
+		result.addObject("lastURL", "comment/list.do?id=" + entityId + "&entity=" + entity);
 
 		return result;
 	}
@@ -99,10 +99,19 @@ public class CommentController extends AbstractController {
 	// UPDATE  ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit() {
-		final Comment comment = this.commentService.create();
-		Assert.notNull(comment);
-		return this.createEditModelAndView(comment);
+	public ModelAndView edit(@RequestParam final int commentId) {
+		ModelAndView result;
+		Comment comment;
+		comment = this.commentService.findOne(commentId);
+		if (comment != null) {
+			result = this.createEditModelAndView(comment);
+			result.addObject("comment", comment);
+
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+
 	}
 
 	// SAVE  ---------------------------------------------------------------		
@@ -114,16 +123,14 @@ public class CommentController extends AbstractController {
 			result = this.createEditModelAndView(comment);
 		else
 			try {
-				final Comment saved = this.commentService.save(comment);
-				result = this.createEditModelAndView(saved);
-				result.addObject("lang", this.lang);
-				result.addObject("requestURI", "comment/edit.do");
+				this.commentService.save(comment);
+				final List<Object> info = this.commentService.findRelationEntity(comment);
+				result = this.list((String) info.get(0), (int) info.get(1));
 			} catch (final Throwable e) {
 				result = this.createEditModelAndView(comment, "comment.commit.error");
 			}
 		return result;
 	}
-
 	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Comment comment) {

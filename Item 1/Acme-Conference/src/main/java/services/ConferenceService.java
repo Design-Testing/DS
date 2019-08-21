@@ -1,7 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -44,7 +43,6 @@ public class ConferenceService {
 
 
 	//METODOS CRUD
-	//TODO JMSX
 	public Conference create() {
 		final UserAccount usuario = LoginService.getPrincipal();
 		Assert.notNull(usuario, "Debes estar logueado - create");
@@ -55,9 +53,6 @@ public class ConferenceService {
 
 		final Collection<Category> categories = this.categoryService.findCategoriesWithNameConference();
 		final Category category = categories.iterator().next();
-
-		System.out.println("CATEGORIES" + categories);
-		System.out.println("CATEGORY" + category);
 
 		final Conference res = new Conference();
 		res.setTitle("");
@@ -181,41 +176,28 @@ public class ConferenceService {
 	}
 
 	public Collection<Conference> findFiveDaysFromSubmissionConferences() {
-		final Date now = new Date();
-		final Collection<Conference> result = new ArrayList<Conference>();
-		for (final Conference c : this.findAll())
-			if (c.getSubmission().before(now))
-				if ((now.getTime() - c.getSubmission().getTime()) / (1000 * 60 * 60 * 24) <= 5)
-					result.add(c);
+
+		final Collection<Conference> result = this.conferenceRepository.findFiveDaysFromSubmissionConferences();
+		Assert.notNull(result);
 		return result;
+
 	}
 
 	public Collection<Conference> findFiveDaysForNotificationConferences() {
-		final Date now = new Date();
-		final Collection<Conference> result = new ArrayList<Conference>();
-		for (final Conference c : this.findAll())
-			if (now.before(c.getNotification()))
-				if ((c.getNotification().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) < 5)
-					result.add(c);
+		final Collection<Conference> result = this.conferenceRepository.findFiveDaysForNotificationConferences();
+		Assert.notNull(result);
 		return result;
 	}
 
 	public Collection<Conference> findFiveDaysForCameraReadyConferences() {
-		final Date now = new Date();
-		final Collection<Conference> result = new ArrayList<Conference>();
-		for (final Conference c : this.findAll())
-			if (now.before(c.getCameraReady()))
-				if ((c.getCameraReady().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) < 5)
-					result.add(c);
+		final Collection<Conference> result = this.conferenceRepository.findFiveDaysForCameraReadyConferences();
+		Assert.notNull(result);
 		return result;
 	}
+
 	public Collection<Conference> findFiveDaysForBeginningConferences() {
-		final Date now = new Date();
-		final Collection<Conference> result = new ArrayList<Conference>();
-		for (final Conference c : this.findAll())
-			if (now.before(c.getStartDate()))
-				if ((c.getStartDate().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) < 5)
-					result.add(c);
+		final Collection<Conference> result = this.conferenceRepository.findFiveDaysForBeginningConferences();
+		Assert.notNull(result);
 		return result;
 	}
 
@@ -291,6 +273,10 @@ public class ConferenceService {
 			throw new ValidationException();
 
 		return result;
+	}
+
+	public Conference findConference(final int activityId) {
+		return this.conferenceRepository.findConference(activityId);
 	}
 
 }

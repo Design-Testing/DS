@@ -62,12 +62,10 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.submission" />: <fmt:formatDate
-			value="${conference.submission}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.submission" />: <fmt:formatDate value="${conference.submission}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.submission" />: <fmt:formatDate
-			value="${conference.submission}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.submission" />: <fmt:formatDate value="${conference.submission}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -75,12 +73,10 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.notification" />: <fmt:formatDate
-			value="${conference.notification}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.notification" />: <fmt:formatDate value="${conference.notification}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.notification" />: <fmt:formatDate
-			value="${conference.notification}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.notification" />: <fmt:formatDate value="${conference.notification}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -88,12 +84,10 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.cameraReady" />: <fmt:formatDate
-			value="${conference.cameraReady}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.cameraReady" />: <fmt:formatDate value="${conference.cameraReady}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.cameraReady" />: <fmt:formatDate
-			value="${conference.cameraReady}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.cameraReady" />: <fmt:formatDate value="${conference.cameraReady}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -107,12 +101,12 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.startDate" />: <fmt:formatDate
-			value="${conference.startDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.startDate" />: 
+		<fmt:formatDate value="${conference.startDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.startDate" />: <fmt:formatDate
-			value="${conference.startDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.startDate" />: 
+		<fmt:formatDate value="${conference.startDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -120,12 +114,10 @@
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="conference.endDate" />: <fmt:formatDate
-			value="${conference.endDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="conference.endDate" />: <fmt:formatDate value="${conference.endDate}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="conference.endDate" />: <fmt:formatDate
-			value="${conference.endDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="conference.endDate" />: <fmt:formatDate value="${conference.endDate}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -273,6 +265,10 @@
 <!------------------------------- BACK BUTTONS ----------------------------------->
 <!-------------------------------------------------------------------------------->
 
+<acme:button url="tutorial/list.do?conferenceId=${conference.id}" name="tutorials" code="conference.tutorials" />
+<acme:button url="panel/list.do?conferenceId=${conference.id}" name="panels" code="conference.panels" />
+<acme:button url="presentation/list.do?conferenceId=${conference.id}" name="presentations" code="conference.presentations" />
+<br/><br/>
 <jstl:choose>
 	<jstl:when test="${isAdministrator eq true }">
 		<acme:button url="conference/administrator/myConferences.do" name="back" code="conference.back" />

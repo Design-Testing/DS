@@ -21,18 +21,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Access(AccessType.PROPERTY)
 public class Comment extends DomainEntity {
 
-	private String			title;
-	private String			text;
-	private Date			moment;
+	private String		title;
+	private String		text;
+	private Date		moment;
 
 	// Relationships
-	private Actor			author;
+	private Actor		author;
 
-	private Conference		conference;
-	private Presentation	presentation;
-	private Panel			panel;
-	private Tutorial		tutorial;
-	private Report			report;
+	private Conference	conference;
+	private Activity	activity;
+	private Report		report;
 
 
 	@NotBlank
@@ -79,32 +77,12 @@ public class Comment extends DomainEntity {
 
 	@Valid
 	@ManyToOne(optional = true)
-	public Tutorial getTutorial() {
-		return this.tutorial;
+	public Activity getActivity() {
+		return this.activity;
 	}
 
-	public void setTutorial(final Tutorial tutorial) {
-		this.tutorial = tutorial;
-	}
-
-	@Valid
-	@ManyToOne(optional = true)
-	public Panel getPanel() {
-		return this.panel;
-	}
-
-	public void setPanel(final Panel panel) {
-		this.panel = panel;
-	}
-
-	@Valid
-	@ManyToOne(optional = true)
-	public Presentation getPresentation() {
-		return this.presentation;
-	}
-
-	public void setPresentation(final Presentation presentation) {
-		this.presentation = presentation;
+	public void setActivity(final Activity activity) {
+		this.activity = activity;
 	}
 
 	@Valid

@@ -12,21 +12,16 @@ import domain.Comment;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-	// Sustituir "ClassName" por el nombre de la nueva clase sobre la que se quiere redactar los comentarios
-	//
-	// @Query("select c from Comment c where c.className.id=?1")
-	// Collection<Comment> findByClassName(int classNameId);
-
-	@Query("select c from Comment c where c.panel.id=?1")
-	Collection<Comment> findByPanel(int panelId);
-
-	@Query("select c from Comment c where c.tutorial.id=?1")
-	Collection<Comment> findByTutorial(int tutorialId);
-
-	@Query("select c from Comment c where c.presentation.id=?1")
-	Collection<Comment> findByPresentation(int presentationId);
-
 	@Query("select c from Comment c where c.conference.id=?1")
 	Collection<Comment> findByConference(int conferenceId);
 
+	@Query("select c from Comment c where c.activity.id=?1")
+	Collection<Comment> findByActivity(int id);
+
+	@Query("select c from Comment c where c.report.id=?1")
+	Collection<Comment> findByReport(int id);
+
+	// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo
+	// @Query("select c from Comment c where c.quolet.id=?1")
+	// Collection<Comment> findByQuolet(int id);
 }

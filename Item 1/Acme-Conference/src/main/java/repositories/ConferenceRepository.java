@@ -28,4 +28,19 @@ public interface ConferenceRepository extends JpaRepository<Conference, Integer>
 	@Query("select distinct p from Conference p join p.category c where (?1='' OR p.acronym LIKE CONCAT('%',?1,'%') OR p.title LIKE CONCAT('%',?1,'%') OR p.venue LIKE CONCAT('%',?1,'%') OR p.summary LIKE CONCAT('%',?1,'%'))")
 	Collection<Conference> findConferences(String keyword);
 
+	@Query("select c from Conference c join c.activities ac where ac.id=?1")
+	Conference findConference(int activityId);
+
+	@Query("select c from Conference c WHERE ((month(CURRENT_TIMESTAMP) - month(c.submission) = 0 AND day(CURRENT_TIMESTAMP) - day(c.submission) <=5 AND day(CURRENT_TIMESTAMP) - day(c.submission) >=0) OR ((month(CURRENT_TIMESTAMP) - month(c.submission) = 1 OR month(CURRENT_TIMESTAMP) - month(c.submission) = -11 ) AND day(CURRENT_TIMESTAMP) - day(c.submission) <=-25 AND day(CURRENT_TIMESTAMP) - day(c.submission) >=-30)) ")
+	Collection<Conference> findFiveDaysFromSubmissionConferences();
+
+	@Query("select c from Conference c WHERE ((month(c.notification) - month(CURRENT_TIMESTAMP) = 0 AND day(c.notification) - day(CURRENT_TIMESTAMP) <=5 AND day(c.notification) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.notification) - month(CURRENT_TIMESTAMP) = 1 OR month(c.notification) - month(CURRENT_TIMESTAMP) = -11 )AND day(c.notification) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.notification) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	Collection<Conference> findFiveDaysForNotificationConferences();
+
+	@Query("select c from Conference c WHERE ((month(c.cameraReady) - month(CURRENT_TIMESTAMP) = 0 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) <=5 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.cameraReady) - month(CURRENT_TIMESTAMP) = 1 OR month(c.cameraReady) - month(CURRENT_TIMESTAMP) = -11) AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	Collection<Conference> findFiveDaysForCameraReadyConferences();
+
+	@Query("select c from Conference c WHERE ((month(c.startDate) - month(CURRENT_TIMESTAMP) = 0 AND day(c.startDate) - day(CURRENT_TIMESTAMP) <=5 AND day(c.startDate) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.startDate) - month(CURRENT_TIMESTAMP) = 1 OR month(c.startDate) - month(CURRENT_TIMESTAMP) = -11) AND day(c.startDate) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.startDate) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	Collection<Conference> findFiveDaysForBeginningConferences();
+
 }

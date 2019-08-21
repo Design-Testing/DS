@@ -1,5 +1,5 @@
 <%--
- * action-2.jsp
+ * edit.jsp
  *
  * Copyright (C) 2018 Universidad de Sevilla
  * 
@@ -8,27 +8,63 @@
  * http://www.tdg-seville.info/License.html
  --%>
 
-<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 
-<%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<form:form action="topic/edit.do" modelAttribute="topic">
+<form:form action="message/edit.do" modelAttribute="m">
 
-    <form:hidden path="id"/>
-    <form:hidden path="version"/>
-    
-    <acme:textbox path="spanish" code="topic.spanish"/>
-    <acme:textbox path="english" code="topic.english"/>
+	<form:hidden path="id" />
+	<form:hidden path="version" />
+	<form:hidden path="moment" />
+	<form:hidden path="sender" />
+
+	<form:label path="recivers">
+		<spring:message code="recivers" />:
+    </form:label>
+	<form:select path="recivers" code="recivers">
+		<jstl:forEach items="${recivers}" var="r">
+			<form:option value="${r.id}" label="${r.name}" />
+		</jstl:forEach>
+	</form:select>
+	<br />
+	<br />
+
+	<acme:textbox path="subject" code="subject" />
+	<br />
+
+	<acme:textarea path="body" code="body" />
+	<br />
 
 
-    <button name="save" type="submit" class="button2">
-        <spring:message code="conference.save"/>
-    </button>
+	<form:label path="topic">
+		<spring:message code="topic" />:
+    </form:label>
+	<form:select path="topic" code="topic">
+		<jstl:forEach items="${topics}" var="rt">
+			<jstl:choose>
+				<jstl:when test="${lang eq 'en' }">
+					<form:option value="${rt.id}" label="${rt.english}" />
+				</jstl:when>
+				<jstl:otherwise>
+					<form:option value="${rt.id}" label="${rt.spanish}" />
+				</jstl:otherwise>
+			</jstl:choose>
 
+		</jstl:forEach>
+	</form:select>
+	<br />
+	<br />
+
+	<button name="save" type="submit" class="button">
+		<spring:message code="send" />
+	</button>
 </form:form>

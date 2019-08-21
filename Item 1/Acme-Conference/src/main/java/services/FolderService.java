@@ -97,7 +97,7 @@ public class FolderService {
 
 	public Folder findInboxByUserId(final int id) {
 		Assert.isTrue(id != 0);
-
+		System.out.println("AQUIIIIIIII" + id);
 		return this.folderRepository.findInboxByUserId(id);
 	}
 

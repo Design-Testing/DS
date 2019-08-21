@@ -61,6 +61,11 @@
 		<security:intercept-url pattern="/finder/*" access="permitAll" />
 		<security:intercept-url pattern="/finder/actor/**" access="isAuthenticated()" />
 		
+		<!-- ACTIVITY -->
+		<security:intercept-url pattern="/tutorial/display.do" access="permitAll" />
+		<security:intercept-url pattern="/tutorial/list.do" access="permitAll" />
+		<security:intercept-url pattern="/tutorial/**" access="hasRole('AUTHOR')" />
+		
 		<!-- COMMENT -->
 		<security:intercept-url pattern="/comment/**" access="permitAll" />
 		 
