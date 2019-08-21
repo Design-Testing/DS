@@ -37,4 +37,11 @@
 </jstl:choose>
 
 	<acme:display code="presentation.camera.ready.paper" value="${presentation.cameraReadyPaper.title}"/><br/>
+	
+	<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${isDraft}">
+	<acme:button url="presentation/delete.do?presentationId=${tutorial.id}&conferenceId=${conferenceId}"
+		name="edit" code="activity.delete" /><br/>
+	</jstl:if>
+	</security:authorize>
 	<acme:button url="presentation/list.do?conferenceId=${conferenceId}" name="back" code="activity.back" />

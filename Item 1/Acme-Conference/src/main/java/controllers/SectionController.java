@@ -21,9 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import security.UserAccount;
 import services.AdministratorService;
 import services.SectionService;
-import services.TutorialService;
 import domain.Section;
-import domain.Tutorial;
 
 @Controller
 @RequestMapping("/section")
@@ -38,7 +36,7 @@ public class SectionController extends AbstractController {
 	private AdministratorService	administratorService;
 
 	@Autowired
-	private TutorialService			tutorialService;
+	private TutorialController		tutorialController;
 
 
 	// CREATE  ---------------------------------------------------------------		
@@ -123,19 +121,17 @@ public class SectionController extends AbstractController {
 	// DELETE -----------------------------------------------------------
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int sectionId, @RequestParam final int tutorialId) {
+	public ModelAndView delete(@RequestParam final int sectionId, @RequestParam final int tutorialId, @RequestParam final int conferenceId) {
 
 		ModelAndView res;
 		final Section toDelete = this.sectionService.findOne(sectionId);
-		final Tutorial folder = this.tutorialService.findOne(tutorialId);
 
 		try {
-			this.sectionService.deleteFromTutorial(toDelete, folder);
-			res = new ModelAndView("redirect: list.do?folderId=" + tutorialId);
-			res.addObject("folder", folder);
+			this.sectionService.delete(toDelete, tutorialId, conferenceId);
+			res = this.tutorialController.display(tutorialId, conferenceId);
 		} catch (final Throwable oops) {
 			res = new ModelAndView("redirect: display.do?sectionId=" + sectionId + "&tutorialId=" + tutorialId);
-			final String error = "Cannot delete this message";
+			final String error = "Cannot delete this section";
 			res.addObject("error", error);
 		}
 		return res;

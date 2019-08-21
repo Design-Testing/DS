@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.SectionRepository;
 import repositories.TutorialRepository;
+import domain.Conference;
 import domain.Section;
 import domain.Tutorial;
 
@@ -26,6 +27,9 @@ public class SectionService {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private ConferenceService		conferenceService;
 
 
 	//	@Autowired
@@ -70,17 +74,15 @@ public class SectionService {
 		Assert.notNull(res);
 		return res;
 	}
-	public void deleteFromTutorial(final Section toDelete, final Tutorial folder) {
-		// TODO Auto-generated method stub
 
-	}
-
-	public void delete(final Section section, final int tutorialId) {
+	public void delete(final Section section, final int tutorialId, final int conferenceId) {
 		this.administratorService.findByPrincipal();
 		Assert.isTrue(this.sectionRepository.findOne(section.getId()).equals(section), "No se puede borrar una section que no existe");
 		Assert.notNull(section);
 		Assert.isTrue(section.getId() != 0);
+		final Conference conference = this.conferenceService.findOne(conferenceId);
 		final Tutorial tutorial = this.tutorialRepository.findOne(tutorialId);
+		Assert.isTrue(conference.getIsDraft() && conference.getActivities().contains(tutorial));
 		final Collection<Section> sections = tutorial.getSections();
 		sections.remove(section);
 		this.tutorialRepository.save(tutorial);

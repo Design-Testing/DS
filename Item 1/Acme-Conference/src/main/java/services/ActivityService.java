@@ -92,11 +92,16 @@ public class ActivityService {
 		return tutorials;
 	}
 
-	public void delete(final Activity activity) {
+	public void delete(final Activity activity, final int conferenceId) {
 		Assert.notNull(activity);
 		Assert.isTrue(activity.getId() != 0);
 		this.administratorService.findByPrincipal();
 		Assert.isTrue(this.activityRepository.findOne(activity.getId()).equals(activity), "No se puede borrar una actividad que no existe");
+		final Conference conference = this.conferenceService.findOne(conferenceId);
+		final Collection<Activity> acs = conference.getActivities();
+		Assert.isTrue(acs.contains(activity));
+		acs.remove(activity);
+		this.conferenceService.save(conference);
 		this.activityRepository.delete(activity);
 	}
 

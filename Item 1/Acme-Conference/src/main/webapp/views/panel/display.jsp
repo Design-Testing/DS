@@ -35,7 +35,13 @@
 		<br />
 	</jstl:otherwise>
 </jstl:choose>
-
+	
+	<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${isDraft}">
+	<acme:button url="panel/delete.do?panelId=${tutorial.id}&conferenceId=${conferenceId}"
+		name="edit" code="activity.delete" /><br/>
+	</jstl:if>
+	</security:authorize>
 	<acme:button url="panel/list.do?conferenceId=${conferenceId}" name="back" code="activity.back" />
 
 

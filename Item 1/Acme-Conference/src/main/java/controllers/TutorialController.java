@@ -118,6 +118,26 @@ public class TutorialController extends AbstractController {
 			}
 		return result;
 	}
+
+	// DELETE -----------------------------------------------------------
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int conferenceId, @RequestParam final int tutorialId) {
+
+		ModelAndView res;
+		final Tutorial toDelete = this.tutorialService.findOne(tutorialId);
+
+		try {
+			this.tutorialService.delete(toDelete, conferenceId);
+			res = this.list(conferenceId);
+		} catch (final Throwable oops) {
+			res = this.display(tutorialId, conferenceId);
+			final String error = "Cannot delete this tutorial";
+			res.addObject("error", error);
+		}
+		return res;
+	}
+
 	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Tutorial tutorial, final int conferenceId) {
