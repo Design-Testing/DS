@@ -615,6 +615,7 @@
 		<property name="reviewPaper" ref="paper1" />
 		<property name="author" ref="author1" />
 		<property name="conference" ref="conference1" />
+		<property name="isNotified" value="false" />
 	</bean>
 
 	<bean id="submission2" class="domain.Submission">
@@ -625,6 +626,7 @@
 		<property name="cameraReadyPaper" ref="paper3" />
 		<property name="author" ref="author2" />
 		<property name="conference" ref="conference1" />
+		<property name="isNotified" value="false" />
 	</bean>
 
 	<bean id="submission3" class="domain.Submission">
@@ -634,6 +636,7 @@
 		<property name="reviewPaper" ref="paper4" />
 		<property name="author" ref="author1" />
 		<property name="conference" ref="conference3" />
+		<property name="isNotified" value="false" />
 	</bean>
 
 
@@ -740,11 +743,11 @@
 		<property name="title" value="Conferencia Allevyn" />
 		<property name="acronym" value="Windows" />
 		<property name="venue" value="Windows" />
-		<property name="submission" value="2019/08/16 00:00" />
-		<property name="notification" value="2019/08/31 00:00" />
-		<property name="cameraReady" value="2019/09/04 00:00" />
-		<property name="startDate" value="2019/09/05 00:00" />
-		<property name="endDate" value="2019/09/06 00:00" />
+		<property name="submission" value="2019/09/16 00:00" />
+		<property name="notification" value="2019/09/31 00:00" />
+		<property name="cameraReady" value="2019/10/04 00:00" />
+		<property name="startDate" value="2019/10/05 00:00" />
+		<property name="endDate" value="2019/10/06 00:00" />
 		<property name="summary" value="Summary of conference 5" />
 		<property name="fee" value="1520.89" />
 		<property name="isDraft" value="false" />

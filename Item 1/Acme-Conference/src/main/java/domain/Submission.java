@@ -25,6 +25,7 @@ public class Submission extends DomainEntity {
 	private String		ticker;
 	private Date		moment;
 	private String		status;
+	private Boolean		isNotified;
 
 	// Relationships
 	private Paper		cameraReadyPaper;
@@ -105,6 +106,15 @@ public class Submission extends DomainEntity {
 
 	public void setConference(final Conference conference) {
 		this.conference = conference;
+	}
+
+	@NotNull
+	public Boolean getIsNotified() {
+		return this.isNotified;
+	}
+
+	public void setIsNotified(final Boolean isNotified) {
+		this.isNotified = isNotified;
 	}
 
 }

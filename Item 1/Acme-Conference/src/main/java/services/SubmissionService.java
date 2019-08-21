@@ -54,7 +54,7 @@ public class SubmissionService {
 		res.setTicker(ticker);
 		res.setMoment(new Date());
 		res.setStatus("UNDER-REVIEWED");
-
+		res.setIsNotified(false);
 		final Conference conference = this.conferenceService.findOne(conferenceId);
 		Assert.isTrue(!conference.getIsDraft(), "conference must be in final mode");
 		res.setConference(conference);
@@ -97,6 +97,7 @@ public class SubmissionService {
 		final Date now = new Date();
 		Assert.isTrue(now.before(submission.getConference().getSubmission()), "submission deadline is elapsed");
 		submission.setMoment(new Date(System.currentTimeMillis() - 1000));
+		submission.setIsNotified(false);
 
 		final Paper paperSaved = this.paperService.save(reviewPaper);
 		submission.setReviewPaper(paperSaved);
