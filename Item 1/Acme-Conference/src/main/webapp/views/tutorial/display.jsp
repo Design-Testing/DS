@@ -61,8 +61,10 @@
 	</display:column>
 </display:table>
 <security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${isDraft}">
 	<acme:button url="section/create.do?tutorialId=${tutorial.id}"
 		name="edit" code="tutorial.section.create" />
+	</jstl:if>
 </security:authorize>
 
 <acme:button url="tutorial/list.do?conferenceId=${conferenceId}"

@@ -37,14 +37,22 @@
 		</display:column>
 		<display:column>
 			<security:authorize access="hasRole('ADMIN')">
+				<jstl:if test="${isDraft}">
 				<acme:button
 					url="panel/edit.do?conferenceId=${conferenceId}&panelId=${row.id}"
 					name="edit" code="activity.edit" />
+				</jstl:if>
 			</security:authorize>
 		</display:column>
 	</jstl:if>
 </display:table>
-
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${isDraft}">
+		<acme:button
+			url="panel/create.do?conferenceId=${conferenceId}&tutorialId=${row.id}"
+			name="edit" code="activity.create" /><br/><br/>
+	</jstl:if>
+</security:authorize>
 <acme:button
 	url="conference/display.do?conferenceId=${conferenceId}"
 	name="edit" code="back.to.conference" />

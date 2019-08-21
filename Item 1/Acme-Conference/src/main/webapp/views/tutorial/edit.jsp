@@ -7,12 +7,13 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
-
-
-<form:form action="tutorial/edit.do" modelAttribute="tutorial">
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+${conferenceId}
+<form:form action="tutorial/edit.do?conferenceId=${conferenceId}" modelAttribute="tutorial">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
+    <form:hidden path="sections"/>
     
     
     <acme:textbox path="title" code="activity.title"/>
@@ -21,12 +22,6 @@
     <acme:textbox path="startMoment" code="activity.startMoment"/>
     <br/>
     
-    <acme:textbox path="room" code="activity.room"/>
-    <br/>
-    
-    <acme:textarea path="attachments" code="activity.attachments"/>
-    <br/>
-
     <acme:numberbox path="hours" code="activity.hours" min="0"/>
     <br/>
     
@@ -36,9 +31,15 @@
     <acme:textarea path="summary" code="activity.summary"/>
     <br/>
     
+    <acme:textbox path="room" code="activity.room"/>
+    <br/>
+    
+    <acme:textarea path="attachments" code="activity.attachments"/>
+    <br/>
+    
     <form:select path="speakers" code="activity.speakers">
     	<jstl:forEach items="${actors}" var="r">
-    		<form:option value="${r.id}" label="${r.surname}-${r.name}"/>
+    		<form:option value="${r.id}" label="${r.name}"/>
     	</jstl:forEach>
     </form:select>
     <br/>

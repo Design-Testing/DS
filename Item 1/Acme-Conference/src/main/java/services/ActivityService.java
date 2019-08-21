@@ -79,8 +79,11 @@ public class ActivityService {
 		Assert.notEmpty(activity.getSpeakers());
 		final Activity res = this.activityRepository.save(activity);
 		final Collection<Activity> activities = conference.getActivities();
-		activities.add(res);
-		conference.setActivities(activities);
+		if (activity.getId() == 0) {
+			activities.add(res);
+			conference.setActivities(activities);
+		} else
+			Assert.isTrue(activities.contains(activity));
 		this.conferenceService.save(conference);
 		return res;
 	}

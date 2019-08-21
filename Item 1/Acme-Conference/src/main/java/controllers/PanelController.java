@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AdministratorService;
+import services.ConferenceService;
 import services.PanelService;
 import domain.Panel;
 
@@ -30,6 +31,9 @@ public class PanelController extends AbstractController {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private ConferenceService		conferenceService;
 
 
 	// CREATE  ---------------------------------------------------------------		
@@ -52,7 +56,8 @@ public class PanelController extends AbstractController {
 		final Collection<Panel> panels = this.panelService.findPanelsByConference(conferenceId);
 		result.addObject("panels", panels);
 		result.addObject("conferenceId", conferenceId);
-		result.addObject("lang", this.lang);
+		final boolean isDraft = this.conferenceService.findOne(conferenceId).getIsDraft();
+		result.addObject("isDraft", isDraft);
 
 		return result;
 	}

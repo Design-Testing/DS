@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.AdministratorService;
+import services.ConferenceService;
 import services.TutorialService;
 import domain.Tutorial;
 
@@ -32,6 +33,9 @@ public class TutorialController extends AbstractController {
 	@Autowired
 	private ActorService			actorService;
 
+	@Autowired
+	private ConferenceService		conferenceService;
+
 
 	// CREATE  ---------------------------------------------------------------		
 
@@ -39,7 +43,7 @@ public class TutorialController extends AbstractController {
 	public ModelAndView create(@RequestParam final int conferenceId) {
 		ModelAndView result;
 		final Tutorial tutorial = (Tutorial) this.tutorialService.create();
-		result = this.createEditModelAndView(tutorial);
+		result = this.createEditModelAndView(tutorial, conferenceId);
 		result.addObject("conferenceId", conferenceId);
 		return result;
 	}
@@ -53,6 +57,8 @@ public class TutorialController extends AbstractController {
 		final Collection<Tutorial> tutorials = this.tutorialService.findTutorialsByConference(conferenceId);
 		result.addObject("tutorials", tutorials);
 		result.addObject("conferenceId", conferenceId);
+		final boolean isDraft = this.conferenceService.findOne(conferenceId).getIsDraft();
+		result.addObject("isDraft", isDraft);
 
 		return result;
 	}
@@ -64,6 +70,8 @@ public class TutorialController extends AbstractController {
 		result = new ModelAndView("tutorial/display");
 		result.addObject("tutorial", tutorial);
 		result.addObject("conferenceId", conferenceId);
+		final boolean isDraft = this.conferenceService.findOne(conferenceId).getIsDraft();
+		result.addObject("isDraft", isDraft);
 
 		return result;
 	}
@@ -78,7 +86,7 @@ public class TutorialController extends AbstractController {
 		tutorial = this.tutorialService.findOne(tutorialId);
 
 		if (tutorial != null) {
-			result = this.createEditModelAndView(tutorial);
+			result = this.createEditModelAndView(tutorial, conferenceId);
 			result.addObject("conferenceId", conferenceId);
 			result.addObject("tutorial", tutorial);
 
@@ -100,23 +108,23 @@ public class TutorialController extends AbstractController {
 		conferenceId = paramTutorialId.isEmpty() ? null : Integer.parseInt(paramTutorialId);
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(tutorial);
+			result = this.createEditModelAndView(tutorial, conferenceId);
 		else
 			try {
 				this.tutorialService.save(tutorial, conferenceId);
 				result = this.list(conferenceId);
 			} catch (final Throwable e) {
-				result = this.createEditModelAndView(tutorial, "tutorial.commit.error");
+				result = this.createEditModelAndView(tutorial, conferenceId, "tutorial.commit.error");
 			}
 		return result;
 	}
 	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final Tutorial tutorial) {
-		return this.createEditModelAndView(tutorial, null);
+	protected ModelAndView createEditModelAndView(final Tutorial tutorial, final int conferenceId) {
+		return this.createEditModelAndView(tutorial, conferenceId, null);
 	}
 
-	protected ModelAndView createEditModelAndView(final Tutorial tutorial, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Tutorial tutorial, final int conferenceId, final String messageCode) {
 		final ModelAndView result;
 
 		this.administratorService.findByPrincipal();
@@ -125,6 +133,7 @@ public class TutorialController extends AbstractController {
 		result.addObject("tutorial", tutorial);
 		result.addObject("message", messageCode);
 		result.addObject("actors", this.actorService.findAll());
+		result.addObject("conferenceId", conferenceId);
 
 		return result;
 	}

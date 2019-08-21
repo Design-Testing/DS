@@ -7,114 +7,48 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-
-<jstl:out value="${lang }"/>
-
-
-<form:form action="conference/administrator/edit.do" modelAttribute="conferenceForm">
+<form:form action="presentation/edit.do" modelAttribute="presentation">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
     
-    
-    <h3><spring:message code="conference.general.information" /></h3>
-    
-    
-    <acme:textbox path="title" code="conference.title"/>
+    <acme:textbox path="title" code="activity.title"/>
     <br/>
     
-    <acme:textbox path="acronym" code="conference.acronym"/>
-    <br/>
-
-    <acme:textbox path="venue" code="conference.venue"/>
+    <acme:textbox path="startMoment" code="activity.startMoment" placeholder="yyyy-MM-dd HH:mm"/>
     <br/>
     
-    <acme:textarea path="summary" code="conference.summary"/>
+    <acme:numberbox path="hours" code="activity.hours" min="0"/>
     <br/>
     
-    <acme:textbox path="fee" code="conference.fee"/>
-    <br/>
+    <acme:numberbox path="minutes" code="activity.minutes" min="0"/>
     <br/>
     
+    <acme:textarea path="summary" code="activity.summary"/>
+    <br/>
     
-     <form:label path="category">
-        <spring:message code="conference.category"/>:
-    </form:label>
-    <form:select path="category" code="conference.category">
-    	<jstl:forEach items="${categories}" var="cat">
-    		<jstl:if test="${lang eq 'en' }" >
-    			<form:option value="${cat.id}" label="${cat.titleEn}"/>
-    		</jstl:if>
-    		<jstl:if test="${lang eq 'es' }" >
-    			<form:option value="${cat.id}" label="${cat.titleEs}"/>
-    		</jstl:if>
+    <acme:textbox path="room" code="activity.room"/>
+    <br/>
+    
+    <acme:textarea path="attachments" code="activity.attachments"/>
+    <br/>
+    
+    <form:select path="speakers" code="activity.speakers">
+    	<jstl:forEach items="${actors}" var="r">
+    		<form:option value="${r.id}" label="${r.name}"/>
     	</jstl:forEach>
     </form:select>
-    
-    
-	
-	<br/>
-	
-	<br/>
-	
-	<br/>
-	
-	<h5 style="color: red;"><spring:message code="conference.alert.dates"/></h5>
-	
-	<br/>
-	
-	<h3><spring:message code="conference.deadlines" /></h3>
-	
-	<acme:textbox path="submission" code="conference.submission" placeholder="yyyy-MM-dd HH:mm"/>
-	
-	<br/>
-	
-	<acme:textbox path="notification" code="conference.notification" placeholder="yyyy-MM-dd HH:mm"/>
-	
-	<br/>
-	
-	<acme:textbox path="cameraReady" code="conference.cameraReady" placeholder="yyyy-MM-dd HH:mm"/>
-	
-	<br/>
-	
-	<h3><spring:message code="conference.dates" /></h3>
-	
-	<acme:textbox path="startDate" code="conference.startDate" placeholder="yyyy-MM-dd HH:mm" />
-	
-	<br/>
-	
-	<acme:textbox path="endDate" code="conference.endDate" placeholder="yyyy-MM-dd HH:mm"/>
-	
-	
-	
-	
-      
-	
     <br/>
-    <br/>
-    
-    <jstl:if test="${not empty msgerror  }">
-    	<h5 style="color: red;"><spring:message code="${msgerror}"/></h5>
-    </jstl:if>
-  
-	
-    <br/>
-    <br/>
-
-    
-	
-
 
     <!---------------------------- BOTONES -------------------------->
 
 
-    <button name="save" type="submit" class="button2">
-        <spring:message code="conference.save"/>
+    <button name="save" type="submit" class="button">
+        <spring:message code="activity.save"/>
     </button>
 
-    <input type="button" class="btn btn-danger" name="cancel"
-           value="<spring:message code="conference.cancel" />"
-           onclick="relativeRedir('conference/administrator/myConferences.do');"/>
-
+    <acme:button url="presentation/list.do" name="back" code="activity.back"/>
+    
 </form:form>
