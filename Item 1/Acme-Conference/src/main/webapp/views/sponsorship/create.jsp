@@ -8,11 +8,12 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="sponsorship/sponsor/create.do" modelAttribute="sponsorship">
+<form:form action="sponsorship/sponsor/edit.do" modelAttribute="sponsorship">
      
     
     <form:hidden path="id"/>
     <form:hidden path="version"/>     
+    <form:hidden path="sponsor"/>
     
     <acme:textbox path="banner" code="sponsorship.banner"/>
     <br/>
@@ -22,7 +23,13 @@
     
     <acme:textbox path="creditCard.holderName" code="sponsorship.creditCard.holderName"/>
     <br/>
-    <acme:textbox path="creditCard.make" code="sponsorship.creditCard.make"/>
+    <spring:message code="sponsorship.creditCard.make"/>
+    <form:select path="creditCard.make" code="sponsorship.creditCard.make">
+    	<jstl:forEach items="${makes}" var="make">
+    			<form:option value="${make}" label="${make}"/>
+    	</jstl:forEach>
+    </form:select>
+    <br>
     <br/>
     <acme:textbox path="creditCard.number" code="sponsorship.creditCard.number"/>
     <br/>

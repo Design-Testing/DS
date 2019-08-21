@@ -9,22 +9,23 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<jstl:if test="${isAdministrator eq true }" >
 
  <input type="button" class="btn btn-danger" name="create"
            value="<spring:message code="category.create" />"
-           onclick="relativeRedir('conference/administrator/create.do');"/>
-</jstl:if>
+           onclick="relativeRedir('category/administrator/create.do');"/>
 
 <display:table name="categories" id="row"
 		requestURI="${requestURI}" pagesize="5"
 		class="displaytag">
-
-	<display:column property="titleEn" titleKey="category.title" />
+			<jstl:if test="${lang eq 'en' }" >
+				<display:column property="titleEn" titleKey="category.title" />
+    		</jstl:if>
+    		<jstl:if test="${lang eq 'es' }" >
+    			<display:column property="titleEs" titleKey="category.title" />
+    		</jstl:if>
 			
 		<display:column>
 			<acme:button url="category/administrator/display.do?categoryId=${row.id}" name="display" code="category.display"/>
-			<acme:button url="category/administrator/delete.do?categoryId=${row.id}" name="delete" code="category.delete"/>
 		</display:column>
 		
 </display:table>

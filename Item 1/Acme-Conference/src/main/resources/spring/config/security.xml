@@ -71,6 +71,12 @@
 		<!-- MESSAGE -->
 		<security:intercept-url pattern="/message/**" access="isAuthenticated()" /> 
 		
+		<!-- CONFIGURATIONPARAMETERS -->
+		<security:intercept-url pattern="/configurationParameters/administrator/**" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/category/administrator/**" access="hasRole('ADMIN')" /> 		
+		
+		<!-- SPONSORSHIP -->		
+		<security:intercept-url pattern="/sponsorship/sponsor/**" access="hasRole('SPONSOR')" /> 
 		
 		<security:form-login 
 			login-page="/security/login.do"

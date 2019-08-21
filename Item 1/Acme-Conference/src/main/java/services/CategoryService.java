@@ -34,6 +34,7 @@ public class CategoryService {
 		Category res = new Category();
 		Assert.notNull(category);
 		Assert.isTrue(category.getTitleEn().trim() != "" && category.getTitleEs().trim() != "");
+		Assert.isTrue(!(category.getTitleEn().equals("CONFERENCE")), "You can´t edit root category 'Conference'.");
 
 		res = this.categoryRepository.save(category);
 		Assert.notNull(res);
@@ -58,6 +59,7 @@ public class CategoryService {
 
 	public void delete(final Integer categoryId) {
 		Assert.notNull(categoryId);
+		Assert.isTrue(!(this.categoryRepository.findOne(categoryId).getTitleEn().equals("CONFERENCE")), "You can´t delete root category 'Conference'.");
 		this.categoryRepository.delete(categoryId);
 	}
 

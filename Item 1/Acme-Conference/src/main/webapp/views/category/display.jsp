@@ -11,14 +11,28 @@
 
 	<acme:display code="category.titleEn" value="${category.titleEn}" />
 	<acme:display code="category.titleEs" value="${category.titleEs}" />
+	<jstl:if test="${lang eq 'en' }" >
+    	<acme:display code="category.father" value="${category.father.titleEn}" />
+    </jstl:if>
+    <jstl:if test="${lang eq 'es' }" >
+    	<acme:display code="category.father" value="${category.father.titleEs}" />
+    </jstl:if>
+	
+	
 
-<input type="button" class="btn btn-danger" name="edit"
+<jstl:choose>
+    <jstl:when test="${category.titleEn eq 'CONFERENCE'}">
+    </jstl:when>
+    <jstl:otherwise>
+    <input type="button" class="btn btn-danger" name="edit"
            value="<spring:message code="category.edit" />"
            onclick="relativeRedir('category/administrator/edit.do?categoryId=${category.id}');"/>
-           
-<input type="button" class="btn btn-danger" name="delete"
+    <input type="button" class="btn btn-danger" name="delete"
            value="<spring:message code="category.delete" />"
            onclick="relativeRedir('category/administrator/delete.do?categoryId=${category.id}');"/>
+    </jstl:otherwise>
+</jstl:choose>     
+
 
 <input type="button" class="btn btn-danger" name="back"
            value="<spring:message code="category.back" />"

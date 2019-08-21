@@ -88,8 +88,10 @@ public class SponsorService {
 			s.getUserAccount().setPassword(password);
 			result = this.sponsorRepository.save(s);
 		} else {
+			final String password = HashPassword.hashPassword(s.getUserAccount().getPassword());
 			final Actor principal = this.actorService.findByPrincipal();
-			//Assert.isTrue(principal.getId() == s.getId(), "You only can edit your info");
+			s.getUserAccount().setPassword(password);
+			Assert.isTrue(principal.getId() == s.getId(), "You only can edit your info");
 			result = (Sponsor) this.actorService.save(s);
 		}
 		return result;

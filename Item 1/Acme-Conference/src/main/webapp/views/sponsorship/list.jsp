@@ -9,13 +9,11 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<jstl:if test="${isSponsor eq true }" >
 
  <input type="button" class="btn btn-danger" name="create"
            value="<spring:message code="sponsorship.create" />"
            onclick="relativeRedir('sponsorship/sponsor/create.do');"/>
-</jstl:if>
-
+<br><br>
 <display:table name="sponsorships" id="row"
 		requestURI="${requestURI}" pagesize="5"
 		class="displaytag">

@@ -38,6 +38,7 @@ public class CategoryController extends AbstractController {
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView viewCategory(@RequestParam final int categoryId) {
 		this.administratorService.findByPrincipal();
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		final ModelAndView result;
 		final Category category = this.categoryService.findOne(categoryId);
@@ -45,6 +46,7 @@ public class CategoryController extends AbstractController {
 		result.addObject("category", category);
 		result.addObject("isAdministrator", true);
 		result.addObject("requestURI", "category/display.do");
+		result.addObject("lang", lang);
 
 		return result;
 	}
@@ -52,6 +54,7 @@ public class CategoryController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView viewCategories() {
 		this.administratorService.findByPrincipal();
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		final ModelAndView result;
 		final Collection<Category> categories = this.categoryService.findAll();
@@ -59,7 +62,23 @@ public class CategoryController extends AbstractController {
 		result.addObject("categories", categories);
 		result.addObject("isAdministrator", true);
 		result.addObject("requestURI", "category/list.do");
+		result.addObject("lang", lang);
 
+		return result;
+	}
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView createCategory() {
+		final ModelAndView result;
+		this.administratorService.findByPrincipal();
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+
+		final Category category = this.categoryService.create();
+		final Collection<Category> categories = this.categoryService.findAll();
+		result = new ModelAndView("category/create");
+		result.addObject("category", category);
+		result.addObject("lang", lang);
+		result.addObject("categories", categories);
 		return result;
 	}
 
@@ -67,10 +86,13 @@ public class CategoryController extends AbstractController {
 	public ModelAndView editCategory(@RequestParam final int categoryId) {
 		final ModelAndView result;
 		this.administratorService.findByPrincipal();
-
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		final Collection<Category> categories = this.categoryService.findAll();
 		final Category category = this.categoryService.findOne(categoryId);
 		result = new ModelAndView("category/edit");
 		result.addObject("category", category);
+		result.addObject("lang", lang);
+		result.addObject("categories", categories);
 		return result;
 	}
 
@@ -81,24 +103,26 @@ public class CategoryController extends AbstractController {
 			result = new ModelAndView("category/edit");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("category", category);
+			final Collection<Category> categories = this.categoryService.findAll();
+			result.addObject("categories", categories);
 
 		} else
 			try {
-				this.categoryService.save(category);
-				result = this.viewCategory(category.getId());
+				final Category cat = this.categoryService.save(category);
+				result = this.viewCategory(cat.getId());
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("category/edit");
 				result.addObject("category", category);
 				result.addObject("errors", "commit.error");
 			}
+
 		return result;
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView deleteCategory(@RequestParam final int categoryId) {
 		this.categoryService.delete(categoryId);
-		final ModelAndView result = new ModelAndView("category/delete");
-		result.addObject("requestURI", "category/list.do");
+		final ModelAndView result = new ModelAndView("forward:/category/administrator/list.do");
 		return result;
 	}
 }

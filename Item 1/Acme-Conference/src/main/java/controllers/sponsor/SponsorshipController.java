@@ -1,7 +1,9 @@
 
 package controllers.sponsor;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.SponsorService;
 import services.SponsorshipService;
 import controllers.AbstractController;
+import domain.Sponsor;
 import domain.Sponsorship;
 
 @Controller
@@ -38,23 +41,25 @@ public class SponsorshipController extends AbstractController {
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView viewSponsorship(@RequestParam final int sponsorshipId) {
 		this.sponsorService.findByPrincipal();
-
-		final ModelAndView result;
+		final Collection<Sponsorship> sponsorships = this.sponsorshipService.findAllBySponsor();
 		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
-		result = new ModelAndView("sponsorship/display");
-		result.addObject("sponsorship", sponsorship);
-		result.addObject("isSponsor", true);
-		result.addObject("requestURI", "sponsorship/display.do");
+		final ModelAndView result;
+		if (sponsorships.contains(sponsorship)) {
+			result = new ModelAndView("sponsorship/display");
+			result.addObject("sponsorship", sponsorship);
+			result.addObject("isSponsor", true);
+			result.addObject("requestURI", "sponsorship/display.do");
+		} else
+			result = new ModelAndView("sponsorship/list");
 
 		return result;
 	}
-
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView viewSponsorships() {
 		this.sponsorService.findByPrincipal();
 
 		final ModelAndView result;
-		final Collection<Sponsorship> sponsorships = this.sponsorshipService.findAll();
+		final Collection<Sponsorship> sponsorships = this.sponsorshipService.findAllBySponsor();
 		result = new ModelAndView("sponsorship/list");
 		result.addObject("sponsorships", sponsorships);
 		result.addObject("isSponsor", true);
@@ -65,53 +70,78 @@ public class SponsorshipController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView editSponsorship(@RequestParam final int sponsorshipId) {
-		final ModelAndView result;
-		this.sponsorService.findByPrincipal();
-
+		ModelAndView result = new ModelAndView();
 		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
-		result = new ModelAndView("sponsorship/edit");
-		result.addObject("sponsorship", sponsorship);
+		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+
+		if (sponsor.getId() == sponsorship.getSponsor().getId()) {
+			result = new ModelAndView("sponsorship/edit");
+			result.addObject("sponsorship", sponsorship);
+		} else
+			result = new ModelAndView("forward:/sponsorship/sponsor/list.do");
 		return result;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView createSponsorship() {
 		final ModelAndView result;
-		this.sponsorService.findByPrincipal();
+		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+		final List<String> makes = new ArrayList<String>();
+		makes.add("VISA");
+		makes.add("MASTER");
+		makes.add("DINNERS");
+		makes.add("AMEX");
 
 		final Sponsorship sponsorship = this.sponsorshipService.create();
+		sponsorship.setSponsor(sponsor);
 		result = new ModelAndView("sponsorship/create");
 		result.addObject("sponsorship", sponsorship);
 		result.addObject("sponsor", this.sponsorService.findByPrincipal());
+		result.addObject("makes", makes);
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveSponsorship(@ModelAttribute("sponsorship") @Valid final Sponsorship sponsorship, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
+		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+		final List<String> makes = new ArrayList<String>();
+		makes.add("VISA");
+		makes.add("MASTER");
+		makes.add("DINNERS");
+		makes.add("AMEX");
 		if (binding.hasErrors()) {
 			result = new ModelAndView("sponsorship/edit");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("sponsorship", sponsorship);
+			result.addObject("makes", makes);
 
-		} else
+		} else if (sponsor.getId() == sponsorship.getSponsor().getId())
 			try {
-				this.sponsorshipService.save(sponsorship);
-				result = this.viewSponsorship(sponsorship.getId());
+				final Sponsorship s = this.sponsorshipService.save(sponsorship);
+				result = this.viewSponsorship(s.getId());
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("sponsorship/edit");
 				result.addObject("sponsorship", sponsorship);
 				result.addObject("errors", "commit.error");
 			}
+		else
+			result = new ModelAndView("forward:/sponsorship/sponsor/list.do");
+
 		return result;
 	}
-
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView deleteSponsorship(@RequestParam final int sponsorshipId) {
 		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
-		this.sponsorshipService.delete(sponsorship);
-		final ModelAndView result = new ModelAndView("sponsorship/delete");
-		result.addObject("requestURI", "sponsorship/list.do");
+		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+		ModelAndView result;
+		if (sponsor.getId() == sponsorship.getSponsor().getId()) {
+			this.sponsorshipService.delete(sponsorship);
+			result = new ModelAndView("sponsorship/list");
+			result.addObject("requestURI", "sponsorship/list.do");
+		} else
+			result = new ModelAndView("sponsorship/sponsor/list");
+
 		return result;
 	}
 }

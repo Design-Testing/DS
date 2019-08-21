@@ -20,8 +20,8 @@
     
     <acme:textbox path="titleEs" code="category.titleEs"/>
     <br/>
-    <spring:message code="category.father"/>
-        <form:select path="father" code="category.father">
+        <spring:message code="category.father"/>
+    <form:select path="father" code="category.titleEn">
     	<jstl:forEach items="${categories}" var="cat">
     		<jstl:if test="${lang eq 'en' }" >
     			<form:option value="${cat}" label="${cat.titleEn}"/>

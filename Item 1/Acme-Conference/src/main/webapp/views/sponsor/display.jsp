@@ -10,7 +10,8 @@
 
 
 
-	<acme:display code="sponsor.name" value="${sponsor.userAccount}" />
+	<acme:display code="sponsor.userAccount.username" value="${sponsor.userAccount.username}" />
+	<acme:display code="sponsor.name" value="${sponsor.name}" />
 	<acme:display code="sponsor.middleName" value="${sponsor.middleName}" />
 	<acme:display code="sponsor.surname" value="${sponsor.surname}" />
 	<acme:display code="sponsor.photo" value="${sponsor.photo}" />
@@ -28,4 +29,4 @@
            
 <input type="button" class="btn btn-danger" name="back"
            value="<spring:message code="sponsor.back" />"
-           onclick="relativeRedir('sponsor/list.do');"/>
+           onclick="relativeRedir('');"/>

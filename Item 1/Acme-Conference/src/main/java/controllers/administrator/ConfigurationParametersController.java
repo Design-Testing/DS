@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AdministratorService;
@@ -38,9 +37,9 @@ public class ConfigurationParametersController extends AbstractController {
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView viewConfiguration() {
-		this.administratorService.findByPrincipal();
+		ModelAndView result;
 
-		final ModelAndView result;
+		this.administratorService.findByPrincipal();
 		final List<ConfigurationParameters> configurationParametersAll = new ArrayList<ConfigurationParameters>(this.configurationParameterService.findAll());
 		result = new ModelAndView("configurationParameters/display");
 		final ConfigurationParameters configurationParameters = configurationParametersAll.get(0);
@@ -52,13 +51,13 @@ public class ConfigurationParametersController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView editConfiguration(@RequestParam final int configurationParametersId) {
-		final ModelAndView result;
+	public ModelAndView editConfiguration() {
+		ModelAndView result;
 		this.administratorService.findByPrincipal();
-
-		final ConfigurationParameters configurationParameters = this.configurationParameterService.findOne(configurationParametersId);
+		final ConfigurationParameters configurationParameters = this.configurationParameterService.find();
 		result = new ModelAndView("configurationParameters/edit");
 		result.addObject("configurationParameters", configurationParameters);
+
 		return result;
 	}
 

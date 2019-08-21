@@ -12,6 +12,7 @@
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>     
+    <form:hidden path="sponsor"/>
     
     <acme:textbox path="banner" code="sponsorship.banner"/>
     <br/>

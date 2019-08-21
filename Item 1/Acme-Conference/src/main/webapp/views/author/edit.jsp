@@ -8,28 +8,28 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="sponsor/save.do" modelAttribute="actorForm">
+<form:form action="author/save.do" modelAttribute="actorForm">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
+    <form:hidden path="userAccountpassword"/>
     
-    <acme:textbox path="userAccountuser" code="sponsor.userAccount.username"/>
+    <acme:textbox path="userAccountuser" code="author.userAccount.username"/>
     <br/>
-    <acme:textbox path="userAccountpassword" code="sponsor.userAccount.password"/>
+    
+    <acme:textbox path="name" code="author.name"/>
     <br/>
-    <acme:textbox path="name" code="sponsor.name"/>
+    <acme:textbox path="surname" code="author.surname"/>
     <br/>
-    <acme:textbox path="surname" code="sponsor.surname"/>
+    <acme:textbox path="middleName" code="author.middleName"/>
     <br/>
-    <acme:textbox path="middleName" code="sponsor.middleName"/>
+    <acme:textbox path="photo" code="author.photo"/>
     <br/>
-    <acme:textbox path="photo" code="sponsor.photo"/>
+    <acme:textbox path="email" code="author.email"/>
     <br/>
-    <acme:textbox path="email" code="sponsor.email"/>
+    <acme:textbox path="phone" code="author.phone"/>
     <br/>
-    <acme:textbox path="phone" code="sponsor.phone"/>
-    <br/>
-    <acme:textbox path="address" code="sponsor.address"/>
+    <acme:textbox path="address" code="author.address"/>
     <br/>
 
 
@@ -52,11 +52,11 @@
 
 
     <button name="save" type="submit" class="button2">
-        <spring:message code="sponsor.save"/>
+        <spring:message code="author.save"/>
     </button>
 
     <input type="button" class="btn btn-danger" name="cancell"
-           value="<spring:message code="sponsor.cancell" />"
-           onclick="relativeRedir('sponsor/display.do?sponsorId=${sponsor.id}');"/>
+           value="<spring:message code="author.cancel" />"
+           onclick="relativeRedir('author/display.do');"/>
 
 </form:form>

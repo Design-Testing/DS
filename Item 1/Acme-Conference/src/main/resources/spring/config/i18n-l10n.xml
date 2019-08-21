@@ -32,7 +32,7 @@
 		<value>/views/category/messages</value>
 		<value>/views/sponsorship/messages</value>
 		<value>/views/sponsor/messages</value>
-		
+		<value>/views/author/messages</value>
 		<value>/views/finder/messages</value>
 		<value>/views/section/messages</value>
 		<value>/views/presentation/messages</value>

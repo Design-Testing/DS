@@ -16,4 +16,4 @@
 
 <input type="button" class="btn btn-danger" name="edit"
            value="<spring:message code="configurationParameters.edit" />"
-           onclick="relativeRedir('configurationParameters/administrator/edit.do?configurationParametersId=${configurationParameters.id}');"/>
+           onclick="relativeRedir('configurationParameters/administrator/edit.do');"/>

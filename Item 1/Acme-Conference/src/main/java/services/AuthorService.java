@@ -17,6 +17,7 @@ import repositories.AuthorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import utilities.HashPassword;
 import domain.Actor;
 import domain.Author;
 import domain.Finder;
@@ -61,9 +62,13 @@ public class AuthorService {
 		Author result;
 
 		if (author.getId() == 0) {
+			final String username = author.getUserAccount().getUsername();
+			final String password = HashPassword.hashPassword(author.getUserAccount().getPassword());
 			final Finder finder = this.finderService.createForNewActor();
 			author.setFinder(finder);
 			this.actorService.setAuthorityUserAccount(Authority.AUTHOR, author);
+			author.getUserAccount().setUsername(username);
+			author.getUserAccount().setPassword(password);
 			result = this.authorRepository.save(author);
 
 		} else {
@@ -121,6 +126,7 @@ public class AuthorService {
 			author = this.create();
 			author.setName(actorForm.getName());
 			author.setSurname(actorForm.getSurname());
+			author.setMiddleName(actorForm.getMiddleName());
 			author.setPhoto(actorForm.getPhoto());
 			author.setPhone(actorForm.getPhone());
 			author.setEmail(actorForm.getEmail());

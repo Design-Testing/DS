@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.AuthorService;
 import services.FinderService;
-import services.SponsorService;
 import services.UserAccountService;
+import domain.Author;
 import domain.Finder;
-import domain.Sponsor;
 import forms.ActorForm;
 
 @Controller
-@RequestMapping("/sponsor")
-public class SponsorController extends AbstractController {
+@RequestMapping("/author")
+public class AuthorController extends AbstractController {
 
 	@Autowired
-	private SponsorService		sponsorService;
+	private AuthorService		authorService;
 
 	@Autowired
 	private FinderService		finderService;
@@ -42,72 +42,72 @@ public class SponsorController extends AbstractController {
 
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView viewSponsor() {
-		final Sponsor sponsor = this.sponsorService.findByPrincipal();
-		final ModelAndView result;
-		result = new ModelAndView("sponsor/display");
-		result.addObject("sponsor", sponsor);
-		result.addObject("requestURI", "sponsor/display.do");
+	public ModelAndView viewAuthor() {
+		final Author author = this.authorService.findByPrincipal();
+		ModelAndView result;
+		result = new ModelAndView("author/display");
+		result.addObject("author", author);
+		result.addObject("requestURI", "author/display.do");
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView editSponsorship() {
-		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+	public ModelAndView editAuthor() {
+		final Author author = this.authorService.findByPrincipal();
 		final ActorForm actorForm = new ActorForm();
-		actorForm.setAddress(sponsor.getAddress());
-		actorForm.setEmail(sponsor.getEmail());
-		actorForm.setId(sponsor.getId());
-		actorForm.setMiddleName(sponsor.getMiddleName());
-		actorForm.setName(sponsor.getName());
-		actorForm.setPhone(sponsor.getPhone());
-		actorForm.setPhoto(sponsor.getPhoto());
-		actorForm.setSurname(sponsor.getSurname());
-		//actorForm.setUserAccountpassword(sponsor.getUserAccount().getPassword());
-		actorForm.setUserAccountuser(sponsor.getUserAccount().getUsername());
+		actorForm.setAddress(author.getAddress());
+		actorForm.setEmail(author.getEmail());
+		actorForm.setId(author.getId());
+		actorForm.setMiddleName(author.getMiddleName());
+		actorForm.setName(author.getName());
+		actorForm.setPhone(author.getPhone());
+		actorForm.setPhoto(author.getPhoto());
+		actorForm.setSurname(author.getSurname());
+		actorForm.setUserAccountpassword(author.getUserAccount().getPassword());
+		actorForm.setUserAccountuser(author.getUserAccount().getUsername());
 		final ModelAndView result;
-		result = new ModelAndView("sponsor/edit");
+		result = new ModelAndView("author/edit");
 		result.addObject("actorForm", actorForm);
 		return result;
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public ModelAndView signupSponsor() {
+	public ModelAndView signupAuthor() {
 		final ModelAndView result;
 
 		final ActorForm actorForm = new ActorForm();
 
-		result = new ModelAndView("sponsor/signup");
-		result.addObject("sponsor", actorForm);
+		result = new ModelAndView("author/signup");
+		result.addObject("actorForm", actorForm);
 		return result;
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveSponsor(@ModelAttribute("sponsor") @Valid final ActorForm actorForm, final BindingResult binding, final HttpServletRequest request) {
+	public ModelAndView saveAuthor(@ModelAttribute("actorForm") @Valid final ActorForm actorForm, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
-			result = new ModelAndView("sponsor/signup");
+			result = new ModelAndView("author/signup");
 			result.addObject("errors", binding.getAllErrors());
-			result.addObject("sponsor", actorForm);
+			result.addObject("actorForm", actorForm);
 		} else if (actorForm.getId() == 0)
 			try {
-				Sponsor sponsor = this.sponsorService.reconstruct(actorForm, binding);
+				Author author = this.authorService.reconstruct(actorForm, binding);
 				final Finder finder = this.finderService.createForNewActor();
-				sponsor.setFinder(finder);
-				sponsor = this.sponsorService.save(sponsor);
-				result = this.viewSponsor();
+				author.setFinder(finder);
+				author = this.authorService.save(author);
+				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("sponsor/signup");
+				result = new ModelAndView("author/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
 			}
 		else
 			try {
-				final Sponsor sponsor = this.sponsorService.reconstruct(actorForm, binding);
-				this.sponsorService.save(sponsor);
-				result = this.viewSponsor();
+				final Author author = this.authorService.reconstruct(actorForm, binding);
+				this.authorService.save(author);
+				result = this.viewAuthor();
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("sponsor/signup");
+				result = new ModelAndView("author/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
 			}
