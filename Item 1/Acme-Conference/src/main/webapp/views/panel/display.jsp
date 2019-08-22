@@ -10,9 +10,9 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 	<acme:showActivity title="${panel.title}"
-	attachments="${panel.attachments}" hours="${panel.hours}"
+	hours="${panel.hours}"
 	minutes="${panel.minutes}" room="${panel.minutes}"
-	speakers="${panel.speakers}" summary="${panel.summary}"
+	summary="${panel.summary}"
 	lang="${lang}" />
 
 <jstl:choose>
@@ -32,6 +32,45 @@
 	<jstl:otherwise>
 		<spring:message code="activity.startMoment" />
 		<spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+
+<jstl:set value="${panel.attachments.size()}" var="s1"/>
+<jstl:set value="${panel.speakers.size()}" var="s2"/>
+<jstl:choose>
+	<jstl:when test="${not empty panel.attachments and (s1 gt 1)}">
+		<spring:message code="activity.attachments"/>
+		<jstl:forEach items="${panel.attachments}" var="line">
+		<ul>
+			<li><a href="${line}"><jstl:out value="${line}"/></a></li>
+		</ul>
+		</jstl:forEach>
+	</jstl:when>
+	<jstl:when test="${not empty panel.attachments and (s1 le 1)}">
+		<spring:message code="activity.attachments"/>: 
+			<a href="${panel.attachments.get(0)}"><jstl:out value="${panel.attachments.get(0)}"/></a><br />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.attachments" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+<jstl:choose>
+	<jstl:when test="${not empty panel.speakers and (s2 gt 1)}">
+		<spring:message code="activity.speakers"/>
+		<jstl:forEach items="${panel.speakers}" var="line">
+		<ul>
+			<li><jstl:out value="${line}"/></li>
+		</ul>
+		</jstl:forEach>
+	</jstl:when>
+	<jstl:when test="${not empty panel.speakers and (s2 le 1)}">
+		<spring:message code="activity.speakers"/>: 
+			<a href="${panel.speakers.get(0)}"><jstl:out value="${panel.speakers.get(0)}"/></a><br />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.speakers" /> <spring:message code="empty" />
 		<br />
 	</jstl:otherwise>
 </jstl:choose>

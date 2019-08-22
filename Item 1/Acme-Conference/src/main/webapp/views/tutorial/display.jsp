@@ -12,10 +12,10 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <acme:showActivity title="${tutorial.title}"
-	attachments="${tutorial.attachments}" hours="${tutorial.hours}"
+	hours="${tutorial.hours}"
 	minutes="${tutorial.minutes}" room="${tutorial.minutes}"
-	speakers="${tutorial.speakers}" summary="${tutorial.summary}"
-	lang="${lang}" />
+	summary="${tutorial.summary}"
+	lang="${lang}"/>
 
 <jstl:choose>
 	<jstl:when test="${not empty tutorial.startMoment}">
@@ -37,6 +37,46 @@
 		<br />
 	</jstl:otherwise>
 </jstl:choose>
+<jstl:set value="${tutorial.attachments.size()}" var="s1"/>
+<jstl:set value="${tutorial.speakers.size()}" var="s2"/>
+<jstl:choose>
+	<jstl:when test="${not empty tutorial.attachments and (s1 gt 1)}">
+		<spring:message code="activity.attachments"/>
+		<jstl:forEach items="${attachments}" var="line">
+		<ul>
+			<li><a href="${line}"><jstl:out value="${line}"/></a></li>
+		</ul>
+		</jstl:forEach>
+	</jstl:when>
+	<jstl:when test="${not empty tutorial.attachments and (s1 le 1)}">
+		<spring:message code="activity.attachments"/>: 
+			<a href="${tutorial.attachments.get(0)}"><jstl:out value="${tutorial.attachments.get(0)}"/></a><br />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.attachments" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+<jstl:choose>
+	<jstl:when test="${not empty tutorial.speakers and (s2 gt 1)}">
+		<spring:message code="activity.speakers"/>
+		<jstl:forEach items="${tutorial.speakers}" var="line">
+		<ul>
+			<li><jstl:out value="${line}"/></li>
+		</ul>
+		</jstl:forEach>
+	</jstl:when>
+	<jstl:when test="${not empty tutorial.speakers and (s2 le 1)}">
+		<spring:message code="activity.speakers"/>: 
+			<jstl:out value="${tutorial.speakers.get(0)}"/><br />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="activity.speakers" /> <spring:message code="empty" />
+		<br />
+	</jstl:otherwise>
+</jstl:choose>
+
+
 
 <!-- Lista de sections dentro del tutorial -->
 <display:table name="${tutorial.sections}" id="row"
@@ -44,6 +84,12 @@
 	class="displaytag">
 
 	<display:column property="title" titleKey="tutorial.section.title" />
+
+	<display:column>
+			<acme:button
+				url="section/display.do?sectionId=${row.id}&tutorialId=${tutorial.id}&conferenceId=${conferenceId}"
+				name="edit" code="tutorial.section.display" />
+	</display:column>
 
 	<display:column>
 		<security:authorize access="hasRole('ADMIN')">

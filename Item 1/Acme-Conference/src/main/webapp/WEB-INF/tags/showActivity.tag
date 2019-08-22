@@ -19,8 +19,6 @@
 <%@ attribute name="hours" required="true"%>
 <%@ attribute name="minutes" required="true"%>
 <%@ attribute name="summary" required="true"%>
-<%@ attribute name="attachments" required="true"%>
-<%@ attribute name="speakers" required="true"%>
 <%@ attribute name="lang" required="true"%>
 
 <jstl:choose>
@@ -69,32 +67,3 @@
 		<br />
 	</jstl:otherwise>
 </jstl:choose>
-<jstl:choose>
-	<jstl:when test="${not empty attachments}">
-		<spring:message code="activity.attachments"/>
-		<jstl:forEach items="${attachments}" var="line">
-		<ul>
-			<li><jstl:out value="${line}"/></li>
-		</ul>
-		</jstl:forEach>
-	</jstl:when>
-	<jstl:otherwise>
-		<spring:message code="activity.attachments" /> <spring:message code="empty" />
-		<br />
-	</jstl:otherwise>
-</jstl:choose>
-<jstl:choose>
-	<jstl:when test="${not empty speakers}">
-		<spring:message code="activity.speakers"/>
-		<jstl:forEach items="${speakers}" var="line">
-		<ul>
-			<li><jstl:out value="${line}"/></li>
-		</ul>
-		</jstl:forEach>
-	</jstl:when>
-	<jstl:otherwise>
-		<spring:message code="activity.speakers" /> <spring:message code="empty" />
-		<br />
-	</jstl:otherwise>
-</jstl:choose>
-<br />
