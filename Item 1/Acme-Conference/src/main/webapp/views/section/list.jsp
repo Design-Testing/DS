@@ -38,4 +38,4 @@
 				url="section/create.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}"
 				name="edit" code="section.create" />
 		</security:authorize>
-		<acme:button url="tutorial/display.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="back" code="section.back" />
+		<acme:button url="tutorial/display.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="back" code="section.tutorial" />

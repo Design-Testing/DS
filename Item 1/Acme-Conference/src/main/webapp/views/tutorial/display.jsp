@@ -42,7 +42,7 @@
 <jstl:choose>
 	<jstl:when test="${not empty tutorial.attachments and (s1 gt 1)}">
 		<spring:message code="activity.attachments"/>
-		<jstl:forEach items="${attachments}" var="line">
+		<jstl:forEach items="${tutorial.attachments}" var="line">
 		<ul>
 			<li><a href="${line}"><jstl:out value="${line}"/></a></li>
 		</ul>
@@ -75,9 +75,9 @@
 		<br />
 	</jstl:otherwise>
 </jstl:choose>
+<br/>
 
-
-
+<h3><spring:message code="tutorial.section" /></h3>
 <!-- Lista de sections dentro del tutorial -->
 <display:table name="${tutorial.sections}" id="row"
 	requestURI="section/list.do?tutorialId=${tutorial.id}" pagesize="5"

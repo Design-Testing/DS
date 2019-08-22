@@ -28,7 +28,8 @@
     <button name="save" type="submit" class="button">
         <spring:message code="section.save"/>
     </button>
-	<jstl:if test="${not empty tutorialId}">
+	<jstl:if test="${not empty tutorialId and not empty conferenceId}">
 		<acme:button url="section/list.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="back" code="section.back"/>
+		<acme:button url="tutorial/display.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="tutorial" code="section.tutorial" />
 	</jstl:if>
 </form:form>
