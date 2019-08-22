@@ -78,7 +78,7 @@ public class ConferenceController extends AbstractController {
 	public ModelAndView list() {
 		final ModelAndView result;
 
-		final Collection<Conference> conferences = this.conferenceService.findAll();
+		final Collection<Conference> conferences = this.conferenceService.findAllFinal();
 
 		final SecurityContext context = SecurityContextHolder.getContext();
 		final Authentication authentication = context.getAuthentication();
@@ -107,7 +107,7 @@ public class ConferenceController extends AbstractController {
 	public ModelAndView listFurthcoming() {
 		final ModelAndView result;
 
-		final Collection<Conference> conferences = this.conferenceService.findFurthcomingConferences();
+		final Collection<Conference> conferences = this.conferenceService.findFinalFurthcomingConferences();
 
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
@@ -121,7 +121,7 @@ public class ConferenceController extends AbstractController {
 	public ModelAndView listPast() {
 		final ModelAndView result;
 
-		final Collection<Conference> conferences = this.conferenceService.findPastConferences();
+		final Collection<Conference> conferences = this.conferenceService.findFinalPastConferences();
 
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
@@ -135,7 +135,7 @@ public class ConferenceController extends AbstractController {
 	public ModelAndView listRunning() {
 		final ModelAndView result;
 
-		final Collection<Conference> conferences = this.conferenceService.findRunningConferences();
+		final Collection<Conference> conferences = this.conferenceService.findFinalRunningConferences();
 
 		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
