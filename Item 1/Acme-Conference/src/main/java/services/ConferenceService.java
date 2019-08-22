@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.ConferenceRepository;
+import repositories.SubmissionRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
@@ -45,6 +46,9 @@ public class ConferenceService {
 
 	@Autowired
 	private MessageService			messageService;
+
+	@Autowired
+	private SubmissionRepository	submissionRepository;
 
 	//	@Autowired
 	//	private ActivityService			activityService;
@@ -310,6 +314,7 @@ public class ConferenceService {
 		final Administrator principal = this.administratorService.findByPrincipal();
 		final Date now = new Date();
 		Assert.isTrue(now.before(conference.getNotification()), "notification deadline is elapsed");
+		Assert.isTrue(now.after(conference.getSubmission()), "submission deadline must be elapsed");
 		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
 		for (final Submission s : submissions)
 			if (!s.getStatus().equals("UNDER-REVIEWED")) {
@@ -321,6 +326,8 @@ public class ConferenceService {
 				recipients.add(s.getAuthor());
 				m.setRecivers(recipients);
 				this.messageService.send(m);
+				s.setIsNotified(true);
+				this.submissionRepository.save(s);
 			}
 	}
 

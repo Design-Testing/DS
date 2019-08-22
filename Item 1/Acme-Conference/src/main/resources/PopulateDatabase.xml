@@ -638,6 +638,16 @@
 		<property name="conference" ref="conference3" />
 		<property name="isNotified" value="false" />
 	</bean>
+	
+	<bean id="submission4" class="domain.Submission">
+		<property name="ticker" value="AUX-BQ29" />
+		<property name="moment" value="2019/08/20 07:25" />
+		<property name="status" value="ACCEPTED" />
+		<property name="reviewPaper" ref="paper5" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference6" />
+		<property name="isNotified" value="false" />
+	</bean>
 
 
 	<!-- =================================================================== -->
@@ -751,6 +761,28 @@
 		<property name="summary" value="Summary of conference 5" />
 		<property name="fee" value="1520.89" />
 		<property name="isDraft" value="true" />
+		<property name="activities">
+			<list>
+
+			</list>
+		</property>
+		<property name="category" ref="category3" />
+
+	</bean>
+	
+	<bean id="conference6" class="domain.Conference">
+		<!-- CONFERENCE -->
+		<property name="title" value="Conferencia Iris" />
+		<property name="acronym" value="Iris" />
+		<property name="venue" value="Iris" />
+		<property name="submission" value="2019/08/20 00:00" />
+		<property name="notification" value="2019/09/31 00:00" />
+		<property name="cameraReady" value="2019/10/04 00:00" />
+		<property name="startDate" value="2019/10/05 00:00" />
+		<property name="endDate" value="2019/10/06 00:00" />
+		<property name="summary" value="Summary of conference 6" />
+		<property name="fee" value="1520.89" />
+		<property name="isDraft" value="false" />
 		<property name="activities">
 			<list>
 
@@ -1014,6 +1046,17 @@
 		<property name="authors">
 			<list>
 				<value>Author of paper4</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="paper5" class="domain.Paper">
+		<property name="title" value="Title of paper 5" />
+		<property name="summary" value="Summary of paper 5" />
+		<property name="document" value="http://www.documentPaper5.com" />
+		<property name="authors">
+			<list>
+				<value>Author of paper5</value>
 			</list>
 		</property>
 	</bean>

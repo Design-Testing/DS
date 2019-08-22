@@ -356,8 +356,10 @@ public class ConferenceAdministratorController extends AbstractController {
 				result = this.display(conferenceId);
 				if (oops.getMessage().equals("notification deadline is elapsed"))
 					result.addObject("notificationMsg", "conference.notification.elapsed");
-				else
-					result.addObject("notificationMsg", "commit.error");
+				if (oops.getMessage().equals("submission deadline must be elapsed"))
+					result.addObject("notificationMsg", "conference.submission.not.elapsed");
+				//else
+				//result.addObject("notificationMsg", "commit.error");
 
 			}
 		else

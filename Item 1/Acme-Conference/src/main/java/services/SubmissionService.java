@@ -280,13 +280,9 @@ public class SubmissionService {
 			if (reports.size() < 3) {
 				final Conference conference = s.getConference();
 				final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conference.getId());
-				System.out.println("REVIEWERS " + reviewers);
 				for (final Reviewer r : reviewers) {
 					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
-					System.out.println("existingReport" + existingReport);
 					if (existingReport == null && reports.size() < 3) {
-						System.out.println("holaaa");
-						System.out.println("submisison" + s);
 						Report newReport = this.reportService.create(s.getId(), r.getId());
 						newReport = this.reportService.save(newReport, s, r);
 					}
