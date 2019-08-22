@@ -24,14 +24,7 @@
 
 </jstl:if>
 
-<!-------------------------------------------------------------------------------------------->
-<!------------------------------- NOTIFICATION BUTTON ---------------------------------------->
-<!-------------------------------------------------------------------------------------------->
 
-<jstl:if test="${isAdmin eq true and conference.isDraft eq false  }" >
-			<acme:button url="conference/administrator/notifyStatus.do?conferenceId=${conference.id}" name="display" code="conference.notify"/>
-
-</jstl:if>
 
 <!--------------------------------------------------------------------------------------->
 <!------------------------------- GENERAL INFORMATION ----------------------------------->
@@ -149,7 +142,14 @@
 	<jstl:if test="${not empty submissions and conference.isDraft eq false  }" >
 			<acme:button url="conference/administrator/decideOnConference.do?conferenceId=${conference.id}" name="display" code="conference.run.decision"/>
 
+			<acme:button url="conference/administrator/notifyStatus.do?conferenceId=${conference.id}" name="display" code="conference.notify"/>
 	</jstl:if>
+	
+	<jstl:if test="${not empty notificationMsg  }">
+    	<h5 style="color: red;"><spring:message code="${notificationMsg}"/></h5>
+    </jstl:if>
+	
+
 	
 	
 	
