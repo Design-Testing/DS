@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
 import services.ActorService;
 import services.MessageService;
 import services.TopicService;
@@ -44,6 +45,7 @@ public class MessageController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
+		final Actor principal = this.actorService.findByPrincipal();
 		result = new ModelAndView("message/edit");
 
 		final Collection<Topic> topics = this.topicService.findAll();
@@ -52,7 +54,8 @@ public class MessageController {
 
 		final Collection<Actor> actors = this.actorService.findAll();
 		result.addObject("actors", actors);
-
+		final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		result.addObject("isAdmin", isAdmin);
 		result.addObject("topics", topics);
 		result.addObject("m", message);
 		return result;
@@ -73,6 +76,8 @@ public class MessageController {
 			result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
 		} else {
 			result = new ModelAndView("message/edit");
+			final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+			result.addObject("isAdmin", isAdmin);
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("m", message);
 		}
@@ -191,6 +196,70 @@ public class MessageController {
 
 		result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
 		return result;
+	}
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int messageId) {
+		ModelAndView result;
+		final Actor principal = this.actorService.findByPrincipal();
+		final Message message = this.messageService.findOne(messageId);
+
+		result = new ModelAndView("message/display");
+
+		result.addObject("m", message);
+		return result;
+	}
+
+	@RequestMapping(value = "/broadcastAuthors", method = RequestMethod.POST)
+	public ModelAndView broadcastAuthors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding) {
+		ModelAndView result;
+
+		final Actor principal = this.actorService.findByPrincipal();
+		if (!binding.hasErrors()) {
+			this.messageService.broadcastToAllAuthors(message);
+			result = new ModelAndView("message/list");
+			result.addObject("topics", this.topicService.findAll());
+			final Collection<Actor> actors = this.actorService.findAll();
+			result.addObject("actors", actors);
+
+			result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
+		} else {
+
+			result = new ModelAndView("message/edit");
+			final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+			result.addObject("isAdmin", isAdmin);
+			result.addObject("errors", binding.getAllErrors());
+			result.addObject("m", message);
+		}
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/broadcastActors", method = RequestMethod.POST)
+	public ModelAndView broadcastActors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding) {
+		ModelAndView result;
+
+		final Actor principal = this.actorService.findByPrincipal();
+
+		if (!binding.hasErrors()) {
+			this.messageService.broadcastToAllActors(message);
+			result = new ModelAndView("message/list");
+			result.addObject("topics", this.topicService.findAll());
+			final Collection<Actor> actors = this.actorService.findAll();
+			result.addObject("actors", actors);
+
+			result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
+		} else {
+			result = new ModelAndView("message/edit");
+			final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+			result.addObject("isAdmin", isAdmin);
+			result.addObject("errors", binding.getAllErrors());
+			result.addObject("m", message);
+		}
+
+		return result;
+
 	}
 
 }

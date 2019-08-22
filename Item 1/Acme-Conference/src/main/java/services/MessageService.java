@@ -114,11 +114,11 @@ public class MessageService {
 		final Collection<Actor> actors = this.actorService.findAll();
 		final Collection<Actor> autors = new ArrayList<Actor>();
 		final Authority authAutor = new Authority();
-		authAutor.setAuthority("AUTOR");
+		authAutor.setAuthority(Authority.AUTHOR);
 		for (final Actor actor : actors)
 			if (actor.getUserAccount().getAuthorities().contains(authAutor))
 				autors.add(actor);
-		m.setRecivers(actors);
+		m.setRecivers(autors);
 		this.send(m);
 	}
 
@@ -135,11 +135,11 @@ public class MessageService {
 		final Collection<Actor> actors = this.actorService.findAll();
 		final Collection<Actor> autors = new ArrayList<Actor>();
 		final Authority authAutor = new Authority();
-		authAutor.setAuthority("AUTOR");
+		authAutor.setAuthority(Authority.AUTHOR);
 		for (final Actor actor : actors)
 			if (actor.getUserAccount().getAuthorities().contains(authAutor))
 				autors.add(actor);
-		m.setRecivers(actors);
+		m.setRecivers(autors);
 		this.send(m);
 	}
 
@@ -156,11 +156,11 @@ public class MessageService {
 		final Collection<Actor> actors = this.actorService.findAll();
 		final Collection<Actor> autors = new ArrayList<Actor>();
 		final Authority authAutor = new Authority();
-		authAutor.setAuthority("AUTOR");
+		authAutor.setAuthority(Authority.AUTHOR);
 		for (final Actor actor : actors)
 			if (actor.getUserAccount().getAuthorities().contains(authAutor))
 				autors.add(actor);
-		m.setRecivers(actors);
+		m.setRecivers(autors);
 		this.send(m);
 	}
 

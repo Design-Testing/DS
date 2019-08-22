@@ -67,4 +67,12 @@
 	<button name="save" type="submit" class="button">
 		<spring:message code="send" />
 	</button>
+	<jstl:if test="${isAdmin}">
+		<button type="submit" formaction="message/broadcastAuthors.do" class="button">
+			<spring:message code="broadcastAuthors" />
+		</button>
+		<button type="submit" formaction="message/broadcastActors.do" class="button">
+			<spring:message code="broadcastActors" />
+		</button>
+	</jstl:if>
 </form:form>
