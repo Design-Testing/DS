@@ -107,17 +107,6 @@ public class SponsorshipController extends AbstractController {
 		ModelAndView result;
 		final Sponsor sponsor = this.sponsorService.findByPrincipal();
 		final Collection<String> makes = this.configurationParametersService.find().getCreditCardMake();
-		System.out.println(sponsorship.getBanner());
-		System.out.println(sponsorship.getId());
-		System.out.println(sponsorship.getTargetPage());
-		System.out.println(sponsorship.getVersion());
-		System.out.println(sponsorship.getSponsor().getId());
-		System.out.println(sponsorship.getCreditCard().getCvv());
-		System.out.println(sponsorship.getCreditCard().getHolderName());
-		System.out.println(sponsorship.getCreditCard().getMake());
-		System.out.println(sponsorship.getCreditCard().getNumber());
-		System.out.println(sponsorship.getCreditCard().getExpirationMonth());
-		System.out.println(sponsorship.getCreditCard().getExpirationYear());
 
 		if (binding.hasErrors()) {
 			result = new ModelAndView("sponsorship/edit");
