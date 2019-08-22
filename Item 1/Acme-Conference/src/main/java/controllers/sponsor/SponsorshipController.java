@@ -1,9 +1,7 @@
 
 package controllers.sponsor;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ConfigurationParametersService;
 import services.SponsorService;
 import services.SponsorshipService;
 import controllers.AbstractController;
@@ -30,12 +29,15 @@ import domain.Sponsorship;
 public class SponsorshipController extends AbstractController {
 
 	@Autowired
-	private SponsorshipService	sponsorshipService;
+	private SponsorshipService				sponsorshipService;
 
 	@Autowired
-	private SponsorService		sponsorService;
+	private SponsorService					sponsorService;
 
-	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
+
+	final String							lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -73,10 +75,12 @@ public class SponsorshipController extends AbstractController {
 		ModelAndView result = new ModelAndView();
 		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
 		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+		final Collection<String> makes = this.configurationParametersService.find().getCreditCardMake();
 
 		if (sponsor.getId() == sponsorship.getSponsor().getId()) {
 			result = new ModelAndView("sponsorship/edit");
 			result.addObject("sponsorship", sponsorship);
+			result.addObject("makes", makes);
 		} else
 			result = new ModelAndView("forward:/sponsorship/sponsor/list.do");
 		return result;
@@ -86,11 +90,8 @@ public class SponsorshipController extends AbstractController {
 	public ModelAndView createSponsorship() {
 		final ModelAndView result;
 		final Sponsor sponsor = this.sponsorService.findByPrincipal();
-		final List<String> makes = new ArrayList<String>();
-		makes.add("VISA");
-		makes.add("MASTER");
-		makes.add("DINNERS");
-		makes.add("AMEX");
+		final Collection<String> makes = this.configurationParametersService.find().getCreditCardMake();
+		System.out.println(makes);
 
 		final Sponsorship sponsorship = this.sponsorshipService.create();
 		sponsorship.setSponsor(sponsor);
@@ -105,11 +106,19 @@ public class SponsorshipController extends AbstractController {
 	public ModelAndView saveSponsorship(@ModelAttribute("sponsorship") @Valid final Sponsorship sponsorship, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 		final Sponsor sponsor = this.sponsorService.findByPrincipal();
-		final List<String> makes = new ArrayList<String>();
-		makes.add("VISA");
-		makes.add("MASTER");
-		makes.add("DINNERS");
-		makes.add("AMEX");
+		final Collection<String> makes = this.configurationParametersService.find().getCreditCardMake();
+		System.out.println(sponsorship.getBanner());
+		System.out.println(sponsorship.getId());
+		System.out.println(sponsorship.getTargetPage());
+		System.out.println(sponsorship.getVersion());
+		System.out.println(sponsorship.getSponsor().getId());
+		System.out.println(sponsorship.getCreditCard().getCvv());
+		System.out.println(sponsorship.getCreditCard().getHolderName());
+		System.out.println(sponsorship.getCreditCard().getMake());
+		System.out.println(sponsorship.getCreditCard().getNumber());
+		System.out.println(sponsorship.getCreditCard().getExpirationMonth());
+		System.out.println(sponsorship.getCreditCard().getExpirationYear());
+
 		if (binding.hasErrors()) {
 			result = new ModelAndView("sponsorship/edit");
 			result.addObject("errors", binding.getAllErrors());

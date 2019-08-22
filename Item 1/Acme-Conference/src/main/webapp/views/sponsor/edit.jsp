@@ -55,8 +55,8 @@
         <spring:message code="sponsor.save"/>
     </button>
 
-    <input type="button" class="btn btn-danger" name="cancell"
-           value="<spring:message code="sponsor.cancell" />"
+    <input type="button" class="btn btn-danger" name="cancel"
+           value="<spring:message code="sponsor.cancel" />"
            onclick="relativeRedir('sponsor/display.do?sponsorId=${sponsor.id}');"/>
 
 </form:form>
