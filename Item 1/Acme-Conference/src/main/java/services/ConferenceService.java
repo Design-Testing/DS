@@ -26,6 +26,7 @@ import domain.Category;
 import domain.Conference;
 import domain.Message;
 import domain.Submission;
+import domain.Topic;
 import forms.ConferenceForm;
 
 @Service
@@ -49,6 +50,9 @@ public class ConferenceService {
 
 	@Autowired
 	private SubmissionRepository	submissionRepository;
+
+	@Autowired
+	private TopicService			topicService;
 
 	//	@Autowired
 	//	private ActivityService			activityService;
@@ -316,6 +320,8 @@ public class ConferenceService {
 		Assert.isTrue(now.before(conference.getNotification()), "notification deadline is elapsed");
 		Assert.isTrue(now.after(conference.getSubmission()), "submission deadline must be elapsed");
 		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
+		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
+		final Topic topic = topics.iterator().next();
 		for (final Submission s : submissions)
 			if (!s.getStatus().equals("UNDER-REVIEWED")) {
 				final Message m = this.messageService.create();
@@ -325,9 +331,12 @@ public class ConferenceService {
 				final Collection<Actor> recipients = new ArrayList<Actor>();
 				recipients.add(s.getAuthor());
 				m.setRecivers(recipients);
+				m.setTopic(topic);
 				this.messageService.send(m);
+				System.out.println("ssssssssssssssssssssssss");
 				s.setIsNotified(true);
 				this.submissionRepository.save(s);
+				System.out.println("XXXXXXXXXXXXXXXX");
 			}
 	}
 

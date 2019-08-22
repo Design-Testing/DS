@@ -540,7 +540,7 @@
 	<bean id="topic5" class="domain.Topic">
 		<!-- Topic -->
 		<property name="spanish" value="OTRO" />
-		<property name="english" value="ORTHER" />
+		<property name="english" value="OTHER" />
 	</bean>
 
 
