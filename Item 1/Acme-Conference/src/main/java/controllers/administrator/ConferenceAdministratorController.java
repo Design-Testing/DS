@@ -324,4 +324,33 @@ public class ConferenceAdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/notifyStatus", method = RequestMethod.GET)
+	public ModelAndView notifyStatus(@RequestParam final int conferenceId) {
+		ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+
+		final Conference conference = this.conferenceService.findOne(conferenceId);
+
+		if (conference != null)
+			try {
+				this.conferenceService.notifyStatus(conferenceId);
+				result = this.display(conferenceId);
+				//result.addObject("message.notification.successful", "message.notification.successful");
+				result.addObject("msgerror", "message.notification.successful");
+			} catch (final Throwable oops) {
+				result = this.display(conferenceId);
+				if (oops.getMessage().equals("notification deadline is elapsed"))
+					result.addObject("msgerror", "conference.notification.elapsed");
+				else
+					result.addObject("errors", "commit.error");
+
+			}
+		else
+			result = new ModelAndView("redirect:misc/403");
+
+		return result;
+
+	}
+
 }

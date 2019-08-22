@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -18,8 +19,11 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Activity;
+import domain.Actor;
+import domain.Administrator;
 import domain.Category;
 import domain.Conference;
+import domain.Message;
 import domain.Submission;
 import forms.ConferenceForm;
 
@@ -38,6 +42,9 @@ public class ConferenceService {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private MessageService			messageService;
 
 	//	@Autowired
 	//	private ActivityService			activityService;
@@ -295,5 +302,26 @@ public class ConferenceService {
 	//		this.conferenceRepository.delete(conference);
 	//		this.activityService.deleteAll(conference.getActivities());
 	//	}
+
+	public void notifyStatus(final int conferenceId) {
+
+		final Conference conference = this.findOne(conferenceId);
+		Assert.notNull(conference);
+		final Administrator principal = this.administratorService.findByPrincipal();
+		final Date now = new Date();
+		Assert.isTrue(now.before(conference.getNotification()), "notification deadline is elapsed");
+		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
+		for (final Submission s : submissions)
+			if (!s.getStatus().equals("UNDER-REVIEWED")) {
+				final Message m = this.messageService.create();
+				m.setSubject("Your submission has been " + s.getStatus());
+				m.setBody("Your submission with ticker" + s.getTicker() + "(to the conference with title " + conference.getTitle() + ") has been " + s.getStatus());
+				m.setSender(principal);
+				final Collection<Actor> recipients = new ArrayList<Actor>();
+				recipients.add(s.getAuthor());
+				m.setRecivers(recipients);
+				this.messageService.send(m);
+			}
+	}
 
 }

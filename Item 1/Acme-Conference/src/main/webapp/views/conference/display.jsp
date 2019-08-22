@@ -11,7 +11,7 @@
 
 
 <!-------------------------------------------------------------------------------------------->
-<!------------------------------- CREATE CONFERENCE BUTTON ----------------------------------->
+<!------------------------------- CREATE SUBMISSION BUTTON ----------------------------------->
 <!-------------------------------------------------------------------------------------------->
 
 <jstl:if test="${isAuthor eq true and conference.isDraft eq false  }" >
@@ -21,6 +21,15 @@
 			<jstl:if test="${availableToSubmit eq false }" >
 			<h5 style="color: red;"><spring:message code="conference.submission.elapsed"/></h5>
 			</jstl:if>
+
+</jstl:if>
+
+<!-------------------------------------------------------------------------------------------->
+<!------------------------------- NOTIFICATION BUTTON ---------------------------------------->
+<!-------------------------------------------------------------------------------------------->
+
+<jstl:if test="${isAdmin eq true and conference.isDraft eq false  }" >
+			<acme:button url="conference/administrator/notifyStatus.do?conferenceId=${conference.id}" name="display" code="conference.notify"/>
 
 </jstl:if>
 
