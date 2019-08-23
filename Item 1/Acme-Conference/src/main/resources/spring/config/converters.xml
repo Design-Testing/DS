@@ -44,7 +44,8 @@
 		<bean class="converters.ReportToStringConverter" />
 		<bean class="converters.MessageToStringConverter" />
 		<bean class="converters.TopicToStringConverter" />
-		
+		<bean class="converters.ReportToStringConverter" />
+		<bean class="converters.ReviewerToStringConverter" />
 		 
 		<bean class="converters.StringToCategoryConverter" />
 		<bean class="converters.StringToActivityConverter" />
@@ -67,6 +68,8 @@
 		<bean class="converters.StringToTutorialConverter" /> 
 		<bean class="converters.StringToMessageConverter" /> 
 		<bean class="converters.StringToTopicConverter" /> 
+		<bean class="converters.StringToReportConverter" /> 
+		<bean class="converters.StringToReviewerConverter" /> 
 	</util:list>
 	
 </beans>

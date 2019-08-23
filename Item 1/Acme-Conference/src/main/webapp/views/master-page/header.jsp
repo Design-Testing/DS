@@ -77,7 +77,9 @@
 					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
 				</ul>
 			</li>
-						
+			<li><a class="fNiv" href="report/list.do"><spring:message	code="master.page.reports" /></a>
+
+			</li>
 		</security:authorize>
 		
 		

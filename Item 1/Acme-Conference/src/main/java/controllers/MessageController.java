@@ -26,7 +26,7 @@ import domain.Topic;
 
 @Controller
 @RequestMapping("/message")
-public class MessageController {
+public class MessageController extends AbstractController {
 
 	@Autowired
 	private MessageService	messageService;

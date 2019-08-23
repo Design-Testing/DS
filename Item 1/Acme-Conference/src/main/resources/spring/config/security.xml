@@ -91,6 +91,9 @@
 		<!-- SPONSORSHIP -->		
 		<security:intercept-url pattern="/sponsorship/sponsor/**" access="hasRole('SPONSOR')" /> 
 		
+		<!-- REPORT -->
+		<security:intercept-url pattern="/report" access="hasRole('REVIEWER')" /> 
+		
 		<security:form-login 
 			login-page="/security/login.do"
 			password-parameter="password" 
