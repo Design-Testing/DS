@@ -340,4 +340,28 @@ public class ConferenceService {
 			}
 	}
 
+	public Collection<Conference> findAllFinal() {
+		final Collection<Conference> result = this.conferenceRepository.findAllFinal();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findFinalFurthcomingConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findFinalFurthcomingConferences();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findFinalPastConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findFinalPastConferences();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findFinalRunningConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findFinalRunningConferences();
+		Assert.notNull(result);
+		return result;
+	}
+
 }

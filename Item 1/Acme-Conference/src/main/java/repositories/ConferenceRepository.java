@@ -47,4 +47,16 @@ public interface ConferenceRepository extends JpaRepository<Conference, Integer>
 	@Query("select ac from Conference c join c.activities ac WHERE c.id=?1")
 	Collection<Activity> findConferenceActivities(int conferenceId);
 
+	@Query("select c from Conference c where c.isDraft=false")
+	Collection<Conference> findAllFinal();
+
+	@Query("select c from Conference c where c.startDate > CURRENT_TIMESTAMP and  c.isDraft=false")
+	Collection<Conference> findFinalFurthcomingConferences();
+
+	@Query("select c from Conference c where c.endDate < CURRENT_TIMESTAMP and  c.isDraft=false")
+	Collection<Conference> findFinalPastConferences();
+
+	@Query("select c from Conference c where c.endDate > CURRENT_TIMESTAMP and c.startDate < CURRENT_TIMESTAMP  and  c.isDraft=false")
+	Collection<Conference> findFinalRunningConferences();
+
 }
