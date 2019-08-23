@@ -9,10 +9,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import utilities.AbstractTest;
+import domain.ConfigurationParameters;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
-	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+	"classpath:spring/junit.xml"
 })
 @Transactional
 public class ConfigurationParametersServiceTest extends AbstractTest {
@@ -21,23 +22,31 @@ public class ConfigurationParametersServiceTest extends AbstractTest {
 	private ConfigurationParametersService	configurationParametersService;
 
 
-	@Test
-	public void createTest() {
+	@Test(expected = IllegalArgumentException.class)
+	public void saveCountryPhoneCodeTest() {
+		super.authenticate("admin1");
+		final ConfigurationParameters configurationParameters = this.configurationParametersService.find();
+		configurationParameters.setCountryPhoneCode("34");
+		this.configurationParametersService.save(configurationParameters);
 
 	}
 
-	@Test
-	public void saveTest() {
+	@Test(expected = IllegalArgumentException.class)
+	public void saveCreditCardMakeTest() {
+		super.authenticate("admin1");
+		final ConfigurationParameters configurationParameters = this.configurationParametersService.find();
+		configurationParameters.getCreditCardMake().add("");
+		this.configurationParametersService.save(configurationParameters);
 
 	}
 
-	@Test
-	public void findOneTest() {
+	@Test(expected = IllegalArgumentException.class)
+	public void saveBannerTest() {
+		super.authenticate("admin1");
+		final ConfigurationParameters configurationParameters = this.configurationParametersService.find();
+		configurationParameters.setBanner("prueba");
+		this.configurationParametersService.save(configurationParameters);
 
 	}
 
-	@Test
-	public void findAll() {
-
-	}
 }
