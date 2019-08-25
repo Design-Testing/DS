@@ -200,7 +200,8 @@ public class MessageService {
 	}
 
 	public Collection<Message> findAllByTopic(final int topicId) {
-		final Collection<Message> res = this.messageRepository.findAllByTopic(topicId);
+		final Actor principal = this.actorService.findByPrincipal();
+		final Collection<Message> res = this.messageRepository.findAllByTopic(topicId, principal.getId());
 		Assert.notNull(res);
 		return res;
 	}
