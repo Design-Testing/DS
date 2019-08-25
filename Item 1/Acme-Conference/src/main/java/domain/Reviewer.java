@@ -1,7 +1,7 @@
 
 package domain;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -14,17 +14,17 @@ import cz.jirutka.validator.collection.constraints.EachNotBlank;
 @Access(AccessType.PROPERTY)
 public class Reviewer extends Actor {
 
-	private Collection<String>	keywords;
+	private List<String>	keywords;
 
 
 	// @EachSafeHtml -> Revisar
 	@ElementCollection
 	@EachNotBlank
-	public Collection<String> getKeywords() {
+	public List<String> getKeywords() {
 		return this.keywords;
 	}
 
-	public void setKeywords(final Collection<String> keywords) {
+	public void setKeywords(final List<String> keywords) {
 		this.keywords = keywords;
 	}
 

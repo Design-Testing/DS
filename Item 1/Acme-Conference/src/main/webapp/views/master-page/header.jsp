@@ -34,6 +34,7 @@
 			</li>
 			<li><a class="fNiv" href="submission/administrator/submissions.do"><spring:message code="master.page.submissions" /></a></li>
 			<li><a class="fNiv" href="topic/list.do"><spring:message code="master.page.topics" /></a></li>
+			<li><a class="fNiv" href="dashboard/get.do"><spring:message code="master.page.dashboard" /></a></li>
 			<li><a class="fNiv" href="category/administrator/list.do"><spring:message code="master.page.categories" /></a></li>
 			<li><a class="fNiv" href="configurationParameters/administrator/display.do"><spring:message code="master.page.config" /></a></li>
 			
@@ -128,6 +129,7 @@
 					<li class="arrow"></li>
 					<li><a href="author/signup.do"><spring:message code="master.page.signup.author" /></a></li>
 					<li><a href="sponsor/signup.do"><spring:message code="master.page.signup.sponsor" /></a></li>
+					<li><a href="reviewer/signup.do"><spring:message code="master.page.signup.reviewer" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
@@ -163,7 +165,14 @@
 					</security:authorize>	
 					<security:authorize access="hasRole('AUTHOR')">
 					<li><a href="author/display.do"><spring:message code="master.page.display.profile" /></a></li>
-					</security:authorize>			
+					</security:authorize>		
+					<security:authorize access="hasRole('REVIEWER')">
+					<li><a href="reviewer/display.do"><spring:message code="master.page.display.profile" /></a></li>
+					</security:authorize>	
+					<security:authorize access="hasRole('ADMIN')">
+					<li><a href="administrator/display.do"><spring:message code="master.page.display.profile" /></a></li>
+					<li><a href="administrator/signup.do"><spring:message code="master.page.admin.create" /></a></li>
+					</security:authorize>	
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 				</ul>
 			</li>

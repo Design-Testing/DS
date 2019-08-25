@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!-- 
- * tiles.xml
- *
- * Copyright (C) 2018 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- -->
 
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
@@ -16,14 +7,19 @@
        
 <tiles-definitions>
 
-	<definition name="administrator/action-1" extends="master.page">	
-		<put-attribute name="title" value="Administrator: Action 1" />
-		<put-attribute name="body" value="/views/administrator/action-1.jsp" />
+	<definition name="administrator/display" extends="master.page">	
+		<put-attribute name="title" value="Administrator: display" />
+		<put-attribute name="body" value="/views/administrator/display.jsp" />
 	</definition>
 	
-	<definition name="administrator/action-2" extends="master.page">	
-		<put-attribute name="title" value="Administrator: Action 2" />
-		<put-attribute name="body" value="/views/administrator/action-2.jsp" />
+	<definition name="administrator/edit" extends="master.page">	
+		<put-attribute name="title" value="Administrator: edit" />
+		<put-attribute name="body" value="/views/administrator/edit.jsp" />
+	</definition>
+		
+	<definition name="administrator/signup" extends="master.page">	
+		<put-attribute name="title" value="Administrator: Sign Up" />
+		<put-attribute name="body" value="/views/administrator/signup.jsp" />
 	</definition>
 	
 </tiles-definitions>

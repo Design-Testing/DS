@@ -94,6 +94,12 @@
 		<!-- REPORT -->
 		<security:intercept-url pattern="/report" access="hasRole('REVIEWER')" /> 
 		
+		<!-- DASHBOARD -->
+		<security:intercept-url pattern="/dasboard" access="hasRole('ADMIN')" /> 
+		
+		<!-- ADMINISTRATOR -->
+		<security:intercept-url pattern="/administrator/**" access="hasRole('ADMIN')" /> 
+		
 		<security:form-login 
 			login-page="/security/login.do"
 			password-parameter="password" 
