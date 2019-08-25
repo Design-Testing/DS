@@ -49,6 +49,12 @@
     <button name="save" type="submit" class="button">
         <spring:message code="report.save"/>
     </button>
+    
+
 
 
 </form:form>
+
+    <button class="button" onclick="location.href = 'comment/create.do?entity=report&entityId=${report.id}'">
+        <spring:message code="report.addComment"/>
+    </button>
