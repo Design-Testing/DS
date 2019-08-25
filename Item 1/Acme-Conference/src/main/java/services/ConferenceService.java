@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -14,13 +15,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.ConferenceRepository;
+import repositories.SubmissionRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Activity;
+import domain.Actor;
+import domain.Administrator;
 import domain.Category;
 import domain.Conference;
+import domain.Message;
 import domain.Submission;
+import domain.Topic;
 import forms.ConferenceForm;
 
 @Service
@@ -38,6 +44,15 @@ public class ConferenceService {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private MessageService			messageService;
+
+	@Autowired
+	private SubmissionRepository	submissionRepository;
+
+	@Autowired
+	private TopicService			topicService;
 
 	//	@Autowired
 	//	private ActivityService			activityService;
@@ -295,5 +310,58 @@ public class ConferenceService {
 	//		this.conferenceRepository.delete(conference);
 	//		this.activityService.deleteAll(conference.getActivities());
 	//	}
+
+	public void notifyStatus(final int conferenceId) {
+
+		final Conference conference = this.findOne(conferenceId);
+		Assert.notNull(conference);
+		final Administrator principal = this.administratorService.findByPrincipal();
+		final Date now = new Date();
+		Assert.isTrue(now.before(conference.getNotification()), "notification deadline is elapsed");
+		Assert.isTrue(now.after(conference.getSubmission()), "submission deadline must be elapsed");
+		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
+		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
+		final Topic topic = topics.iterator().next();
+		for (final Submission s : submissions)
+			if (!s.getStatus().equals("UNDER-REVIEWED")) {
+				final Message m = this.messageService.create();
+				m.setSubject("Your submission has been " + s.getStatus());
+				m.setBody("Your submission with ticker" + s.getTicker() + "(to the conference with title " + conference.getTitle() + ") has been " + s.getStatus());
+				m.setSender(principal);
+				final Collection<Actor> recipients = new ArrayList<Actor>();
+				recipients.add(s.getAuthor());
+				m.setRecivers(recipients);
+				m.setTopic(topic);
+				this.messageService.send(m);
+				System.out.println("ssssssssssssssssssssssss");
+				s.setIsNotified(true);
+				this.submissionRepository.save(s);
+				System.out.println("XXXXXXXXXXXXXXXX");
+			}
+	}
+
+	public Collection<Conference> findAllFinal() {
+		final Collection<Conference> result = this.conferenceRepository.findAllFinal();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findFinalFurthcomingConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findFinalFurthcomingConferences();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findFinalPastConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findFinalPastConferences();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Conference> findFinalRunningConferences() {
+		final Collection<Conference> result = this.conferenceRepository.findFinalRunningConferences();
+		Assert.notNull(result);
+		return result;
+	}
 
 }

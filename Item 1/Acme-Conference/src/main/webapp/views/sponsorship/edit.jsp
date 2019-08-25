@@ -22,8 +22,12 @@
     
     <acme:textbox path="creditCard.holderName" code="sponsorship.creditCard.holderName"/>
     <br/>
-    <acme:textbox path="creditCard.make" code="sponsorship.creditCard.make"/>
-    <br/>
+    <spring:message code="sponsorship.creditCard.make"/>
+    <form:select path="creditCard.make" code="sponsorship.creditCard.make">
+    	<jstl:forEach items="${makes}" var="make">
+    			<form:option value="${make}" label="${make}"/>
+    	</jstl:forEach>
+    </form:select>
     <acme:textbox path="creditCard.number" code="sponsorship.creditCard.number"/>
     <br/>
     <acme:textbox path="creditCard.cvv" code="sponsorship.creditCard.cvv"/>
@@ -55,8 +59,8 @@
         <spring:message code="sponsorship.save"/>
     </button>
 
-    <input type="button" class="btn btn-danger" name="cancell"
-           value="<spring:message code="sponsorship.cancell" />"
+    <input type="button" class="btn btn-danger" name="cancel"
+           value="<spring:message code="sponsorship.cancel" />"
            onclick="relativeRedir('sponsorship/sponsor/display.do?sponsorshipId=${sponsorship.id}');"/>
 
 </form:form>

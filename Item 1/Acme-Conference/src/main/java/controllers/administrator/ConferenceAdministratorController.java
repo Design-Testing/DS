@@ -317,11 +317,56 @@ public class ConferenceAdministratorController extends AbstractController {
 
 		this.administratorService.findByPrincipal();
 
-		this.conferenceService.decideOnConference(conferenceId);
+		final Conference conference = this.conferenceService.findOne(conferenceId);
 
-		result = this.display(conferenceId);
+		if (conference != null)
+			try {
+				this.conferenceService.decideOnConference(conferenceId);
+				result = this.display(conferenceId);
+				result.addObject("notificationMsg", "message.make.desicion.successful");
+			} catch (final Throwable oops) {
+				result = this.display(conferenceId);
+				if (oops.getMessage().equals("submission deadline must be elapsed"))
+					result.addObject("notificationMsg", "conference.submission.not.elapsed");
+				else
+					result.addObject("notificationMsg", "commit.error");
+
+			}
+		else
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
+	}
+
+	@RequestMapping(value = "/notifyStatus", method = RequestMethod.GET)
+	public ModelAndView notifyStatus(@RequestParam final int conferenceId) {
+		ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+
+		final Conference conference = this.conferenceService.findOne(conferenceId);
+
+		if (conference != null)
+			try {
+				this.conferenceService.notifyStatus(conferenceId);
+				result = this.display(conferenceId);
+				//result.addObject("message.notification.successful", "message.notification.successful");
+				result.addObject("notificationMsg", "message.notification.successful");
+			} catch (final Throwable oops) {
+				result = this.display(conferenceId);
+				if (oops.getMessage().equals("notification deadline is elapsed"))
+					result.addObject("notificationMsg", "conference.notification.elapsed");
+				if (oops.getMessage().equals("submission deadline must be elapsed"))
+					result.addObject("notificationMsg", "conference.submission.not.elapsed");
+				//else
+				//result.addObject("notificationMsg", "commit.error");
+
+			}
+		else
+			result = new ModelAndView("redirect:misc/403");
+
+		return result;
+
 	}
 
 }

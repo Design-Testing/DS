@@ -29,6 +29,10 @@
     
     <acme:textbox path="welcomeMessageEn" code="configurationParameters.welcomeMessageEn"/>
     <br/>
+    <acme:textbox path="creditCardMake" code="configurationParameters.creditCardMake"/>
+    <br/>
+    <acme:textbox path="voidWords" code="configurationParameters.voidWords"/>
+    <br/>
     <br/>
     
     
@@ -50,8 +54,8 @@
         <spring:message code="configurationParameters.save"/>
     </button>
 
-    <input type="button" class="btn btn-danger" name="cancell"
-           value="<spring:message code="configurationParameters.cancell" />"
+    <input type="button" class="btn btn-danger" name="cancel"
+           value="<spring:message code="configurationParameters.cancel" />"
            onclick="relativeRedir('configurationParameters/administrator/display.do');"/>
 
 </form:form>

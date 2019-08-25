@@ -69,4 +69,10 @@ public class TopicService {
 		return res;
 	}
 
+	public Collection<Topic> findTopicByNames(final String spanishName, final String englishName) {
+		final Collection<Topic> result = this.topicRepository.findTopicByNames(spanishName, englishName);
+		Assert.notNull(result);
+		return result;
+	}
+
 }
