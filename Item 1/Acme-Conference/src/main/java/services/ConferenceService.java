@@ -364,4 +364,14 @@ public class ConferenceService {
 		return result;
 	}
 
+	public Collection<Conference> findAllByAuthorUserId(final int authorUAId) {
+		final Collection<Conference> result = this.conferenceRepository.findAllByAuthorUserId(authorUAId);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public boolean exists(final int id) {
+		return this.conferenceRepository.exists(id);
+	}
+
 }
