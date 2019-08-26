@@ -58,3 +58,6 @@
     <button class="button" onclick="location.href = 'comment/create.do?entity=report&entityId=${report.id}'">
         <spring:message code="report.addComment"/>
     </button>
+    <button class="button" onclick="location.href = 'comment/list.do?entity=report&id=${report.id}'">
+        <spring:message code="report.listComment"/>
+    </button>
