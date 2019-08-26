@@ -792,6 +792,27 @@
 
 	</bean>
 
+	<bean id="conference7" class="domain.Conference">
+		<!-- CONFERENCE -->
+		<property name="title" value="Conferencia Logitech" />
+		<property name="acronym" value="LGTCH" />
+		<property name="venue" value="Logitech" />
+		<property name="submission" value="2019/09/20 00:00" />
+		<property name="notification" value="2019/10/31 00:00" />
+		<property name="cameraReady" value="2019/11/04 00:00" />
+		<property name="startDate" value="2019/11/05 00:00" />
+		<property name="endDate" value="2019/11/06 00:00" />
+		<property name="summary" value="Summary of conference 7" />
+		<property name="fee" value="1520.89" />
+		<property name="isDraft" value="false" />
+		<property name="activities">
+			<list>
+
+			</list>
+		</property>
+		<property name="category" ref="category3" />
+
+	</bean>
 	<!-- =================================================================== -->
 	<!-- ========================== CATEGORY =============================== -->
 	<!-- =================================================================== -->
