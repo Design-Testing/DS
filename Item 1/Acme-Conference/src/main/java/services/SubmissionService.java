@@ -62,29 +62,28 @@ public class SubmissionService {
 		return res;
 	}
 
-	/*
-	 * public Submission save(final Submission submission, final Conference conference, final Author author, final Paper cameraReadyPaper, final Paper reviewPaper) {
-	 * Assert.notNull(submission);
-	 * Assert.notNull(conference);
-	 * Assert.notNull(author);
-	 * Assert.notNull(cameraReadyPaper);
-	 * Assert.notNull(reviewPaper);
-	 * 
-	 * Assert.isTrue(Pattern.matches("yyyy-MM-dd HH:mm", submission.getMoment().toString()));
-	 * Assert.isTrue(Pattern.matches("^([A-Z]{3}-[0-9A-Z]{4})$", submission.getTicker()));
-	 * Assert.isTrue(Pattern.matches("^(UNDER-REVIEWED|ACCEPTED|REJECTED)$", submission.getStatus()));
-	 * 
-	 * submission.setConference(conference);
-	 * submission.setAuthor(author);
-	 * submission.setCameraReadyPaper(cameraReadyPaper);
-	 * submission.setReviewPaper(reviewPaper);
-	 * 
-	 * final Submission res = this.submissionRepository.save(submission);
-	 * Assert.notNull(res);
-	 * 
-	 * return res;
-	 * }
-	 */
+	//	public Submission save(final Submission submission, final Conference conference, final Author author, final Paper cameraReadyPaper, final Paper reviewPaper) {
+	//		Assert.notNull(submission);
+	//		Assert.notNull(conference);
+	//		Assert.notNull(author);
+	//		Assert.notNull(cameraReadyPaper);
+	//		Assert.notNull(reviewPaper);
+	//
+	//		Assert.isTrue(Pattern.matches("yyyy-MM-dd HH:mm", submission.getMoment().toString()));
+	//		Assert.isTrue(Pattern.matches("^([A-Z]{3}-[0-9A-Z]{4})$", submission.getTicker()));
+	//		Assert.isTrue(Pattern.matches("^(UNDER-REVIEWED|ACCEPTED|REJECTED)$", submission.getStatus()));
+	//
+	//		submission.setConference(conference);
+	//		submission.setAuthor(author);
+	//		submission.setCameraReadyPaper(cameraReadyPaper);
+	//		submission.setReviewPaper(reviewPaper);
+	//
+	//		final Submission res = this.submissionRepository.save(submission);
+	//		Assert.notNull(res);
+	//
+	//		return res;
+	//	}
+
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Submission submits(final Submission submission, final Paper reviewPaper) {
 		Submission res;
