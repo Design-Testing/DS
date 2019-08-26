@@ -333,10 +333,8 @@ public class ConferenceService {
 				m.setRecivers(recipients);
 				m.setTopic(topic);
 				this.messageService.send(m);
-				System.out.println("ssssssssssssssssssssssss");
 				s.setIsNotified(true);
 				this.submissionRepository.save(s);
-				System.out.println("XXXXXXXXXXXXXXXX");
 			}
 	}
 
