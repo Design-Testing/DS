@@ -59,4 +59,6 @@ public interface ConferenceRepository extends JpaRepository<Conference, Integer>
 	@Query("select c from Conference c where c.endDate > CURRENT_TIMESTAMP and c.startDate < CURRENT_TIMESTAMP  and  c.isDraft=false")
 	Collection<Conference> findFinalRunningConferences();
 
+	@Query("select r.conference from Registration r where r.author.userAccount.id=?1")
+	Collection<Conference> findAllByAuthorUserId(int authorUAId);
 }

@@ -14,8 +14,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd		
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd		
-	">
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 	<util:list id="converters">
 		<!-- 
@@ -26,6 +25,7 @@
 		<bean class="converters.CategoryToStringConverter" />
 		<bean class="converters.ActivityToStringConverter" />
 		<bean class="converters.ActorToStringConverter" />
+		<bean class="converters.AuthorToStringConverter" />
 		<bean class="converters.AdministratorToStringConverter" />
 		<bean class="converters.ConfigurationParametersToStringConverter" />
 		<bean class="converters.CreditCardToStringConverter" />
@@ -50,7 +50,8 @@
 		<bean class="converters.StringToCategoryConverter" />
 		<bean class="converters.StringToActivityConverter" />
 		<bean class="converters.StringToMessageConverter" /> 
-		<bean class="converters.StringToActorConverter" /> 
+		<bean class="converters.StringToActorConverter" />
+		<bean class="converters.StringToAuthorConverter" />
 		<bean class="converters.StringToAdministratorConverter" /> 
 		<bean class="converters.StringToConfigurationParametersConverter" /> 
 		<bean class="converters.StringToCreditCardConverter" /> 

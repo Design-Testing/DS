@@ -113,6 +113,7 @@ public class SectionController extends AbstractController {
 		else
 			try {
 				this.sectionService.save(section, tutorialId);
+				System.out.println("2222");
 				result = this.tutorialController.display(tutorialId, conferenceId);
 			} catch (final Throwable e) {
 				result = this.createEditModelAndView(section, tutorialId, conferenceId, "section.commit.error");
@@ -132,7 +133,7 @@ public class SectionController extends AbstractController {
 			this.sectionService.delete(toDelete, tutorialId, conferenceId);
 			res = this.tutorialController.display(tutorialId, conferenceId);
 		} catch (final Throwable oops) {
-			res = new ModelAndView("redirect: display.do?sectionId=" + sectionId + "&tutorialId=" + tutorialId);
+			res = new ModelAndView("redirect:display.do?sectionId=" + sectionId + "&tutorialId=" + tutorialId + "&conferenceId=" + conferenceId);
 			final String error = "Cannot delete this section";
 			res.addObject("error", error);
 		}

@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.SectionRepository;
 import repositories.TutorialRepository;
+import domain.Activity;
 import domain.Conference;
 import domain.Section;
 import domain.Tutorial;
@@ -64,9 +65,12 @@ public class SectionService {
 		Assert.notNull(tutorial);
 		final Section res = this.sectionRepository.save(section);
 		final Collection<Section> sections = tutorial.getSections();
-		sections.add(res);
-		tutorial.setSections(sections);
-		this.tutorialRepository.save(tutorial);
+		if (section.getId() == 0) {
+			sections.add(res);
+			tutorial.setSections(sections);
+			this.tutorialRepository.save(tutorial);
+		} else
+			Assert.isTrue(sections.contains(sections), "Al editar la seccion, el tutorial a la que pertenece debe contenerla en su lista de secciones");
 		return res;
 	}
 	public Collection<Section> findByTutorial(final int tutorialId) {
@@ -82,7 +86,9 @@ public class SectionService {
 		Assert.isTrue(section.getId() != 0);
 		final Conference conference = this.conferenceService.findOne(conferenceId);
 		final Tutorial tutorial = this.tutorialRepository.findOne(tutorialId);
-		Assert.isTrue(conference.getIsDraft() && conference.getActivities().contains(tutorial));
+		Collection<Activity> acs = conference.getActivities();
+		acs = this.conferenceService.findConferenceActivities(conferenceId);
+		Assert.isTrue(acs.contains(tutorial), "La conferencia sobre la que se va a eliminar el tutorial debe de contener a este entre sus actividades");
 		final Collection<Section> sections = tutorial.getSections();
 		sections.remove(section);
 		this.tutorialRepository.save(tutorial);

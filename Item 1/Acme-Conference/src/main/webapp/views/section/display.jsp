@@ -15,11 +15,8 @@
 <acme:img code="section.picture" url="${section.pictures}" alt="${altern}"/><br/><br/>
 
 <security:authorize access="hasRole('ADMIN')">
-	<acme:button url="section/edit.do?sectionId=${section.id}&tutorialId=${tutorialId}" name="edit" code="section.edit" />
+	<acme:button url="section/delete.do?sectionId=${section.id}&tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="delete" code="section.delete" />
 </security:authorize>
 
 <acme:button url="section/list.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="back" code="section.back" />
-
-
-
-
+<acme:button url="tutorial/display.do?tutorialId=${tutorialId}&conferenceId=${conferenceId}" name="tutorial" code="section.tutorial" />

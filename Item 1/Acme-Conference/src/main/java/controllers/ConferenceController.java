@@ -80,6 +80,8 @@ public class ConferenceController extends AbstractController {
 
 		final Collection<Conference> conferences = this.conferenceService.findAllFinal();
 
+		result = new ModelAndView("conference/list");
+
 		final SecurityContext context = SecurityContextHolder.getContext();
 		final Authentication authentication = context.getAuthentication();
 		final Object principal = authentication.getPrincipal();
@@ -89,12 +91,13 @@ public class ConferenceController extends AbstractController {
 			final Actor logged = this.actorService.findByPrincipal();
 			final Authority authAuthor = new Authority();
 			authAuthor.setAuthority("AUTHOR");
-			if (logged.getUserAccount().getAuthorities().contains(authAuthor))
+			if (logged.getUserAccount().getAuthorities().contains(authAuthor)) {
 				isAuthor = true;
+				result.addObject("conferenceAvailable", this.conferenceService.conferenceAvailable(logged.getUserAccount().getId()));
+			}
 
 		}
 
-		result = new ModelAndView("conference/list");
 		result.addObject("conferences", conferences);
 		result.addObject("isAdministrator", false);
 		result.addObject("isAuthor", isAuthor);
