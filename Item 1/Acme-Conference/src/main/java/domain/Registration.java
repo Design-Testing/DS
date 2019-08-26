@@ -19,6 +19,7 @@ public class Registration extends DomainEntity {
 
 
 	@NotNull
+	@Valid
 	public CreditCard getCreditCard() {
 		return this.creditCard;
 	}

@@ -7,42 +7,23 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<spring:message code="application.moment" />
-:
-<jstl:out value="${application.moment}" />
+<acme:display code="registration.conference" value="${registration.conference.title}" url="conference/display.do?conferenceId=${registration.conference.id}"/>
+<acme:display code="registration.author" value="${registration.author.name}"/>
+
+<h4><spring:message code="creditCard" /></h4>
+
+<acme:display code="creditcard.holderName" value="${registration.creditCard.holderName}"/>
+<acme:display code="creditcard.number" value="${registration.creditCard.number}"/>
+<acme:display code="creditcard.expirationMonth" value="${registration.creditCard.expirationMonth}"/>
+<acme:display code="creditcard.expirationYear" value="${registration.creditCard.expirationYear}"/>
+<acme:display code="creditcard.cvv" value="${registration.creditCard.cvv}"/>
+
+<acme:display code="registration.conference.fee" value="${registration.conference.fee}"/>
+
 <br />
-
-<spring:message code="application.status" />
-:
-<jstl:out value="${application.status}" />
-<br />
-
-<jstl:set var="newPrice" value="${(application.price*vat)/100}" />
-
-<spring:message code="application.price" />
-:
-<jstl:out value="${application.price} (+${newPrice} " /><spring:message code="application.vat" />)
-<br />
-
-<spring:message code="application.comments" />
-:
-<ul>
-	<jstl:forEach var="comment" items="${application.comments}">
-		<li><jstl:out value="${comment}" /></li>
-	</jstl:forEach>
-</ul>
-<br />
-
-<spring:message code="application.task.ticker" />
-:
-<jstl:out value="${application.task.ticker}" />
-<br />
-
-<input type="button" name="back"
-	value="<spring:message code="application.back" />"
-	onclick="javascript: relativeRedir('application/${rol}/list.do');" />
-<br />
+<acme:button code="registration.back" name="back" url="registration/${rol}/list.do"/>
 
 
 

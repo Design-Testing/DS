@@ -9,66 +9,38 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<style type="text/css">
-.pendingPeriodPassed {
-	color: grey;
-}
-
-.ACCEPTED {
-	color: green;
-}
-
-.REJECTED {
-	color: orange;
-}
-</style>
 
 <jstl:choose>
 	<jstl:when test="${empty registrations }">
 		<spring:message code="registration.no.list" />
 	</jstl:when>
 	<jstl:otherwise>
-		<display:table name="registrations" id="row"
-			requestURI="registration/${rol}/list.do" pagesize="5"
-			class="displaytag">
+		<security:authorize access="hasRole('AUTHOR')">
+			<display:table name="registrations" id="row"
+				requestURI="registration/author/list.do" pagesize="5"
+				class="displaytag">
 
-			<security:authorize access="hasRole('CUSTOMER')">
 				<display:column>
-					<a href="registration/customer/edit.do?registrationId=${row.id}">
+					<a href="registration/author/display.do?registrationId=${row.id}">
 						<spring:message code="registration.display" />
 					</a>
 				</display:column>
-			</security:authorize>
 
-			<jstl:set value="${row.status} " var="colorStyle" />
-			<jsp:useBean id="currentDate" class="java.util.Date" />
-			<fmt:formatDate var="now" value="${currentDate}"
-				pattern="dd/MM/yyyy HH:mm" />
-			<jstl:if
-				test="${(row.status eq 'PENDING') and (now > row.task.endDate)}">
-				<jstl:set value="pendingPeriodPassed" var="colorStyle" />
-			</jstl:if>
+				<display:column property="author" titleKey="registration.author" />
 
-			<display:column property="moment" titleKey="registration.moment"
-				sortable="true" format="{0,date,dd/MM/yyyy HH:mm}" />
+				<display:column property="conference" titleKey="registration.conference" />
 
-			<display:column property="status" titleKey="registration.status"
-				class="${colorStyle}" />
+				<display:column property="creditCard.number" titleKey="registration.creaditCard.number"/>
 
-			<display:column property="task.ticker"
-				titleKey="registration.task.ticker" />
-
-			<security:authorize access="hasRole('HANDYWORKER')">
 				<display:column>
-					<a
-						href="registration/author/display.do?registrationId=${row.id}">
-						<spring:message code="registration.display" />
+					<a href="registration/author/edit.do?registrationId=${row.id}">
+						<spring:message code="registration.edit" />
 					</a>
 				</display:column>
-			</security:authorize>
+				
+			</display:table>
+		</security:authorize>
 
-
-		</display:table>
 	</jstl:otherwise>
 </jstl:choose>
 
@@ -84,7 +56,3 @@
 		</jstl:otherwise>
 	</jstl:choose>
 </security:authorize>
-
-<jstl:if test="${noCards}">
-	<spring:message code="registration.creditCard.no" />
-</jstl:if>

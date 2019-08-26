@@ -370,6 +370,13 @@ public class ConferenceService {
 		return result;
 	}
 
+	public Collection<Conference> conferenceAvailable(final int authorUAId) {
+		final Collection<Conference> hwConference = this.findAllByAuthorUserId(authorUAId);
+		final Collection<Conference> conference = this.findAll();
+		conference.removeAll(hwConference);
+		return conference;
+	}
+
 	public boolean exists(final int id) {
 		return this.conferenceRepository.exists(id);
 	}

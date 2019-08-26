@@ -3,11 +3,15 @@ package services;
 
 import java.util.Collection;
 
+import javax.validation.ValidationException;
+
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.RegistrationRepository;
 import security.Authority;
@@ -16,6 +20,7 @@ import domain.Author;
 import domain.Conference;
 import domain.CreditCard;
 import domain.Registration;
+import forms.RegistrationForm;
 
 @Service
 @Transactional
@@ -23,6 +28,18 @@ public class RegistrationService {
 
 	@Autowired
 	private RegistrationRepository	registrationRepository;
+
+	@Autowired
+	private ActorService			actorService;
+
+	@Autowired
+	private AuthorService			authorService;
+
+	@Autowired
+	private ConferenceService		conferenceService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	public Registration create(final Author author, final Conference conference) {
@@ -41,16 +58,6 @@ public class RegistrationService {
 		Assert.notNull(res);
 		return res;
 	}
-
-
-	@Autowired
-	private ActorService		actorService;
-
-	private AuthorService		authorService;
-
-	@Autowired
-	private ConferenceService	conferenceService;
-
 
 	public Collection<Registration> findByConference(final int conferenceId) {
 		this.authorService.findByPrincipal();
@@ -137,13 +144,41 @@ public class RegistrationService {
 
 	private Collection<Registration> findAllByAuthorUserId(final int id) {
 		Assert.isTrue(id != 0);
-		Assert.isTrue(this.checkPrincipal(id));
-		return this.registrationRepository.findAllByAuthorUserId(id);
+		final Collection<Registration> res = this.registrationRepository.findAllByAuthorUserId(id);
+		Assert.notNull(res);
+		return res;
 	}
 
-	private boolean checkPrincipal(final int id) {
-		final Actor a = this.actorService.findByPrincipal();
-		return a.getUserAccount().getId() == id;
+	public Collection<Registration> findAll(final Author principal) {
+		Assert.notNull(principal);
+		final Collection<Registration> registrations = this.findAllByAuthorUserId(principal.getUserAccount().getId());
+		return registrations;
+	}
+
+	public Registration reconstruct(final RegistrationForm registrationForm, final BindingResult binding) {
+		Registration result;
+		Assert.isTrue(registrationForm.getId() != 0);
+		result = this.findOne(registrationForm.getId());
+
+		final CreditCard creditCard = new CreditCard();
+		creditCard.setHolderName(registrationForm.getHolderName());
+		creditCard.setCvv(registrationForm.getCvv());
+		creditCard.setExpirationMonth(registrationForm.getExpirationMonth());
+		creditCard.setExpirationYear(registrationForm.getExpirationYear());
+		creditCard.setMake(registrationForm.getCvv());
+		creditCard.setNumber(registrationForm.getNumber());
+
+		result.setId(registrationForm.getId());
+		result.setVersion(registrationForm.getVersion());
+		result.setAuthor(registrationForm.getAuthor());
+		result.setConference(registrationForm.getConference());
+		result.setCreditCard(creditCard);
+
+		this.validator.validate(result, binding);
+		if (binding.hasErrors())
+			throw new ValidationException();
+
+		return result;
 	}
 
 }
