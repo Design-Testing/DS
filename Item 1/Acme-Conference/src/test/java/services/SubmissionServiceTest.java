@@ -80,4 +80,47 @@ public class SubmissionServiceTest extends AbstractTest {
 
 		this.checkExceptions(expected, caught);
 	}
+
+	/* ========================= Test Send Camera-Ready Paper =========================== */
+
+	@Test
+	public void driverSendCameraReadyPaper() {
+
+		final Collection<String> authors = new ArrayList<String>();
+		authors.add("author1");
+		final Paper paper = this.paperService.create();
+		paper.setDocument("http://www.document.com");
+		paper.setSummary("summary");
+		paper.setTitle("title");
+		paper.setAuthors(authors);
+
+		final Object testingData[][] = {
+			{
+				//				A: Acme-Conference: un autor puede enviar un documento definitivo para alguna de sus solicitudes de presentación
+				//				B: Test Positivo: un autor envia un documento definitivo adecuadamente
+				"author1", "submission4", paper, null
+			}, {
+				//				A: Acme-Conference: un autor puede enviar un documento definitivo para alguna de sus solicitudes de presentación
+				//				B: Test Negativo: un autor intenta enviar un documento definitivo sobre una conferencia cuyo plazo de presentación de tal documento ha expirado
+				"author1", "submission3", paper, java.lang.IllegalArgumentException.class
+			},
+
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateSendCameraReadyPaper((String) testingData[i][0], (String) testingData[i][1], (Paper) testingData[i][2], (Class<?>) testingData[i][3]);
+	}
+	private void templateSendCameraReadyPaper(final String author, final String submission, final Paper paper, final Class<?> expected) {
+
+		Class<?> caught;
+		caught = null;
+		try {
+			this.authenticate(author);
+			final Paper cameraReadyPaper = this.paperService.save(paper);
+			this.submissionService.sendCameraReadyPaper(this.getEntityId(submission), cameraReadyPaper);
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+	}
 }
