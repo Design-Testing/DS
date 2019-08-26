@@ -8,7 +8,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <jstl:choose>
 	<jstl:when test="${empty registrations }">
@@ -21,21 +21,17 @@
 				class="displaytag">
 
 				<display:column>
-					<a href="registration/author/display.do?registrationId=${row.id}">
-						<spring:message code="registration.display" />
-					</a>
+					<acme:button code="registration.display" url="registration/author/display.do?registrationId=${row.id}" name="display"/>
 				</display:column>
 
-				<display:column property="author" titleKey="registration.author" />
+				<display:column property="author.name" titleKey="registration.author" />
 
-				<display:column property="conference" titleKey="registration.conference" />
+				<display:column property="conference.title" titleKey="registration.conference" />
 
-				<display:column property="creditCard.number" titleKey="registration.creaditCard.number"/>
+				<display:column property="creditCard.number" titleKey="creditcard.number"/>
 
 				<display:column>
-					<a href="registration/author/edit.do?registrationId=${row.id}">
-						<spring:message code="registration.edit" />
-					</a>
+					<acme:button code="registration.edit" url="registration/author/edit.do?registrationId=${row.id}" name="edit"/>
 				</display:column>
 				
 			</display:table>

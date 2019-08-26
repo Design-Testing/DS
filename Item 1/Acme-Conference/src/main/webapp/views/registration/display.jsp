@@ -19,7 +19,7 @@
 <acme:display code="creditcard.expirationMonth" value="${registration.creditCard.expirationMonth}"/>
 <acme:display code="creditcard.expirationYear" value="${registration.creditCard.expirationYear}"/>
 <acme:display code="creditcard.cvv" value="${registration.creditCard.cvv}"/>
-
+<br/>
 <acme:display code="registration.conference.fee" value="${registration.conference.fee}"/>
 
 <br />

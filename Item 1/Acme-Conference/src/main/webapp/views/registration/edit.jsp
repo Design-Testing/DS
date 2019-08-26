@@ -15,17 +15,27 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="author" />
+	<form:hidden path="author"/>
 	<form:hidden path="conference" />
 	
 	<h4><spring:message code="creditCard" /></h4>
 
 	<acme:textbox code="creditcard.holderName" path="holderName"/>
 	<acme:numberbox code="creditcard.number" path="number" min="0"/>
+	
+	<form:label path="make">
+		<spring:message code="creditcard.make" />
+	</form:label>	
+	<form:select path="make" >
+		<form:options items="${makes}" />
+	</form:select>
+	<form:errors path="make" cssClass="error" />
+	
 	<acme:numberbox code="creditcard.expirationMonth" path="expirationMonth" min="0"/>
 	<acme:numberbox code="creditcard.expirationYear" path="expirationYear" min="0"/>
 	<acme:textbox code="creditcard.cvv" path="cvv"/><br/>
 	
+	<acme:display code="registration.conference.fee" value="${registrationForm.conference.fee}"/><br/>
 
 	<acme:submit name="save" code="registration.save"/>
 

@@ -85,7 +85,8 @@
 						name="create" code="register" />
 				</jstl:when>
 				<jstl:otherwise>
-					<spring:message code="conference.registered" />
+					<acme:button url="registration/author/displayFromConference.do?conferenceId=${row.id}"
+						name="display" code="conference.registered" />
 				</jstl:otherwise>
 			</jstl:choose>
 		</display:column>

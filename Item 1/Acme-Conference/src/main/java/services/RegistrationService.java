@@ -155,10 +155,18 @@ public class RegistrationService {
 		return registrations;
 	}
 
+	public Registration findByConferenceAndPrincipal(final int conferenceId) {
+		final Author principal = this.authorService.findByPrincipal();
+		return this.registrationRepository.findByConferenceAndPrincipal(principal.getId(), conferenceId);
+	}
+
 	public Registration reconstruct(final RegistrationForm registrationForm, final BindingResult binding) {
 		Registration result;
-		Assert.isTrue(registrationForm.getId() != 0);
-		result = this.findOne(registrationForm.getId());
+
+		if (registrationForm.getId() != 0)
+			result = this.findOne(registrationForm.getId());
+		else
+			result = new Registration();
 
 		final CreditCard creditCard = new CreditCard();
 		creditCard.setHolderName(registrationForm.getHolderName());

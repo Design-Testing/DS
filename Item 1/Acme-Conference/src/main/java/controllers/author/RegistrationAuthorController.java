@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.AuthorService;
 import services.ConferenceService;
+import services.ConfigurationParametersService;
 import services.RegistrationService;
 import controllers.AbstractController;
 import domain.Author;
@@ -28,13 +29,16 @@ import forms.RegistrationForm;
 public class RegistrationAuthorController extends AbstractController {
 
 	@Autowired
-	private RegistrationService	registrationService;
+	private RegistrationService				registrationService;
 
 	@Autowired
-	private ConferenceService	conferenceService;
+	private ConferenceService				conferenceService;
 
 	@Autowired
-	private AuthorService		authorService;
+	private AuthorService					authorService;
+
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
 
 
 	//	AUTHOR
@@ -91,6 +95,38 @@ public class RegistrationAuthorController extends AbstractController {
 
 		return result;
 	}
+
+	@RequestMapping(value = "/displayFromConference", method = RequestMethod.GET)
+	public ModelAndView displayFromConference(@RequestParam final int conferenceId) {
+		ModelAndView result;
+		Registration registration;
+
+		registration = this.registrationService.findByConferenceAndPrincipal(conferenceId);
+
+		result = new ModelAndView("registration/display");
+		result.addObject("registration", registration);
+		result.addObject("rol", "author");
+
+		return result;
+	}
+
+	// ------------------------- Edit -------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int registrationId) {
+		ModelAndView result;
+		Registration registration;
+
+		registration = this.registrationService.findOne(registrationId);
+
+		if (registration != null)
+			result = this.createEditModelAndView(registration);
+		else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+	}
+
 	// ------------------------- Save -------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
@@ -142,11 +178,9 @@ public class RegistrationAuthorController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Registration registration, final String messageCode) {
 		ModelAndView result;
 
-		final Author principal = this.authorService.findByPrincipal();
-
 		result = new ModelAndView("registration/edit");
 		result.addObject("registrationForm", this.constructPruned(registration));
-
+		result.addObject("makes", this.configurationParametersService.find().getCreditCardMake());
 		result.addObject("message", messageCode);
 
 		return result;
@@ -155,11 +189,11 @@ public class RegistrationAuthorController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final RegistrationForm registrationForm, final String messageCode) {
 		ModelAndView result;
 
-		final Author principal = this.authorService.findByPrincipal();
+		this.authorService.findByPrincipal();
 
 		result = new ModelAndView("registration/edit");
 		result.addObject("registrationForm", registrationForm);
-
+		result.addObject("makes", this.configurationParametersService.find().getCreditCardMake());
 		result.addObject("message", messageCode);
 
 		return result;

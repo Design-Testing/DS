@@ -18,4 +18,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
 	@Query("select r from Registration r where r.author.userAccount.id=?1")
 	Collection<Registration> findAllByAuthorUserId(int id);
 
+	@Query("select r from Registration r where r.author.id=?1 AND r.conference.id=?2")
+	Registration findByConferenceAndPrincipal(int id, int conferenceId);
+
 }
