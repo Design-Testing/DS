@@ -17,10 +17,11 @@ import repositories.ReviewerRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import utilities.HashPassword;
 import domain.Actor;
 import domain.Finder;
 import domain.Reviewer;
-import forms.ActorForm;
+import forms.ReviewerForm;
 
 @Service
 @Transactional
@@ -61,9 +62,13 @@ public class ReviewerService {
 		Reviewer result;
 
 		if (reviewer.getId() == 0) {
+			final String username = reviewer.getUserAccount().getUsername();
+			final String password = HashPassword.hashPassword(reviewer.getUserAccount().getPassword());
 			final Finder finder = this.finderService.createForNewActor();
 			reviewer.setFinder(finder);
 			this.actorService.setAuthorityUserAccount(Authority.REVIEWER, reviewer);
+			reviewer.getUserAccount().setUsername(username);
+			reviewer.getUserAccount().setPassword(password);
 			result = this.reviewerRepository.save(reviewer);
 
 		} else {
@@ -108,18 +113,19 @@ public class ReviewerService {
 		this.reviewerRepository.flush();
 	}
 
-	public Reviewer reconstruct(final ActorForm actorForm, final BindingResult binding) {
+	public Reviewer reconstruct(final ReviewerForm reviewerForm, final BindingResult binding) {
 		Reviewer reviewer;
 
-		if (actorForm.getId() == 0) {
+		if (reviewerForm.getId() == 0) {
 			reviewer = this.create();
-			reviewer.setName(actorForm.getName());
-			reviewer.setSurname(actorForm.getSurname());
-			reviewer.setPhoto(actorForm.getPhoto());
-			reviewer.setPhone(actorForm.getPhone());
-			reviewer.setEmail(actorForm.getEmail());
-			reviewer.setAddress(actorForm.getAddress());
-			reviewer.setVersion(actorForm.getVersion());
+			reviewer.setName(reviewerForm.getName());
+			reviewer.setSurname(reviewerForm.getSurname());
+			reviewer.setPhoto(reviewerForm.getPhoto());
+			reviewer.setPhone(reviewerForm.getPhone());
+			reviewer.setEmail(reviewerForm.getEmail());
+			reviewer.setKeywords(reviewerForm.getKeywords());
+			reviewer.setAddress(reviewerForm.getAddress());
+			reviewer.setVersion(reviewerForm.getVersion());
 			reviewer.setFinder(this.finderService.create());
 			final UserAccount account = this.userAccountService.create();
 			final Collection<Authority> authorities = new ArrayList<>();
@@ -127,22 +133,23 @@ public class ReviewerService {
 			auth.setAuthority(Authority.REVIEWER);
 			authorities.add(auth);
 			account.setAuthorities(authorities);
-			account.setUsername(actorForm.getUserAccountuser());
-			account.setPassword(actorForm.getUserAccountpassword());
+			account.setUsername(reviewerForm.getUserAccountuser());
+			account.setPassword(reviewerForm.getUserAccountpassword());
 			reviewer.setUserAccount(account);
 		} else {
-			reviewer = this.reviewerRepository.findOne(actorForm.getId());
-			reviewer.setName(actorForm.getName());
-			reviewer.setSurname(actorForm.getSurname());
-			reviewer.setPhoto(actorForm.getPhoto());
-			reviewer.setPhone(actorForm.getPhone());
-			reviewer.setEmail(actorForm.getEmail());
-			reviewer.setAddress(actorForm.getAddress());
-			reviewer.setVersion(actorForm.getVersion());
+			reviewer = this.reviewerRepository.findOne(reviewerForm.getId());
+			reviewer.setName(reviewerForm.getName());
+			reviewer.setSurname(reviewerForm.getSurname());
+			reviewer.setPhoto(reviewerForm.getPhoto());
+			reviewer.setPhone(reviewerForm.getPhone());
+			reviewer.setEmail(reviewerForm.getEmail());
+			reviewer.setKeywords(reviewerForm.getKeywords());
+			reviewer.setAddress(reviewerForm.getAddress());
+			reviewer.setVersion(reviewerForm.getVersion());
 			reviewer.setFinder(this.finderService.findActorFinder());
 			final UserAccount account = this.userAccountService.findOne(reviewer.getUserAccount().getId());
-			account.setUsername(actorForm.getUserAccountuser());
-			account.setPassword(actorForm.getUserAccountpassword());
+			account.setUsername(reviewerForm.getUserAccountuser());
+			account.setPassword(reviewerForm.getUserAccountpassword());
 			reviewer.setUserAccount(account);
 		}
 

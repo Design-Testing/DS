@@ -21,7 +21,6 @@
 			<acme:display code="topic" value="${m.topic.spanish}" />
 		</jstl:otherwise>
 	</jstl:choose>
-	<acme:display code="topic" value="${m.topic}" />
 	<acme:display code="recivers" value="${m.recivers}" />
 	<acme:display code="body" value="${m.body}" />
 

@@ -15,8 +15,8 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 	@Query("select m from Message m where m.sender.id=?1")
 	Collection<Message> findAllBySender(int senderId);
 
-	@Query("select m from Message m where m.topic.id=?1")
-	Collection<Message> findAllByTopic(int topicId);
+	@Query("select m from Message m join m.recivers r where (r.id=?2 or m.sender.id=?2) and m.topic.id=?1")
+	Collection<Message> findAllByTopic(int topicId, int actorId);
 
 	//TODO ALBA
 	@Query("select m from Message m join m.recivers r where r.id=?1")

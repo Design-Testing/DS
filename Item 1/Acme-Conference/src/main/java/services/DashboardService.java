@@ -13,7 +13,7 @@ import repositories.DashboardRepository;
 public class DashboardService {
 
 	@Autowired
-	DashboardRepository	dashboardRepository;
+	private DashboardRepository	dashboardRepository;
 
 
 	/**
@@ -22,7 +22,7 @@ public class DashboardService {
 	 * @return Double[] Average, minimum, maximum and standard deviation (in order).
 	 * @author a8081
 	 * */
-	Double[] getNumberSubmissionPerConference() {
+	public Double[] getNumberSubmissionPerConference() {
 		final Double[] res = this.dashboardRepository.getNumberSubmissionPerConference();
 		Assert.notNull(res);
 		return res;
@@ -34,7 +34,7 @@ public class DashboardService {
 	 * @return Double[] Average, minimum, maximum and standard deviation (in order).
 	 * @author a8081
 	 * */
-	Double[] getNumberRegistrationPerConference() {
+	public Double[] getNumberRegistrationPerConference() {
 		final Double[] res = this.dashboardRepository.getNumberRegistrationPerConference();
 		Assert.notNull(res);
 		return res;
@@ -46,7 +46,7 @@ public class DashboardService {
 	 * @return Double[] Average, minimum, maximum and standard deviation (in order).
 	 * @author a8081
 	 * */
-	Double[] getConferenceFees() {
+	public Double[] getConferenceFees() {
 		final Double[] res = this.dashboardRepository.getConferenceFees();
 		Assert.notNull(res);
 		return res;
@@ -58,7 +58,7 @@ public class DashboardService {
 	 * @return Double[] Average, minimum, maximum and standard deviation (in order).
 	 * @author a8081
 	 * */
-	Double[] getNumberOfDaysPerConference() {
+	public Double[] getNumberOfDaysPerConference() {
 		final Double[] res = this.dashboardRepository.getNumberOfDaysPerConference();
 		Assert.notNull(res);
 		return res;
@@ -70,7 +70,7 @@ public class DashboardService {
 	 * @return Double[] Average, minimum, maximum and standard deviation (in order).
 	 * @author a8081
 	 * */
-	Double[] getNumberOfConferencesPerCategory() {
+	public Double[] getNumberOfConferencesPerCategory() {
 		final Double[] res = this.dashboardRepository.getNumberOfConferencesPerCategory();
 		Assert.notNull(res);
 		return res;
@@ -82,7 +82,7 @@ public class DashboardService {
 	 * @return Double[] Average, minimum, maximum and standard deviation (in order).
 	 * @author a8081
 	 * */
-	Double[] getNumberCommentsPerConference() {
+	public Double[] getNumberCommentsPerConference() {
 		final Double[] res = this.dashboardRepository.getNumberCommentsPerConference();
 		Assert.notNull(res);
 		return res;
@@ -94,7 +94,7 @@ public class DashboardService {
 	 * @return Double[] Average, minimum, maximum and standard deviation (in order).
 	 * @author a8081
 	 * */
-	Double[] getNumberCommentsPerActivity() {
+	public Double[] getNumberCommentsPerActivity() {
 		final Double[] res = this.dashboardRepository.getNumberCommentsPerActivity();
 		Assert.notNull(res);
 		return res;
