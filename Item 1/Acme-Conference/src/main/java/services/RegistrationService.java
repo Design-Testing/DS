@@ -89,10 +89,11 @@ public class RegistrationService {
 		final Conference conference = registration.getConference();
 		Assert.isTrue(this.conferenceService.exists(conference.getId()));
 		final Author principal = this.authorService.findByPrincipal();
+		Assert.isTrue(!this.tarjetaCaducada(registration.getCreditCard()), "creditCard.no.validate.error");
+		Assert.isTrue(this.isValidInteger(registration.getCreditCard().getNumber()), "creditCard.number.no.integer.error");
 
 		if (registration.getId() == 0) {
 			registration.setAuthor(principal);
-			Assert.isTrue(this.validCreditCard(registration.getCreditCard()));
 			saved = this.registrationRepository.save(registration);
 			this.authorService.save(principal);
 		} else {
@@ -130,16 +131,29 @@ public class RegistrationService {
 	 * 
 	 * @param creditCard
 	 *            The credit card that you want to be valid
-	 * @return True if it is a valid credit card and false if not
+	 * @return False if it is a valid credit card and true if not
 	 * @author a8081
 	 * */
-	private boolean validCreditCard(final CreditCard creditCard) {
-		Assert.notNull(creditCard);
-		final LocalDate now = LocalDate.now();
-		boolean result = creditCard.getExpirationYear() < now.getYear();
-		if (creditCard.getExpirationYear() == now.getYear())
-			result = creditCard.getExpirationMonth() > now.getMonthOfYear();
-		return result;
+	public boolean tarjetaCaducada(final CreditCard c) {
+		boolean res = false;
+		final boolean mesCaducado = c.getExpirationMonth() < LocalDate.now().getMonthOfYear();
+		final boolean mismoAnyo = (2000 + c.getExpirationYear()) == LocalDate.now().getYear();
+		final boolean anyoCaducado = (2000 + c.getExpirationYear()) < LocalDate.now().getYear();
+		if (anyoCaducado || (mismoAnyo && mesCaducado))
+			res = true;
+
+		return res;
+	}
+
+	public boolean isValidInteger(final String input) {
+		boolean res = false;
+		try {
+			new Integer(input);
+			res = true;
+		} catch (final NumberFormatException e) {
+			res = false;
+		}
+		return res;
 	}
 
 	private Collection<Registration> findAllByAuthorUserId(final int id) {
@@ -174,7 +188,7 @@ public class RegistrationService {
 		creditCard.setExpirationMonth(registrationForm.getExpirationMonth());
 		creditCard.setExpirationYear(registrationForm.getExpirationYear());
 		creditCard.setMake(registrationForm.getCvv());
-		creditCard.setNumber(registrationForm.getNumber());
+		creditCard.setNumber(registrationForm.getNumber().replace(" ", ""));
 
 		result.setId(registrationForm.getId());
 		result.setVersion(registrationForm.getVersion());
@@ -188,5 +202,4 @@ public class RegistrationService {
 
 		return result;
 	}
-
 }
