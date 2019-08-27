@@ -28,7 +28,7 @@
 
 <acme:display code="submission.reviewPaper.title" value="${submission.reviewPaper.title}" />
 <acme:display code="submission.reviewPaper.summary" value="${submission.reviewPaper.summary}" />
-<acme:display code="submission.reviewPaper.document" value="${submission.reviewPaper.document}" />
+<acme:display code="submission.reviewPaper.document" value="${submission.reviewPaper.document}" url="${submission.reviewPaper.document}" />
 <acme:display code="submission.reviewPaper.authors" value="${submission.reviewPaper.authors}" />
 
 

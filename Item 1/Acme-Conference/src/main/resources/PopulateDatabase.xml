@@ -286,37 +286,6 @@
 		</property>
 	</bean>
 
-	<!-- =================================================================== -->
-	<!-- ============================ SYSTEM =============================== -->
-	<!-- =================================================================== -->
-
-	<bean id="userAccountSystem" class="security.UserAccount">
-		<property name="username" value="system" />
-		<property name="password" value="54b53072540eeeb8f8e9343e71f28176" />
-		<property name="authorities">
-			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="ADMIN" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="system" class="domain.Administrator">
-		<property name="name" value="Acme-Conference" />
-		<property name="surname">
-			<list>
-				<value>System</value>
-				<value>Acme-Conference</value>
-			</list>
-		</property>
-		<property name="photo" value="" />
-		<property name="email" value="acmeconference@mail.com" />
-		<property name="phone" value="+34647307406" />
-		<property name="address" value="" />
-		<property name="finder" ref="finderSystem1" />
-		<property name="userAccount" ref="userAccountSystem" />
-	</bean>
 
 	<!-- =================================================================== -->
 	<!-- ======================== ADMINISTRATOR ============================ -->

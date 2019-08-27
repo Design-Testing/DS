@@ -66,7 +66,7 @@
     <br/>
     <acme:textbox path="address" code="reviewer.address"/>
     <br/>
-    <acme:textbox path="keywords" code="reviewer.keywords"/>
+    <acme:textarea path="keywords" code="reviewer.keywords"/>
     <br/>
 
     <br/>

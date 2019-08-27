@@ -42,9 +42,8 @@ public class ReportController extends AbstractController {
 	public ModelAndView edit(@Valid final Report report, final BindingResult binding) {
 		ModelAndView result;
 		if (!binding.hasErrors()) {
-			result = new ModelAndView("report/list");
 			this.reportService.save(report, report.getSubmission(), report.getReviewer());
-			result.addObject("reports", this.reportService.findAll());
+			result = new ModelAndView("redirect:/report/list.do");
 		} else {
 			result = new ModelAndView("report/edit");
 			result.addObject("report", report);
