@@ -9,8 +9,9 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 
-	<acme:display code="sponsorship.banner" value="${sponsorship.banner}" />
-	<acme:display code="sponsorship.targetPage" value="${sponsorship.targetPage}" />
+	<img src="${sponsorship.banner}" alt="<spring:message code="sponsorship.banner" />" width="220" height="135"/>
+	<br>
+	<acme:display code="sponsorship.targetPage" value="" /><a href="${sponsorship.targetPage}"><p>${sponsorship.targetPage}</p></a>
     <h3><spring:message code="sponsorship.creditCard" /></h3>
     <acme:display code="sponsorship.creditCard.holderName" value="${sponsorship.creditCard.holderName}" />
 	<acme:display code="sponsorship.creditCard.make" value="${sponsorship.creditCard.make}" />
