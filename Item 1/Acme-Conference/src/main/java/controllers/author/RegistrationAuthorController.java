@@ -21,6 +21,7 @@ import services.RegistrationService;
 import controllers.AbstractController;
 import domain.Author;
 import domain.Conference;
+import domain.CreditCard;
 import domain.Registration;
 import forms.RegistrationForm;
 
@@ -142,12 +143,11 @@ public class RegistrationAuthorController extends AbstractController {
 				result = new ModelAndView("redirect:/registration/author/list.do");
 			} catch (final Throwable oops) {
 				String errorMessage = "registration.commit.error";
-				if (oops.getMessage().contains("message.error"))
+				if (oops.getMessage().contains(".error"))
 					errorMessage = oops.getMessage();
 				result = this.createEditModelAndView(registrationForm, errorMessage);
 			}
 		return result;
-
 	}
 	// Delete --------------------------------------------------------
 
@@ -217,6 +217,17 @@ public class RegistrationAuthorController extends AbstractController {
 		pruned.setConference(registration.getConference());
 
 		return pruned;
+	}
+
+	private CreditCard constructCreditCard(final RegistrationForm registrationForm) {
+		final CreditCard creditCard = new CreditCard();
+		creditCard.setHolderName(registrationForm.getHolderName());
+		creditCard.setCvv(registrationForm.getCvv());
+		creditCard.setExpirationMonth(registrationForm.getExpirationMonth());
+		creditCard.setExpirationYear(registrationForm.getExpirationYear());
+		creditCard.setMake(registrationForm.getCvv());
+		creditCard.setNumber(registrationForm.getNumber());
+		return creditCard;
 	}
 
 }
