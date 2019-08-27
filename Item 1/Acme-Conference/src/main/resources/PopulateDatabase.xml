@@ -456,7 +456,7 @@
 			</list>
 		</property>
 		<property name="photo" value="http://tinyurl.com/picture.png" />
-		<property name="email" value="carlos.gonzález@gmail.es" />
+		<property name="email" value="carlosgonzalez@gmail.es" />
 		<property name="phone" value="+34647467526" />
 		<property name="address" value="Avd La Salle" />
 		<property name="finder" ref="finderReviewer3" />

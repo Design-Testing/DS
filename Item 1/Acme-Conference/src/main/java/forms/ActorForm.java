@@ -8,10 +8,8 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -95,7 +93,6 @@ public class ActorForm extends DomainEntity {
 
 	@Column(unique = true)
 	@NotBlank
-	@Email
 	public String getEmail() {
 		return this.email;
 	}
@@ -104,7 +101,6 @@ public class ActorForm extends DomainEntity {
 		this.email = email;
 	}
 
-	@Pattern(regexp = "(^\\+([1-9]{1}[0-9]{1,2}))?[ ]*(\\([1-9]{1}[0-9]{1,2}\\))?[ ]*(\\d{4,}$)||''")
 	public String getPhone() {
 		return this.phone;
 	}
