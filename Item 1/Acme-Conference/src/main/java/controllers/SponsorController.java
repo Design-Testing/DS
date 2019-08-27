@@ -95,7 +95,7 @@ public class SponsorController extends AbstractController {
 				final Finder finder = this.finderService.createForNewActor();
 				sponsor.setFinder(finder);
 				sponsor = this.sponsorService.save(sponsor);
-				result = this.viewSponsor();
+				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("sponsor/signup");
 				result.addObject("actorForm", actorForm);
