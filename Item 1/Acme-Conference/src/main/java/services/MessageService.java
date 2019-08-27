@@ -122,7 +122,6 @@ public class MessageService {
 		this.send(m);
 	}
 
-	//TODO ALBA llamar al método en el sitio correspondiente
 	/**
 	 * This method sends a message to the authors who have made a submission to a conference and sets the logged user as the sender.
 	 * */
@@ -143,7 +142,6 @@ public class MessageService {
 		this.send(m);
 	}
 
-	//TODO ALBA llamar al método en el sitio correspondiente
 	/**
 	 * This method sends a message to the authors who has registered to a conference and sets the logged user as the sender.
 	 * */
