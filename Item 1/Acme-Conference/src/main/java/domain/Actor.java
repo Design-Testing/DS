@@ -11,9 +11,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
@@ -83,7 +81,6 @@ public class Actor extends DomainEntity {
 
 	@Column(unique = true)
 	@NotBlank
-	@Email
 	public String getEmail() {
 		return this.email;
 	}
@@ -92,7 +89,7 @@ public class Actor extends DomainEntity {
 		this.email = email;
 	}
 
-	@Pattern(regexp = "(^\\+([1-9]{1}[0-9]{1,2}))?[ ]*(\\([1-9]{1}[0-9]{1,2}\\))?[ ]*(\\d{4,}$)||''")
+	//@Pattern(regexp = "(^\\+([1-9]{1}[0-9]{1,2}))?[ ]*(\\([1-9]{1}[0-9]{1,2}\\))?[ ]*(\\d{4,}$)||''")
 	public String getPhone() {
 		return this.phone;
 	}

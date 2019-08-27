@@ -28,7 +28,7 @@
 
 <acme:display code="submission.reviewPaper.title" value="${submission.reviewPaper.title}" />
 <acme:display code="submission.reviewPaper.summary" value="${submission.reviewPaper.summary}" />
-<acme:display code="submission.reviewPaper.document" value="${submission.reviewPaper.document}" />
+<acme:display code="submission.reviewPaper.document" value="${submission.reviewPaper.document}" url="${submission.reviewPaper.document}" />
 <acme:display code="submission.reviewPaper.authors" value="${submission.reviewPaper.authors}" />
 
 
@@ -54,10 +54,10 @@
 
 <jstl:choose>
 <jstl:when test="${availableSubmissionStatus eq false }">
-<spring:message code="submission.no.status" />
+<h4 style="color: red;"><spring:message code="submission.no.status" /></h4>
 </jstl:when>
 <jstl:when test="${availableSubmissionStatus eq true and availableCameraReadyDeadline eq false  }">
-<spring:message code="submission.elapsed.camera.deadline" />
+<h4 style="color: red;"><spring:message code="submission.elapsed.camera.deadline" /></h4>
 </jstl:when>
 <jstl:when test="${availableSubmissionStatus eq true and availableCameraReadyDeadline eq true }">
 <acme:button url="submission/author/createPaper.do?submissionId=${submission.id }" name="back" code="submission.create.paper" />

@@ -8,6 +8,35 @@
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
+<script>
+	function phoneFun() {
+		var x = document.getElementById("phone");
+		var telefono = x.value;
+		var CCACPN = new RegExp("(^\\+([1-9]{1}[0-9]{0,2})){1}\\s*(\\([1-9]{1}[0-9]{0,2}\\)){1}\\s*(\\d{4,}$)"); /* +CC (AC) PN */
+		var CCPN = new RegExp("(^\\+([1-9]{1}[0-9]{0,2})){1}\\s*(\\d{4,}$)"); /* +CC PN */
+		var PN = new RegExp("(^\\d{4,}$)"); /* PN */
+		if (('${phone}' != telefono) && !CCACPN.test(telefono) && !CCPN.test(telefono)) {
+			if (PN.test(telefono)) {
+				x.value = '${countryPhoneCode}' + " " + telefono;
+			} else {
+				var mensaje = confirm("<spring:message code="phone.error"/>");
+				if (!mensaje) {
+					x.value = '${phone}';
+				}
+			}
+		}
+	}
+	</script>
+	
+	<jstl:if test="${not empty alert}">
+	<script>
+	 $(document).ready(function() {
+		 alert('<spring:message code="${alert}"/>');
+	    });
+		
+	</script>
+</jstl:if>
+
 <form:form action="author/save.do" modelAttribute="actorForm">
 
     <form:hidden path="id"/>
@@ -25,9 +54,17 @@
     <br/>
     <acme:textbox path="photo" code="author.photo"/>
     <br/>
-    <acme:textbox path="email" code="author.email"/>
+    <acme:textbox path="email" code="author.email" placeholder="id@domain / alias id@domain " size="45"/>
     <br/>
-    <acme:textbox path="phone" code="author.phone"/>
+    
+    <div>
+		<form:label path="phone">
+			<spring:message code="author.phone" />
+		</form:label>
+		<form:input path="phone" onblur="phoneFun()" />
+		<form:errors path="phone" cssClass="error" />
+	</div>
+	
     <br/>
     <acme:textbox path="address" code="author.address"/>
     <br/>
