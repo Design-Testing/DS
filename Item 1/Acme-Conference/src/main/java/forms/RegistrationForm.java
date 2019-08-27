@@ -3,7 +3,6 @@ package forms;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
@@ -56,7 +55,6 @@ public class RegistrationForm extends DomainEntity {
 		this.make = make;
 	}
 
-	@Column(unique = true)
 	@NotBlank
 	@CreditCardNumber
 	public String getNumber() {

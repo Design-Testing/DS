@@ -62,6 +62,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="userAccountReviewer3" class="security.UserAccount">
+		<property name="username" value="reviewer3" />
+		<property name="password" value="315d31e7c8f3a136610aafa220d689be" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="REVIEWER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 	<bean id="userAccountAuthor1" class="security.UserAccount">
 		<property name="username" value="author1" />
@@ -274,10 +286,6 @@
 		</property>
 	</bean>
 
-	<!-- =================================================================== -->
-	<!-- ============================ SYSTEM =============================== -->
-	<!-- =================================================================== -->
-
 
 	<!-- =================================================================== -->
 	<!-- ======================== ADMINISTRATOR ============================ -->
@@ -404,6 +412,30 @@
 		<property name="keywords">
 			<list>
 				<value>linux</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="reviewer3" class="domain.Reviewer">
+		<!-- Actor -->
+		<property name="name" value="Carlos" />
+		<property name="surname">
+			<list>
+				<value>González</value>
+			</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png" />
+		<property name="email" value="carlos.gonzález@gmail.es" />
+		<property name="phone" value="+34647467526" />
+		<property name="address" value="Avd La Salle" />
+		<property name="finder" ref="finderReviewer3" />
+		<property name="userAccount" ref="userAccountReviewer3" />
+
+		<!-- Reviewer -->
+
+		<property name="keywords">
+			<list>
+				<value>asus</value>
 			</list>
 		</property>
 	</bean>
@@ -775,6 +807,28 @@
 		<property name="startDate" value="2019/11/05 00:00" />
 		<property name="endDate" value="2019/11/06 00:00" />
 		<property name="summary" value="Summary of conference 7" />
+		<property name="fee" value="1520.89" />
+		<property name="isDraft" value="false" />
+		<property name="activities">
+			<list>
+
+			</list>
+		</property>
+		<property name="category" ref="category3" />
+
+	</bean>
+	
+	<bean id="conference8" class="domain.Conference">
+		<!-- CONFERENCE -->
+		<property name="title" value="Conferencia Asus" />
+		<property name="acronym" value="Asus" />
+		<property name="venue" value="Asus" />
+		<property name="submission" value="2019/08/27 18:12" />
+		<property name="notification" value="2019/08/27 18:15" />
+		<property name="cameraReady" value="2019/08/27 18:18" />
+		<property name="startDate" value="2019/08/27 18:20" />
+		<property name="endDate" value="2019/08/027 18:23" />
+		<property name="summary" value="Summary of conference 8" />
 		<property name="fee" value="1520.89" />
 		<property name="isDraft" value="false" />
 		<property name="activities">
@@ -1211,6 +1265,17 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="finderReviewer3" class="domain.Finder">
+		<property name="keyword" value="Asos" />
+		<property name="fromDate" value="2019/06/02 13:00" />
+		<property name="toDate" value="2019/06/02 13:02" />
+		<!-- Reletions -->
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
 
 	<bean id="finderSponsor1" class="domain.Finder">
 		<property name="keyword" value="Conference" />
@@ -1236,7 +1301,18 @@
 		</property>
 	</bean>
 
-
+	<bean id="finderSystem1" class="domain.Finder">
+		<property name="keyword" value="Conference" />
+		<property name="maximumFee" value="10.0" />
+		<property name="categoryName" value="Coding" />
+		<property name="fromDate" value="2019/04/02 13:00" />
+		<property name="toDate" value="2019/04/15 13:00" />
+		<!-- Reletions -->
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
 
 	<!-- =================================================================== -->
 	<!-- ======================== SPONSORSHIP ============================== -->

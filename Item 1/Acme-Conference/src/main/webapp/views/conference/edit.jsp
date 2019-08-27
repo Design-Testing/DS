@@ -9,9 +9,6 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 
-<jstl:out value="${lang }"/>
-
-
 <form:form action="conference/administrator/edit.do" modelAttribute="conferenceForm">
 
     <form:hidden path="id"/>
