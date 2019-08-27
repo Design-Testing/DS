@@ -123,4 +123,47 @@ public class SubmissionServiceTest extends AbstractTest {
 
 		this.checkExceptions(expected, caught);
 	}
+
+	/* ========================= Test Assign to Reviewer =========================== */
+
+	@Test
+	public void driverAssignReviewer() {
+
+		final Collection<String> authors = new ArrayList<String>();
+		authors.add("author1");
+		final Paper paper = this.paperService.create();
+		paper.setDocument("http://www.document.com");
+		paper.setSummary("summary");
+		paper.setTitle("title");
+		paper.setAuthors(authors);
+
+		final Object testingData[][] = {
+			{
+				//				A: Acme-Conference: un administrador asigna una solicitud de presentación a un revisor
+				//				B: Test Positivo: un administrador asigna una solicitud de presentación a un revisor correctamente
+				"reviewer2", "submission1", null
+			}, {
+				//				A: Acme-Conference: un administrador asigna una presentación a un revisor
+				//				B: Test Negativo: un administrador intenta asignar a un revisor una solicitud de presentación que ya tiene asignada
+				"reviewer1", "submission1", java.lang.IllegalArgumentException.class
+			}
+
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateAssignReviewer((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+	private void templateAssignReviewer(final String reviewer, final String submission, final Class<?> expected) {
+
+		Class<?> caught;
+		caught = null;
+		try {
+			this.authenticate("admin1");
+			this.submissionService.assignToReviewer(this.getEntityId(submission), this.getEntityId(reviewer));
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+	}
+
 }

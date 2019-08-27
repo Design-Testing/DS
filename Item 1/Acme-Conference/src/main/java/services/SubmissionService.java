@@ -137,6 +137,7 @@ public class SubmissionService {
 	}
 
 	public void assignToReviewer(final int submissionId, final int reviewerId) {
+		this.administratorService.findByPrincipal();
 		final Submission submission = this.findOne(submissionId);
 		final Reviewer reviewer = this.reviewerService.findOne(reviewerId);
 		Assert.notNull(submission);
@@ -237,12 +238,10 @@ public class SubmissionService {
 		return result;
 	}
 
-	/*
-	 * public void delete(final Integer submissionId) {
-	 * Assert.notNull(submissionId);
-	 * this.submissionRepository.delete(submissionId);
-	 * }
-	 */
+	public void delete(final Integer submissionId) {
+		Assert.notNull(submissionId);
+		this.submissionRepository.delete(submissionId);
+	}
 
 	/** El ticker es ABC-XXXX donde ABC son las inciales del autor y XXXX cuatro letras randoms en mayuscula **/
 	public String generateTicker() {
@@ -273,6 +272,7 @@ public class SubmissionService {
 	}
 
 	public void runReviewerAssignation() {
+		this.administratorService.findByPrincipal();
 		final Collection<Submission> submissionsToAssign = this.findUnderReviewedSubmissions();
 		for (final Submission s : submissionsToAssign) {
 			final Collection<Report> reports = this.reportService.findReportsBySubmission(s.getId());

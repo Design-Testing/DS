@@ -405,8 +405,8 @@
 
 		<property name="keywords">
 			<list>
-				<value>optimista</value>
-				<value>superman</value>
+				<value>linux</value>
+				<value>windows</value>
 			</list>
 		</property>
 	</bean>
@@ -430,7 +430,6 @@
 
 		<property name="keywords">
 			<list>
-				<value>pesimista</value>
 				<value>linux</value>
 			</list>
 		</property>
