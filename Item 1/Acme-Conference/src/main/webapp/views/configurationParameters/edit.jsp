@@ -29,9 +29,9 @@
     
     <acme:textbox path="welcomeMessageEn" code="configurationParameters.welcomeMessageEn"/>
     <br/>
-    <acme:textbox path="creditCardMake" code="configurationParameters.creditCardMake"/>
+    <acme:textarea path="creditCardMake" code="configurationParameters.creditCardMake"/>
     <br/>
-    <acme:textbox path="voidWords" code="configurationParameters.voidWords"/>
+    <acme:textarea path="voidWords" code="configurationParameters.voidWords"/>
     <br/>
     <br/>
     
