@@ -25,6 +25,8 @@ import domain.Administrator;
 import domain.Category;
 import domain.Conference;
 import domain.Message;
+import domain.Report;
+import domain.Reviewer;
 import domain.Submission;
 import domain.Topic;
 import forms.ConferenceForm;
@@ -43,6 +45,9 @@ public class ConferenceService {
 	private SubmissionService		submissionService;
 
 	@Autowired
+	private ReportService			reportService;
+
+	@Autowired
 	private AdministratorService	administratorService;
 
 	@Autowired
@@ -53,6 +58,9 @@ public class ConferenceService {
 
 	@Autowired
 	private TopicService			topicService;
+
+	@Autowired
+	private ReviewerService			reviewerService;
 
 	//	@Autowired
 	//	private ActivityService			activityService;
@@ -377,6 +385,25 @@ public class ConferenceService {
 
 	public boolean exists(final int id) {
 		return this.conferenceRepository.exists(id);
+	}
+
+	public void runReviewerAssignation(final int conferenceId) {
+		this.administratorService.findByPrincipal();
+		Assert.notNull(this.findOne(conferenceId));
+		final Collection<Submission> submissionsToAssign = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
+		Assert.isTrue(!submissionsToAssign.isEmpty(), "all submissions are already been decided");
+		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conferenceId);
+		Assert.isTrue(!reviewers.isEmpty(), "no reviewers available to be assigned");
+		for (final Submission s : submissionsToAssign)
+			if (this.reportService.findReportsBySubmission(s.getId()).size() < 3)
+				for (final Reviewer r : reviewers) {
+					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
+					if (existingReport == null && this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
+						Report newReport = this.reportService.create(s.getId(), r.getId());
+						newReport = this.reportService.save(newReport, s, r);
+					}
+				}
+
 	}
 
 }

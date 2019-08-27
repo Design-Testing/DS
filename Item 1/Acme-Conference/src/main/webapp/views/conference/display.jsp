@@ -140,6 +140,8 @@
 
 	
 	<jstl:if test="${not empty submissions and conference.isDraft eq false  }" >
+			<acme:button url="conference/administrator/runAssignation.do?conferenceId=${conference.id}" name="display" code="conference.run.assignation"/>
+			
 			<acme:button url="conference/administrator/decideOnConference.do?conferenceId=${conference.id}" name="display" code="conference.run.decision"/>
 
 			<acme:button url="conference/administrator/notifyStatus.do?conferenceId=${conference.id}" name="display" code="conference.notify"/>

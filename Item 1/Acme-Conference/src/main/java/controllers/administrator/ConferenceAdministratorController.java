@@ -369,4 +369,28 @@ public class ConferenceAdministratorController extends AbstractController {
 
 	}
 
+	/** debe estar en el display de conference arriba de todas las submissions **/
+	@RequestMapping(value = "/runAssignation", method = RequestMethod.GET)
+	public ModelAndView runAssignation(@RequestParam final int conferenceId) {
+		ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+
+		try {
+
+			this.conferenceService.runReviewerAssignation(conferenceId);
+
+			result = this.display(conferenceId);
+			result.addObject("notificationMsg", "conference.run.assignation.success");
+
+		} catch (final Throwable oops) {
+			result = this.display(conferenceId);
+			if (oops.getMessage().equals("all submissions are already been decided"))
+				result.addObject("notificationMsg", "conference.all.submissions.decided");
+			if (oops.getMessage().equals("no reviewers available to be assigned"))
+				result.addObject("notificationMsg", "conference.no.reviewers.available");
+		}
+		return result;
+	}
+
 }

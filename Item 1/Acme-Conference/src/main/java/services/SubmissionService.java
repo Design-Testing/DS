@@ -279,23 +279,23 @@ public class SubmissionService {
 	public void runReviewerAssignation() {
 		this.administratorService.findByPrincipal();
 		final Collection<Submission> submissionsToAssign = this.findUnderReviewedSubmissions();
-		for (final Submission s : submissionsToAssign) {
-			final Collection<Report> reports = this.reportService.findReportsBySubmission(s.getId());
-			if (reports.size() < 3) {
+		//Assert.isTrue(!submissionsToAssign.isEmpty(), "all submissions are already been decided");
+		for (final Submission s : submissionsToAssign)
+			if (this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
 				final Conference conference = s.getConference();
 				final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conference.getId());
 				for (final Reviewer r : reviewers) {
 					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
-					if (existingReport == null && reports.size() < 3) {
+					if (existingReport == null && this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
 						Report newReport = this.reportService.create(s.getId(), r.getId());
 						newReport = this.reportService.save(newReport, s, r);
 					}
 				}
 
 			}
-		}
 
 	}
+
 	private Collection<Submission> findUnderReviewedSubmissions() {
 		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();
 		Assert.notNull(result);

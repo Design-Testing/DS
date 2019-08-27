@@ -10,18 +10,18 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
-<jstl:if test="${isAdministrator eq true }" >
+<!--<jstl:if test="${isAdministrator eq true }" >
 			<acme:button url="submission/administrator/runAssignation.do" name="display" code="conference.run.assignation"/>
 
 </jstl:if>
 
 <jstl:if test="${messageSuccessRunAssignation eq true}">
     	<h5 style="color: red;"><spring:message code="message.success.run.assignation"/></h5>
-</jstl:if>
+</jstl:if> -->
 
 <jstl:if test="${messageSuccessAssign eq true}">
     	<h5 style="color: red;"><spring:message code="message.success.assign"/></h5>
-</jstl:if>
+</jstl:if> 
     
 <jstl:if test="${isAdministrator eq true or isAuthor eq true }" >
 

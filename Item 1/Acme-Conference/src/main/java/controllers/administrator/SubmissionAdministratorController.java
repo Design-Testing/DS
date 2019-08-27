@@ -135,25 +135,5 @@ public class SubmissionAdministratorController extends AbstractController {
 		result.addObject("messageSuccessAssign", true);
 		return result;
 	}
-	/** debe estar en el display de conference arriba de todas las submissions **/
-	@RequestMapping(value = "/runAssignation", method = RequestMethod.GET)
-	public ModelAndView runAssignation() {
-		ModelAndView result;
-
-		this.administratorService.findByPrincipal();
-
-		this.submissionService.runReviewerAssignation();
-
-		final Collection<Submission> submissions = this.submissionService.findAll();
-
-		result = new ModelAndView("submission/list");
-		result.addObject("submissions", submissions);
-		result.addObject("isAdministrator", true);
-		result.addObject("isAuthor", false);
-		result.addObject("requestURI", "submission/administrator/submissions.do");
-		result.addObject("messageSuccessRunAssignation", true);
-
-		return result;
-	}
 
 }
