@@ -823,21 +823,94 @@
 	</bean>
 
 	<bean id="category2" class="domain.Category">
-		<property name="titleEs" value="PROGRAMACIÓN" />
-		<property name="titleEn" value="CODING" />
+		<property name="titleEs" value="CIENCIAS DE LA COMPUTACIÓN" />
+		<property name="titleEn" value="COMPUTER SCIENCE" />
 		<property name="father" ref="category1" />
 	</bean>
-
+	<bean id="category5" class="domain.Category">
+		<property name="titleEs" value="INTELIGENCIA ARTIFICIAL" />
+		<property name="titleEn" value="ARTIFICIAL INTELLIGENCE" />
+		<property name="father" ref="category2" />
+	</bean>
+	<bean id="category13" class="domain.Category">
+		<property name="titleEs" value="DEEP LEARNING" />
+		<property name="titleEn" value="DEEP LEARNING" />
+		<property name="father" ref="category5" />
+	</bean>
+	<bean id="category14" class="domain.Category">
+		<property name="titleEs" value="APRENDIZAJE BASADO EN INSTANCIAS" />
+		<property name="titleEn" value="INSTANCE-BASED LEARNING" />
+		<property name="father" ref="category5" />
+	</bean>
+	<bean id="category15" class="domain.Category">
+		<property name="titleEs" value="REGRESIÓN" />
+		<property name="titleEn" value="REGRESSION" />
+		<property name="father" ref="category5" />
+	</bean>
+	<bean id="category6" class="domain.Category">
+		<property name="titleEs" value="INGENIERÍA DEL SOFTWARE" />
+		<property name="titleEn" value="SOFTWARE ENGINEERING" />
+		<property name="father" ref="category2" />
+	</bean>
+	<bean id="category16" class="domain.Category">
+		<property name="titleEs" value="BIG DATA" />
+		<property name="titleEn" value="BIG DATA" />
+		<property name="father" ref="category6" />
+	</bean>
+	<bean id="category17" class="domain.Category">
+		<property name="titleEs" value="GRAN PROCESAMIENTO" />
+		<property name="titleEn" value="BIG PROCESSING" />
+		<property name="father" ref="category6" />
+	</bean>
+	<bean id="category18" class="domain.Category">
+		<property name="titleEs" value="MÉTODOS" />
+		<property name="titleEn" value="METHODS" />
+		<property name="father" ref="category6" />
+	</bean>
+	<bean id="category19" class="domain.Category">
+		<property name="titleEs" value="HERRAMIENTAS" />
+		<property name="titleEn" value="TOOLS" />
+		<property name="father" ref="category6" />
+	</bean>
 	<bean id="category3" class="domain.Category">
-		<property name="titleEs" value="REDES" />
-		<property name="titleEn" value="NETWORK" />
+		<property name="titleEs" value="FÍSICA" />
+		<property name="titleEn" value="PHYSICS" />
 		<property name="father" ref="category1" />
 	</bean>
-
-	<bean id="category4" class="domain.Category">
-		<property name="titleEs" value="SISTEMAS OPERATIVOS" />
-		<property name="titleEn" value="OPERATING SYSTEMS" />
+	<bean id="category7" class="domain.Category">
+		<property name="titleEs" value="CINEMÁTICA" />
+		<property name="titleEn" value="CINEMATIC" />
 		<property name="father" ref="category3" />
+	</bean>
+	<bean id="category8" class="domain.Category">
+		<property name="titleEs" value="ELECTRICIDAD" />
+		<property name="titleEn" value="ELECTRICITY" />
+		<property name="father" ref="category3" />
+	</bean>
+	<bean id="category9" class="domain.Category">
+		<property name="titleEs" value="ELECTRÓNICA" />
+		<property name="titleEn" value="ELECTRONICS" />
+		<property name="father" ref="category3" />
+	</bean>
+	<bean id="category4" class="domain.Category">
+		<property name="titleEs" value="BIOLOGÍA" />
+		<property name="titleEn" value="BIOLOGY" />
+		<property name="father" ref="category1" />
+	</bean>
+	<bean id="category10" class="domain.Category">
+		<property name="titleEs" value="ANIMALES" />
+		<property name="titleEn" value="ANIMALS" />
+		<property name="father" ref="category4" />
+	</bean>
+	<bean id="category11" class="domain.Category">
+		<property name="titleEs" value="PLANTAS" />
+		<property name="titleEn" value="PLANTS" />
+		<property name="father" ref="category4" />
+	</bean>
+	<bean id="category12" class="domain.Category">
+		<property name="titleEs" value="HONGOS" />
+		<property name="titleEn" value="FUNGI" />
+		<property name="father" ref="category4" />
 	</bean>
 
 
