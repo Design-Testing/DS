@@ -65,8 +65,6 @@ public class Paper extends DomainEntity {
 	@NotEmpty
 	@ElementCollection
 	@EachNotBlank
-	//@Valid
-	//@OneToMany
 	public Collection<String> getAuthors() {
 		return this.authors;
 	}
