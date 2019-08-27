@@ -154,6 +154,8 @@ public class SubmissionAuthorController extends AbstractController {
 
 		final String lang = LocaleContextHolder.getLocale().getLanguage();
 
+		this.authorService.findByPrincipal();
+
 		if (binding.hasErrors()) {
 			result = new ModelAndView("submission/editCameraReadyPaper");
 			result.addObject("paper", paper);
@@ -162,8 +164,7 @@ public class SubmissionAuthorController extends AbstractController {
 			result.addObject("lang", lang);
 		} else
 			try {
-				final Paper paperSaved = this.paperService.save(paper);
-				this.submissionService.sendCameraReadyPaper(Integer.parseInt(submissionId), paperSaved);
+				this.submissionService.sendCameraReadyPaper(Integer.parseInt(submissionId), paper);
 				result = this.display(Integer.parseInt(submissionId));
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("submission/editCameraReadyPaper");
@@ -176,8 +177,6 @@ public class SubmissionAuthorController extends AbstractController {
 				result.addObject("paper", paper);
 				result.addObject("submissionId", submissionId);
 				result.addObject("lang", lang);
-				//if (oops.getMessage().equals("no deadline or date can be null"))
-				//result.addObject("msgerror", "conference.error.empty");
 				result.addObject("errors", binding.getAllErrors());
 
 			}

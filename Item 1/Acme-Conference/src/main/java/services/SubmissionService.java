@@ -111,9 +111,14 @@ public class SubmissionService {
 		Assert.notNull(retrieved);
 		Assert.isTrue(retrieved.getAuthor().equals(principal));
 		Assert.isTrue(retrieved.getStatus().equals("ACCEPTED"));
+		if (cameraReadyPaper.getId() != 0)
+			Assert.isTrue(retrieved.getCameraReadyPaper().equals(cameraReadyPaper) && retrieved.getAuthor().equals(principal));
+		else
+			Assert.isTrue(retrieved.getAuthor().equals(principal));
 		final Date now = new Date();
 		Assert.isTrue(now.before(retrieved.getConference().getCameraReady()), "camera-ready deadline is elapsed");
-		retrieved.setCameraReadyPaper(cameraReadyPaper);
+		final Paper paperSaved = this.paperService.save(cameraReadyPaper);
+		retrieved.setCameraReadyPaper(paperSaved);
 		this.submissionRepository.save(retrieved);
 
 	}
@@ -145,8 +150,8 @@ public class SubmissionService {
 		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
 		final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(submissionId, reviewerId);
 		Assert.isTrue(existingReport == null, "this reviewer has already been assigned to that submission");
-		//TODO dejarlo?
-		Assert.isTrue(this.reportService.findReportsBySubmission(submissionId).size() <= 3, "no more than 3 reviewers can be assigned to a submission");
+		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(submission.getConference().getId());
+		Assert.isTrue(reviewers.contains(reviewer), "keywords of the reviewer must be contained within the title or the summary of the conference");
 		final Report newReport = this.reportService.create(submissionId, reviewerId);
 		this.reportService.save(newReport, submission, reviewer);
 
