@@ -42,10 +42,12 @@ public class CategoryController extends AbstractController {
 
 		final ModelAndView result;
 		final Category category = this.categoryService.findOne(categoryId);
+		final Collection<Category> subcategories = this.categoryService.findSubcategCategories(categoryId);
 		result = new ModelAndView("category/display");
 		result.addObject("category", category);
+		result.addObject("subcategories", subcategories);
 		result.addObject("isAdministrator", true);
-		result.addObject("requestURI", "category/display.do");
+		result.addObject("requestURI", "category/administrator/display.do");
 		result.addObject("lang", lang);
 
 		return result;
@@ -61,7 +63,7 @@ public class CategoryController extends AbstractController {
 		result = new ModelAndView("category/list");
 		result.addObject("categories", categories);
 		result.addObject("isAdministrator", true);
-		result.addObject("requestURI", "category/list.do");
+		result.addObject("requestURI", "category/administrator/list.do");
 		result.addObject("lang", lang);
 
 		return result;

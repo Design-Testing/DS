@@ -17,6 +17,21 @@
     <jstl:if test="${lang eq 'es' }" >
     	<acme:display code="category.father" value="${category.father.titleEs}" />
     </jstl:if>
+    <display:table name="subcategories" id="row"
+		requestURI="${requestURI}" pagesize="5"
+		class="displaytag">
+			<jstl:if test="${lang eq 'en' }" >
+				<display:column property="titleEn" titleKey="category.title" />
+    		</jstl:if>
+    		<jstl:if test="${lang eq 'es' }" >
+    			<display:column property="titleEs" titleKey="category.title" />
+    		</jstl:if>
+			
+		<display:column>
+			<acme:button url="category/administrator/display.do?categoryId=${row.id}" name="display" code="category.display"/>
+		</display:column>
+		
+</display:table>
 	
 	
 

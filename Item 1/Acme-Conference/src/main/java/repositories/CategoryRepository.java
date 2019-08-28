@@ -23,4 +23,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
 	@Query("select c from Category c where c.father.id = ?1 and c.father.titleEn <> 'CONFERENCE'")
 	Collection<Category> findCategoriesWichFatherIs(int categoryId);
+
+	@Query("select c from Category c where c.father.id = ?1")
+	Collection<Category> findSubCategories(int categoryId);
 }

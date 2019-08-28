@@ -65,7 +65,7 @@ public class SponsorshipController extends AbstractController {
 		result = new ModelAndView("sponsorship/list");
 		result.addObject("sponsorships", sponsorships);
 		result.addObject("isSponsor", true);
-		result.addObject("requestURI", "sponsorship/list.do");
+		result.addObject("requestURI", "sponsorship/sponsor/list.do");
 
 		return result;
 	}

@@ -13,8 +13,16 @@
 	<acme:display code="sponsor.userAccount.username" value="${sponsor.userAccount.username}" />
 	<acme:display code="sponsor.name" value="${sponsor.name}" />
 	<acme:display code="sponsor.middleName" value="${sponsor.middleName}" />
-	<acme:display code="sponsor.surname" value="${sponsor.surname}" />
-	<acme:display code="sponsor.photo" value="${sponsor.photo}" />
+	<dt><spring:message code="sponsor.surname" />:</dt>
+	<dd>
+		<jstl:forEach items="${sponsor.surname}" var="surname">
+    			<jstl:out value="${surname}"/>
+    	</jstl:forEach></dd>
+	
+	<dt><spring:message code="sponsor.photo" />:</dt>
+	<dd>
+	<img src="${sponsor.photo}" alt="<jstl:out value ="${sponsor.photo}"/>" width="220" height="135"/>
+	</dd>
 	<acme:display code="sponsor.email" value="${sponsor.email}" />
 	<acme:display code="sponsor.phone" value="${sponsor.phone}" />
 	<acme:display code="sponsor.address" value="${sponsor.address}" />

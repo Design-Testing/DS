@@ -65,14 +65,21 @@ public class CategoryService {
 	public void delete(final Integer categoryId) {
 		Assert.notNull(categoryId);
 		Assert.isTrue(!(this.categoryRepository.findOne(categoryId).getTitleEn().equals("CONFERENCE")), "You can´t delete root category 'Conference'.");
-		this.conferenceService.reassignConferences(categoryId);
+
 		final List<Category> categoriasDependientes = new ArrayList<Category>(this.categoryRepository.findCategoriesWichFatherIs(categoryId));
-		if (categoriasDependientes.isEmpty())
+
+		if (categoriasDependientes.isEmpty()) {
+			this.conferenceService.reassignConferences(categoryId);
 			this.categoryRepository.delete(categoryId);
-		else {
-			for (int i = 0; i < categoriasDependientes.size(); i++)
-				this.delete(categoriasDependientes.get(i).getId());//Esto hay que cambiarlo en caso de que se quieran reasignar en vez de eliminar todas las hijas
+			System.out.println("Se ha eliminado la categoria" + categoryId);
+		} else {
+			for (int i = 0; i < categoriasDependientes.size(); i++) {
+				System.out.println(categoriasDependientes.get(i));
+				this.delete(categoriasDependientes.get(i).getId());
+			}
+			this.conferenceService.reassignConferences(categoryId);
 			this.categoryRepository.delete(categoryId);
+			System.out.println("Se ha eliminado la categoria" + categoryId);
 		}
 
 	}
@@ -86,5 +93,9 @@ public class CategoryService {
 			res = this.categoryRepository.findCategoriesNameEs();
 		Assert.notNull(res);
 		return res;
+	}
+
+	public Collection<Category> findSubcategCategories(final int categoryId) {
+		return this.categoryRepository.findSubCategories(categoryId);
 	}
 }

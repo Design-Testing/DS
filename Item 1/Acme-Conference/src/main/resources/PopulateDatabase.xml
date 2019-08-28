@@ -713,9 +713,9 @@
 
 	<bean id="conference1" class="domain.Conference">
 		<!-- CONFERENCE -->
-		<property name="title" value="Conferencia linux" />
-		<property name="acronym" value="linux" />
-		<property name="venue" value="linux" />
+		<property name="title" value="Deep-Learning y sus aplicaciones en el ámbito de la salud" />
+		<property name="acronym" value="deepLearning" />
+		<property name="venue" value="deepLearning" />
 		<property name="submission" value="2019/06/12 12:34" />
 		<property name="notification" value="2019/06/12 12:34" />
 		<property name="cameraReady" value="2019/06/12 12:34" />
@@ -732,15 +732,15 @@
 				<ref bean="panel2" />
 			</list>
 		</property>
-		<property name="category" ref="category1" />
+		<property name="category" ref="category13" />
 
 	</bean>
 
 	<bean id="conference2" class="domain.Conference">
 		<!-- CONFERENCE -->
-		<property name="title" value="Conferencia Windows" />
-		<property name="acronym" value="Windows" />
-		<property name="venue" value="Windows" />
+		<property name="title" value="La importancia de la Ingeniería del software" />
+		<property name="acronym" value="software" />
+		<property name="venue" value="software" />
 		<property name="submission" value="2019/06/12 12:34" />
 		<property name="notification" value="2019/06/12 12:34" />
 		<property name="cameraReady" value="2019/06/12 12:34" />
@@ -756,16 +756,16 @@
 				<ref bean="panel1" />
 			</list>
 		</property>
-		<property name="category" ref="category3" />
+		<property name="category" ref="category6" />
 
 	</bean>
 
 
 	<bean id="conference3" class="domain.Conference">
 		<!-- CONFERENCE -->
-		<property name="title" value="Conferencia Windows" />
-		<property name="acronym" value="Windows" />
-		<property name="venue" value="Windows" />
+		<property name="title" value="El alcance de la Física Moderna" />
+		<property name="acronym" value="fisica" />
+		<property name="venue" value="fisica" />
 		<property name="submission" value="2019/07/28 00:00" />
 		<property name="notification" value="2019/07/31 00:00" />
 		<property name="cameraReady" value="2019/08/04 00:00" />
@@ -785,9 +785,9 @@
 	
 	<bean id="conference4" class="domain.Conference">
 		<!-- CONFERENCE -->
-		<property name="title" value="Conferencia Csif" />
-		<property name="acronym" value="Windows" />
-		<property name="venue" value="Windows" />
+		<property name="title" value="Los Animales y su evolución" />
+		<property name="acronym" value="animales" />
+		<property name="venue" value="animales" />
 		<property name="submission" value="2019/07/16 00:00" />
 		<property name="notification" value="2019/07/31 00:00" />
 		<property name="cameraReady" value="2019/08/03 00:00" />
@@ -801,15 +801,15 @@
 
 			</list>
 		</property>
-		<property name="category" ref="category3" />
+		<property name="category" ref="category10" />
 
 	</bean>
 	
 	<bean id="conference5" class="domain.Conference">
 		<!-- CONFERENCE -->
-		<property name="title" value="Conferencia Allevyn" />
-		<property name="acronym" value="Windows" />
-		<property name="venue" value="Windows" />
+		<property name="title" value="Conferencia sobre la Investigación" />
+		<property name="acronym" value="investigacionGeneral" />
+		<property name="venue" value="hall" />
 		<property name="submission" value="2019/09/16 00:00" />
 		<property name="notification" value="2019/09/31 00:00" />
 		<property name="cameraReady" value="2019/10/04 00:00" />
@@ -823,15 +823,15 @@
 
 			</list>
 		</property>
-		<property name="category" ref="category3" />
+		<property name="category" ref="category1" />
 
 	</bean>
 	
 	<bean id="conference6" class="domain.Conference">
 		<!-- CONFERENCE -->
-		<property name="title" value="Conferencia Iris" />
-		<property name="acronym" value="Iris" />
-		<property name="venue" value="Iris" />
+		<property name="title" value="Herramientas de desarrollo para Android" />
+		<property name="acronym" value="android" />
+		<property name="venue" value="android" />
 		<property name="submission" value="2019/08/20 00:00" />
 		<property name="notification" value="2019/09/31 00:00" />
 		<property name="cameraReady" value="2019/10/04 00:00" />
@@ -845,15 +845,15 @@
 
 			</list>
 		</property>
-		<property name="category" ref="category3" />
+		<property name="category" ref="category19" />
 
 	</bean>
 
 	<bean id="conference7" class="domain.Conference">
 		<!-- CONFERENCE -->
-		<property name="title" value="Conferencia Logitech" />
-		<property name="acronym" value="LGTCH" />
-		<property name="venue" value="Logitech" />
+		<property name="title" value="Big data en la sociedad actual" />
+		<property name="acronym" value="bigdata" />
+		<property name="venue" value="Big Data" />
 		<property name="submission" value="2019/09/20 00:00" />
 		<property name="notification" value="2019/10/31 00:00" />
 		<property name="cameraReady" value="2019/11/04 00:00" />
@@ -867,15 +867,15 @@
 
 			</list>
 		</property>
-		<property name="category" ref="category3" />
+		<property name="category" ref="category16" />
 
 	</bean>
 	
 	<bean id="conference8" class="domain.Conference">
 		<!-- CONFERENCE -->
-		<property name="title" value="Conferencia Asus" />
-		<property name="acronym" value="Asus" />
-		<property name="venue" value="Asus" />
+		<property name="title" value="Herramientas de desarrollo para iOS" />
+		<property name="acronym" value="iOS" />
+		<property name="venue" value="iOS" />
 		<property name="submission" value="2019/08/28 18:12" />
 		<property name="notification" value="2019/08/28 18:15" />
 		<property name="cameraReady" value="2019/08/28 18:18" />
@@ -889,7 +889,7 @@
 
 			</list>
 		</property>
-		<property name="category" ref="category3" />
+		<property name="category" ref="category19" />
 
 	</bean>
 	<!-- =================================================================== -->
@@ -1501,7 +1501,7 @@
 		<property name="welcomeMessageEn"
 			value="Welcome to Acme Conference! Your scientific event manager" />
 		<property name="welcomeMessageEsp"
-			value="“¡Bienvenidos a Acme Conference! Su gestor de eventos científicos" />
+			value="¡Bienvenidos a Acme Conference! Su gestor de eventos científicos" />
 		<property name="countryPhoneCode" value="+34" />
 		<property name="creditCardMake">
 			<list>

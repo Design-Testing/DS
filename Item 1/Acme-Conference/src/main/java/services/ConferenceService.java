@@ -452,11 +452,14 @@ public class ConferenceService {
 	public Collection<Conference> reassignConferences(final int categoryId) {
 		final List<Conference> toReassign = new ArrayList<Conference>(this.conferenceRepository.findByCategory(categoryId));
 		final Category father = this.categoryService.findOne(categoryId).getFather();
-		System.out.println(toReassign);
-		System.out.println(father);
-		for (int i = 0; i < toReassign.size(); i++)
-			toReassign.get(i).setCategory(father);
-		this.conferenceRepository.save(toReassign);
+		System.out.println("Reasignacion a la categoria padre: " + father.getTitleEs());
+		System.out.println("Se van a reasignar las conferencias: " + toReassign);
+		for (int i = 0; i < toReassign.size(); i++) {
+			final Conference c = toReassign.get(i);
+			c.setCategory(father);
+			System.out.println("Conferencia reasignada: " + c.getTitle() + "/ " + c.getCategory());
+			this.conferenceRepository.save(c);
+		}
 
 		return toReassign;
 
