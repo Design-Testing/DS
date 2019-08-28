@@ -13,12 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.SubmissionRepository;
+import domain.Actor;
+import domain.Administrator;
 import domain.Author;
 import domain.Conference;
+import domain.Message;
 import domain.Paper;
 import domain.Report;
 import domain.Reviewer;
 import domain.Submission;
+import domain.Topic;
 
 @Service
 //@Transactional
@@ -44,6 +48,12 @@ public class SubmissionService {
 
 	@Autowired
 	private ReviewerService			reviewerService;
+
+	@Autowired
+	private MessageService			messageService;
+
+	@Autowired
+	private TopicService			topicService;
 
 
 	public Submission create(final int conferenceId) {
@@ -142,18 +152,31 @@ public class SubmissionService {
 	}
 
 	public void assignToReviewer(final int submissionId, final int reviewerId) {
-		this.administratorService.findByPrincipal();
+		final Administrator principal = this.administratorService.findByPrincipal();
 		final Submission submission = this.findOne(submissionId);
 		final Reviewer reviewer = this.reviewerService.findOne(reviewerId);
 		Assert.notNull(submission);
 		Assert.notNull(reviewer);
-		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
+		//TODO under-reviewed
+		//Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
 		final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(submissionId, reviewerId);
 		Assert.isTrue(existingReport == null, "this reviewer has already been assigned to that submission");
 		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(submission.getConference().getId());
 		Assert.isTrue(reviewers.contains(reviewer), "keywords of the reviewer must be contained within the title or the summary of the conference");
 		final Report newReport = this.reportService.create(submissionId, reviewerId);
 		this.reportService.save(newReport, submission, reviewer);
+
+		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
+		final Topic topic = topics.iterator().next();
+		final Message m = this.messageService.create();
+		m.setSubject("You has been assigned a new submission");
+		m.setBody("You has been assigned to the submission with ticker " + submission.getTicker());
+		m.setSender(principal);
+		final Collection<Actor> recipients = new ArrayList<Actor>();
+		recipients.add(reviewer);
+		m.setRecivers(recipients);
+		m.setTopic(topic);
+		this.messageService.send(m);
 
 	}
 
@@ -276,25 +299,25 @@ public class SubmissionService {
 		return res;
 	}
 
-	public void runReviewerAssignation() {
-		this.administratorService.findByPrincipal();
-		final Collection<Submission> submissionsToAssign = this.findUnderReviewedSubmissions();
-		//Assert.isTrue(!submissionsToAssign.isEmpty(), "all submissions are already been decided");
-		for (final Submission s : submissionsToAssign)
-			if (this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
-				final Conference conference = s.getConference();
-				final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conference.getId());
-				for (final Reviewer r : reviewers) {
-					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
-					if (existingReport == null && this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
-						Report newReport = this.reportService.create(s.getId(), r.getId());
-						newReport = this.reportService.save(newReport, s, r);
-					}
-				}
-
-			}
-
-	}
+	//	public void runReviewerAssignation() {
+	//		this.administratorService.findByPrincipal();
+	//		final Collection<Submission> submissionsToAssign = this.findUnderReviewedSubmissions();
+	//		//Assert.isTrue(!submissionsToAssign.isEmpty(), "all submissions are already been decided");
+	//		for (final Submission s : submissionsToAssign)
+	//			if (this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
+	//				final Conference conference = s.getConference();
+	//				final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conference.getId());
+	//				for (final Reviewer r : reviewers) {
+	//					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
+	//					if (existingReport == null && this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
+	//						Report newReport = this.reportService.create(s.getId(), r.getId());
+	//						newReport = this.reportService.save(newReport, s, r);
+	//					}
+	//				}
+	//
+	//			}
+	//
+	//	}
 
 	private Collection<Submission> findUnderReviewedSubmissions() {
 		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();

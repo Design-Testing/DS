@@ -379,7 +379,6 @@ public class ConferenceAdministratorController extends AbstractController {
 		try {
 
 			this.conferenceService.runReviewerAssignation(conferenceId);
-
 			result = this.display(conferenceId);
 			result.addObject("notificationMsg", "conference.run.assignation.success");
 

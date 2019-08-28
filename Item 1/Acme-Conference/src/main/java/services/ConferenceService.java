@@ -388,12 +388,24 @@ public class ConferenceService {
 	}
 
 	public void runReviewerAssignation(final int conferenceId) {
-		this.administratorService.findByPrincipal();
-		Assert.notNull(this.findOne(conferenceId));
-		final Collection<Submission> submissionsToAssign = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
+
+		final Administrator principal = this.administratorService.findByPrincipal();
+		final Conference conference = this.findOne(conferenceId);
+		Assert.notNull(conference);
+		//final Date now = new Date();
+		//Assert.isTrue(now.before(conference.getNotification()), "the notification deadline has elapsed");
+
+		//TODO under-reviewed
+		//final Collection<Submission> submissionsToAssign = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
+		final Collection<Submission> submissionsToAssign = this.submissionService.findSubmissionsByConference(conferenceId);
+
 		Assert.isTrue(!submissionsToAssign.isEmpty(), "all submissions are already been decided");
 		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conferenceId);
 		Assert.isTrue(!reviewers.isEmpty(), "no reviewers available to be assigned");
+
+		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
+		final Topic topic = topics.iterator().next();
+
 		for (final Submission s : submissionsToAssign)
 			if (this.reportService.findReportsBySubmission(s.getId()).size() < 3)
 				for (final Reviewer r : reviewers) {
@@ -401,6 +413,15 @@ public class ConferenceService {
 					if (existingReport == null && this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
 						Report newReport = this.reportService.create(s.getId(), r.getId());
 						newReport = this.reportService.save(newReport, s, r);
+						final Message m = this.messageService.create();
+						m.setSubject("You has been assigned a new submission");
+						m.setBody("You has been assigned to the submission with ticker " + s.getTicker());
+						m.setSender(principal);
+						final Collection<Actor> recipients = new ArrayList<Actor>();
+						recipients.add(r);
+						m.setRecivers(recipients);
+						m.setTopic(topic);
+						this.messageService.send(m);
 					}
 				}
 

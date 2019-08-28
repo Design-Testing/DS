@@ -36,7 +36,8 @@ public class ReportService {
 		res.setIsDraft(true);
 		final Submission submission = this.submissionService.findOne(submissionId);
 		Assert.notNull(submission);
-		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"), "no se puede crear un report sobre una submission que no esté en estado PRE-REVIEWED");
+		//TODO under-reviewed
+		//Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"), "no se puede crear un report sobre una submission que no esté en estado PRE-REVIEWED");
 		final Reviewer reviewer = this.reviewerService.findOne(reviewerId);
 		Assert.notNull(reviewer);
 

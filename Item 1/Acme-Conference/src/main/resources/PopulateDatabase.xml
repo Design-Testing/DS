@@ -285,6 +285,26 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="outBoxReviewer3" class="domain.Folder">
+		<property name="name" value="Out box" />
+		<property name="actor" ref="reviewer3" />
+		<property name="messages">
+			<list>
+				<!-- <ref bean="message1"/> -->
+			</list>
+		</property>
+	</bean>
+
+	<bean id="inBoxReviewer3" class="domain.Folder">
+		<property name="name" value="In box" />
+		<property name="actor" ref="reviewer3" />
+		<property name="messages">
+			<list>
+				<!-- <ref bean="message1"/> -->
+			</list>
+		</property>
+	</bean>
 
 
 	<!-- =================================================================== -->
@@ -388,6 +408,7 @@
 			<list>
 				<value>linux</value>
 				<value>windows</value>
+				<value>iris</value>
 			</list>
 		</property>
 	</bean>
@@ -412,6 +433,7 @@
 		<property name="keywords">
 			<list>
 				<value>linux</value>
+				<value>iris</value>
 			</list>
 		</property>
 	</bean>
@@ -436,6 +458,7 @@
 		<property name="keywords">
 			<list>
 				<value>asus</value>
+				<value>iris</value>
 			</list>
 		</property>
 	</bean>
@@ -648,6 +671,36 @@
 		<property name="moment" value="2019/08/20 07:25" />
 		<property name="status" value="ACCEPTED" />
 		<property name="reviewPaper" ref="paper5" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference6" />
+		<property name="isNotified" value="false" />
+	</bean>
+	
+	<bean id="submission5" class="domain.Submission">
+		<property name="ticker" value="AUX-BQ23" />
+		<property name="moment" value="2019/08/20 07:25" />
+		<property name="status" value="UNDER-REVIEWED" />
+		<property name="reviewPaper" ref="paper6" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference6" />
+		<property name="isNotified" value="false" />
+	</bean>
+	
+	<bean id="submission6" class="domain.Submission">
+		<property name="ticker" value="AUX-BQ10" />
+		<property name="moment" value="2019/08/20 07:25" />
+		<property name="status" value="UNDER-REVIEWED" />
+		<property name="reviewPaper" ref="paper7" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference6" />
+		<property name="isNotified" value="false" />
+	</bean>
+	
+	<bean id="submission7" class="domain.Submission">
+		<property name="ticker" value="AUX-BQ11" />
+		<property name="moment" value="2019/08/20 07:25" />
+		<property name="status" value="UNDER-REVIEWED" />
+		<property name="reviewPaper" ref="paper8" />
 		<property name="author" ref="author1" />
 		<property name="conference" ref="conference6" />
 		<property name="isNotified" value="false" />
@@ -1104,6 +1157,39 @@
 		<property name="authors">
 			<list>
 				<value>Author of paper5</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="paper6" class="domain.Paper">
+		<property name="title" value="Title of paper 6" />
+		<property name="summary" value="Summary of paper 6" />
+		<property name="document" value="http://www.documentPaper6.com" />
+		<property name="authors">
+			<list>
+				<value>Author of paper6</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="paper7" class="domain.Paper">
+		<property name="title" value="Title of paper 7" />
+		<property name="summary" value="Summary of paper 7" />
+		<property name="document" value="http://www.documentPaper7.com" />
+		<property name="authors">
+			<list>
+				<value>Author of paper7</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="paper8" class="domain.Paper">
+		<property name="title" value="Title of paper 8" />
+		<property name="summary" value="Summary of paper 8" />
+		<property name="document" value="http://www.documentPaper8.com" />
+		<property name="authors">
+			<list>
+				<value>Author of paper8</value>
 			</list>
 		</property>
 	</bean>
