@@ -2,7 +2,6 @@
 package services;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -57,7 +56,7 @@ public class AdministratorServiceTest extends AbstractTest {
 		admin.setEmail("theboss@jmsx.es");
 		admin.setName("Pepe");
 		admin.setMiddleName("Bolino");
-		admin.setSurname(Arrays.asList("Shur-name"));
+		admin.setSurname("Shur-name");
 
 		admin = this.administratorService.save(admin);
 		Assert.isTrue(admin.getId() != 0);

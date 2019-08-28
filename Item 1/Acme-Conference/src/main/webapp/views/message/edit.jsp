@@ -20,7 +20,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<form:form action="message/edit.do" modelAttribute="m">
+<form:form action="${action}" modelAttribute="m">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -35,6 +35,7 @@
 			<form:option value="${r.id}" label="${r.name}" />
 		</jstl:forEach>
 	</form:select>
+	<form:errors path="recivers" cssClass="error" />
 	<br />
 	<br />
 
@@ -58,9 +59,9 @@
 					<form:option value="${rt.id}" label="${rt.spanish}" />
 				</jstl:otherwise>
 			</jstl:choose>
-
 		</jstl:forEach>
 	</form:select>
+	<form:errors path="topic" cssClass="error" />
 	<br />
 	<br />
 

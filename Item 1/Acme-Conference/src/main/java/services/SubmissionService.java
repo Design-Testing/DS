@@ -289,7 +289,7 @@ public class SubmissionService {
 		else
 			initial2 = 'X';
 
-		final Character initial3 = author.getSurname().get(0).charAt(0);
+		final Character initial3 = author.getSurname().charAt(0);
 
 		res = "" + initial1 + "" + initial2 + "" + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
 
