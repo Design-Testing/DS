@@ -18,4 +18,7 @@ public interface ReviewerRepository extends JpaRepository<Reviewer, Integer> {
 	@Query("select r from Reviewer r join r.keywords k where exists (select c from Conference c where c.id=?1 AND (c.title LIKE CONCAT('%',k,'%') OR c.summary LIKE CONCAT('%',k,'%')))")
 	Collection<Reviewer> findReviewersAccordingToConference(int conferenceId);
 
+	@Query("select r.reviewer from Report r where r.submission.id=?1")
+	Collection<Reviewer> findReviewersAssignedToSubmission(int submissionId);
+
 }

@@ -2,6 +2,7 @@
 package controllers.administrator;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -296,10 +297,22 @@ public class ConferenceAdministratorController extends AbstractController {
 		final Collection<Submission> underReviewedSubmissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 
 		if (conference != null) {
+
+			Boolean isNotificationElapsed = false;
+			Boolean isSubmissionElapsed = false;
+
+			final Date now = new Date();
+			if (now.after(conference.getNotification()))
+				isNotificationElapsed = true;
+			if (now.after(conference.getSubmission()))
+				isSubmissionElapsed = true;
+
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", true);
 			result.addObject("submissions", submissions);
+			result.addObject("isNotificationElapsed", isNotificationElapsed);
+			result.addObject("isSubmissionElapsed", isSubmissionElapsed);
 			result.addObject("acceptedSubmissions", acceptedSubmissions);
 			result.addObject("rejectedSubmissions", rejectedSubmissions);
 			result.addObject("underReviewedSubmissions", underReviewedSubmissions);
@@ -321,9 +334,12 @@ public class ConferenceAdministratorController extends AbstractController {
 
 		if (conference != null)
 			try {
-				this.conferenceService.decideOnConference(conferenceId);
+				final Boolean isAnyStatusUpdated = this.conferenceService.decideOnConference(conferenceId);
 				result = this.display(conferenceId);
-				result.addObject("notificationMsg", "message.make.desicion.successful");
+				if (isAnyStatusUpdated == true)
+					result.addObject("message.make.desicion.successful", "message.make.desicion.successful");
+				else
+					result.addObject("notificationMsg", "conference.no.status.updated");
 			} catch (final Throwable oops) {
 				result = this.display(conferenceId);
 				if (oops.getMessage().equals("submission deadline must be elapsed"))
@@ -351,7 +367,7 @@ public class ConferenceAdministratorController extends AbstractController {
 				this.conferenceService.notifyStatus(conferenceId);
 				result = this.display(conferenceId);
 				//result.addObject("message.notification.successful", "message.notification.successful");
-				result.addObject("notificationMsg", "message.notification.successful");
+				result.addObject("message.notification.successful", "message.notification.successful");
 			} catch (final Throwable oops) {
 				result = this.display(conferenceId);
 				if (oops.getMessage().equals("notification deadline is elapsed"))
@@ -388,6 +404,8 @@ public class ConferenceAdministratorController extends AbstractController {
 				result.addObject("notificationMsg", "conference.all.submissions.decided");
 			if (oops.getMessage().equals("no reviewers available to be assigned"))
 				result.addObject("notificationMsg", "conference.no.reviewers.available");
+			if (oops.getMessage().equals("the notification deadline has elapsed"))
+				result.addObject("notificationMsg", "conference.notification.elapsed");
 		}
 		return result;
 	}

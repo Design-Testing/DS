@@ -2,6 +2,7 @@
 package controllers.administrator;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AdministratorService;
-import services.ReportService;
+import services.ReviewerService;
 import services.SubmissionService;
 import controllers.AbstractController;
 import domain.Reviewer;
@@ -29,7 +30,7 @@ public class SubmissionAdministratorController extends AbstractController {
 	private SubmissionService					submissionService;
 
 	@Autowired
-	private ReportService						reportService;
+	private ReviewerService						reviewerService;
 
 	@Autowired
 	private ConferenceAdministratorController	conferenceAdministratorController;
@@ -96,25 +97,27 @@ public class SubmissionAdministratorController extends AbstractController {
 
 		final Collection<Reviewer> reviewers = this.submissionService.availableReviewers(submissionId);
 
-		Boolean alreadyAssignThree = false;
+		Boolean notificationElapsed = false;
 
-		if (this.reportService.findReportsBySubmission(submissionId).size() >= 3)
-			alreadyAssignThree = true;
+		final Date now = new Date();
+		if (now.after(submission.getConference().getNotification()))
+			notificationElapsed = true;
 
-		if (submission != null) {
+		if (submission != null && notificationElapsed == false) {
 			result = new ModelAndView("submission/listReviewers");
 			result.addObject("submissionId", submissionId);
 			result.addObject("reviewers", reviewers);
 			result.addObject("isAdministrator", true);
 			result.addObject("isAuthor", false);
-			result.addObject("alreadyAssignThree", alreadyAssignThree);
 			result.addObject("toAssign", true);
 			result.addObject("conferenceId", submission.getConference().getId());
 			result.addObject("requestURI", "submission/administrator/assign.do");
 			result.addObject("lang", lang);
+		} else if (submission != null && notificationElapsed == true) {
+			result = this.conferenceAdministratorController.display(submission.getConference().getId());
+			result.addObject("notificationMsg", "conference.notification.elapsed");
 		} else
 			result = new ModelAndView("redirect:misc/403");
-
 		return result;
 	}
 	@RequestMapping(value = "/assignToReviewer", method = RequestMethod.GET)
@@ -136,4 +139,27 @@ public class SubmissionAdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/listAssignedReviewers", method = RequestMethod.GET)
+	public ModelAndView listAssignedReviewers(@RequestParam final int submissionId) {
+		ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+
+		final Submission submission = this.submissionService.findOne(submissionId);
+
+		if (submission != null) {
+
+			final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAssignedToSubmission(submissionId);
+
+			result = new ModelAndView("reviewer/list");
+			result.addObject("reviewers", reviewers);
+			result.addObject("submission", submission);
+			result.addObject("isAdministrator", true);
+			result.addObject("isAuthor", false);
+			result.addObject("requestURI", "submission/administrator/listAssignedReviewers.do");
+		} else
+			result = new ModelAndView("redirect:misc/403");
+
+		return result;
+	}
 }

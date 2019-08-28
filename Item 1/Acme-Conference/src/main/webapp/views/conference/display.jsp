@@ -1,13 +1,20 @@
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
+<%@page import="services.ReviewerService"%>
+<%@page import="domain.Reviewer"%>
+<%@page import="java.util.Collection"%>
+
 <%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+
 
 
 <!-------------------------------------------------------------------------------------------->
@@ -148,11 +155,21 @@
 	</jstl:if>
 	
 	<jstl:if test="${not empty notificationMsg  }">
-    	<h5 style="color: red;"><spring:message code="${notificationMsg}"/></h5>
+    	<h4 style="color: red;"><spring:message code="${notificationMsg}"/></h4>
     </jstl:if>
 	
 
+	<jstl:if test="${not empty message.success.assign.reviewer}">
+    	<h4 style="color: green;"><spring:message code="message.success.assign.reviewer"/></h4>
+	</jstl:if>
 	
+	<jstl:if test="${not empty message.notification.successful}">
+    	<h4 style="color: green;"><spring:message code="message.notification.successful"/></h4>
+	</jstl:if>
+	
+	<jstl:if test="${not empty message.make.desicion.successful}">
+    	<h4 style="color: green;"><spring:message code="message.make.desicion.successful"/></h4>
+	</jstl:if>
 	
 	
 
@@ -161,9 +178,7 @@
 
 <h4><spring:message code="conference.submissions.under.reviewed" /></h4>
 
-<jstl:if test="${not empty message.success.assign.reviewer}">
-    	<h5 style="color: red;"><spring:message code="message.success.assign.reviewer"/></h5>
-</jstl:if>
+
 
 <display:table name="underReviewedSubmissions" id="row"
 		requestURI="${requestURI}" pagesize="5"
@@ -186,16 +201,20 @@
 		<display:column>
 			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
 		</display:column>
-	
-
-	
-	
+		
+		<display:column>
+			<acme:button url="submission/administrator/listAssignedReviewers.do?submissionId=${row.id}" name="display" code="submission.lst.assigned.reviewer"/>
+		</display:column>
+		
+		
 	
 
 </display:table>
 <!------------------------------- Accepted submissions ----------------------------------->
 
 <h4><spring:message code="conference.submissions.accepted" /></h4>
+
+
 
 <display:table name="acceptedSubmissions" id="row"
 		requestURI="${requestURI}" pagesize="5"
@@ -215,14 +234,13 @@
 			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
 			
 		</display:column>
+		
 		<display:column>
-			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
+			<acme:button url="submission/administrator/listAssignedReviewers.do?submissionId=${row.id}" name="display" code="submission.lst.assigned.reviewer"/>
 		</display:column>
-	
 
-	
-	
-	
+
+
 
 </display:table>
 <!------------------------------- Rejected submissions ----------------------------------->
@@ -247,9 +265,11 @@
 			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
 			
 		</display:column>
+		
 		<display:column>
-			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
+			<acme:button url="submission/administrator/listAssignedReviewers.do?submissionId=${row.id}" name="display" code="submission.lst.assigned.reviewer"/>
 		</display:column>
+		
 	
 
 	

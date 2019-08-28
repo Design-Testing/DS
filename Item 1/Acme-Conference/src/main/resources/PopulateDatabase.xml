@@ -840,11 +840,11 @@
 		<property name="title" value="Conferencia Asus" />
 		<property name="acronym" value="Asus" />
 		<property name="venue" value="Asus" />
-		<property name="submission" value="2019/08/27 18:12" />
-		<property name="notification" value="2019/08/27 18:15" />
-		<property name="cameraReady" value="2019/08/27 18:18" />
-		<property name="startDate" value="2019/08/27 18:20" />
-		<property name="endDate" value="2019/08/027 18:23" />
+		<property name="submission" value="2019/08/28 18:12" />
+		<property name="notification" value="2019/08/28 18:15" />
+		<property name="cameraReady" value="2019/08/28 18:18" />
+		<property name="startDate" value="2019/08/28 18:20" />
+		<property name="endDate" value="2019/08/028 18:23" />
 		<property name="summary" value="Summary of conference 8" />
 		<property name="fee" value="1520.89" />
 		<property name="isDraft" value="false" />
