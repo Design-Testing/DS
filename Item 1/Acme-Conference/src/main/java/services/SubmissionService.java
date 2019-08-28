@@ -157,8 +157,9 @@ public class SubmissionService {
 		final Reviewer reviewer = this.reviewerService.findOne(reviewerId);
 		Assert.notNull(submission);
 		Assert.notNull(reviewer);
-		//TODO under-reviewed
-		//Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"));
+		final Date now = new Date();
+		Assert.isTrue(now.before(submission.getConference().getNotification()), "notification deadline is elapsed");
+		Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"), "submission status must be under-reviwed to be assigned to a reviewer");
 		final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(submissionId, reviewerId);
 		Assert.isTrue(existingReport == null, "this reviewer has already been assigned to that submission");
 		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(submission.getConference().getId());
@@ -180,21 +181,8 @@ public class SubmissionService {
 
 	}
 
-	/**
-	 * Run a decision-making procedure on a conference,
-	 * as long as the corresponding submission deadline has elapsed.
-	 * Making a decision on a submission means analysing the reports
-	 * written by the reviewers to decide if the corresponding submission
-	 * must change its status to either REJECTED or ACCEPTED.
-	 * A submission is accepted if the number of reports with decision
-	 * ACCEPT that it's got is greater than or equal to the number
-	 * of reports with decision REJECT that it's got;
-	 * in cases of ties, reports whose decision is BORDER-LINE
-	 * are considered to ACCEPT the paper; in cases in which ties persist,
-	 * then the corresponding submissions are accepted.
-	 **/
-
-	//TODO ALBA REVISAR
+	//TODO pasar a queries
+	/** Calcula resultado de una submission. Este metodo es llamado desde decideOnConference en ConferenceService **/
 	public void decideOnSubmission(final int submissionId) {
 		this.administratorService.findByPrincipal();
 		final Submission retrieved = this.findOne(submissionId);
@@ -203,24 +191,26 @@ public class SubmissionService {
 		Integer numberReject = 0;
 		Integer numberBorderLine = 0;
 		final Collection<Report> reports = this.reportService.findReportsBySubmission(submissionId);
-		for (final Report r : reports)
-			if (r.getDecision().equals("ACCEPT") && r.getIsDraft() == false)
-				numberAccept = numberAccept + 1;
-			else if (r.getDecision().equals("REJECT") && r.getIsDraft() == false)
-				numberReject = numberReject + 1;
-			else if (r.getDecision().equals("BORDER-LINE") && r.getIsDraft() == false)
-				numberBorderLine = numberBorderLine + 1;
-		if (numberAccept > numberReject)
-			this.acceptSubmission(submissionId);
-		else if (numberAccept == numberReject) {
-			if (numberBorderLine > 0)
+		if (!reports.isEmpty()) {
+			for (final Report r : reports)
+				if (r.getDecision().equals("ACCEPT") && r.getIsDraft() == false)
+					numberAccept = numberAccept + 1;
+				else if (r.getDecision().equals("REJECT") && r.getIsDraft() == false)
+					numberReject = numberReject + 1;
+				else if (r.getDecision().equals("BORDER-LINE") && r.getIsDraft() == false)
+					numberBorderLine = numberBorderLine + 1;
+			if (numberAccept > numberReject)
 				this.acceptSubmission(submissionId);
-			else
-				this.acceptSubmission(submissionId);
-		} else if (numberReject > numberAccept)
-			this.rejectSubmission(submissionId);
-
+			else if (numberAccept == numberReject) {
+				if (numberBorderLine > 0)
+					this.acceptSubmission(submissionId);
+				else
+					this.acceptSubmission(submissionId);
+			} else if (numberReject > numberAccept)
+				this.rejectSubmission(submissionId);
+		}
 	}
+
 	public Submission findOne(final Integer submissionId) {
 		Assert.notNull(submissionId);
 		final Submission res = this.submissionRepository.findOne(submissionId);

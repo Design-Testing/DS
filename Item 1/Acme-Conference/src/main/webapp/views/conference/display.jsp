@@ -215,10 +215,7 @@
 			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
 			
 		</display:column>
-		<display:column>
-			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
-		</display:column>
-	
+		
 
 	
 	
@@ -247,9 +244,7 @@
 			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
 			
 		</display:column>
-		<display:column>
-			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
-		</display:column>
+		
 	
 
 	

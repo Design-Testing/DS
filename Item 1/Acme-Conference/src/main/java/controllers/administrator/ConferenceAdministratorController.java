@@ -2,6 +2,7 @@
 package controllers.administrator;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -296,10 +297,22 @@ public class ConferenceAdministratorController extends AbstractController {
 		final Collection<Submission> underReviewedSubmissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 
 		if (conference != null) {
+
+			Boolean isNotificationElapsed = false;
+			Boolean isSubmissionElapsed = false;
+
+			final Date now = new Date();
+			if (now.after(conference.getNotification()))
+				isNotificationElapsed = true;
+			if (now.after(conference.getSubmission()))
+				isSubmissionElapsed = true;
+
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", true);
 			result.addObject("submissions", submissions);
+			result.addObject("isNotificationElapsed", isNotificationElapsed);
+			result.addObject("isSubmissionElapsed", isSubmissionElapsed);
 			result.addObject("acceptedSubmissions", acceptedSubmissions);
 			result.addObject("rejectedSubmissions", rejectedSubmissions);
 			result.addObject("underReviewedSubmissions", underReviewedSubmissions);
@@ -388,6 +401,8 @@ public class ConferenceAdministratorController extends AbstractController {
 				result.addObject("notificationMsg", "conference.all.submissions.decided");
 			if (oops.getMessage().equals("no reviewers available to be assigned"))
 				result.addObject("notificationMsg", "conference.no.reviewers.available");
+			if (oops.getMessage().equals("the notification deadline has elapsed"))
+				result.addObject("notificationMsg", "conference.notification.elapsed");
 		}
 		return result;
 	}

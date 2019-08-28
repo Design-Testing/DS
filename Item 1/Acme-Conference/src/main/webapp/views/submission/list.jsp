@@ -45,11 +45,7 @@
 			<acme:button url="submission/administrator/display.do?submissionId=${row.id}" name="display" code="submission.display"/>
 			
 		</display:column>
-		<display:column>
-			<jstl:if test="${row.status eq 'UNDER-REVIEWED' }" >
-			<acme:button url="submission/administrator/assign.do?submissionId=${row.id}" name="display" code="submission.assign.reviewer"/>
-			</jstl:if>
-		</display:column>
+		
 	
 	</jstl:when>
 	<jstl:when test="${isAuthor eq true }">

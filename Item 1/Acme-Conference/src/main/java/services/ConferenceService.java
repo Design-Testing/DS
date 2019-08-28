@@ -248,7 +248,8 @@ public class ConferenceService {
 		final Conference retrieved = this.findOne(conferenceId);
 		Assert.notNull(retrieved);
 		final Date now = new Date();
-		Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
+		//TODO submission deadline
+		//Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
 		final Collection<Submission> submissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 		for (final Submission s : submissions)
 			this.submissionService.decideOnSubmission(s.getId());
@@ -320,6 +321,7 @@ public class ConferenceService {
 	//		this.activityService.deleteAll(conference.getActivities());
 	//	}
 
+	/** Notify the status of the submissions to all its respective authors **/
 	public void notifyStatus(final int conferenceId) {
 
 		final Conference conference = this.findOne(conferenceId);
@@ -327,24 +329,39 @@ public class ConferenceService {
 		final Administrator principal = this.administratorService.findByPrincipal();
 		final Date now = new Date();
 		Assert.isTrue(now.before(conference.getNotification()), "notification deadline is elapsed");
-		Assert.isTrue(now.after(conference.getSubmission()), "submission deadline must be elapsed");
+		//TODO submission deadline
+		//Assert.isTrue(now.after(conference.getSubmission()), "submission deadline must be elapsed");
 		final Collection<Submission> submissions = this.submissionService.findSubmissionsByConference(conferenceId);
+
 		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
 		final Topic topic = topics.iterator().next();
-		for (final Submission s : submissions)
+
+		for (final Submission s : submissions) {
+
+			final Message m = this.messageService.create();
+			m.setSender(principal);
+			final Collection<Actor> recipients = new ArrayList<Actor>();
+			recipients.add(s.getAuthor());
+			m.setRecivers(recipients);
+			m.setTopic(topic);
+
 			if (!s.getStatus().equals("UNDER-REVIEWED")) {
-				final Message m = this.messageService.create();
+
 				m.setSubject("Your submission has been " + s.getStatus());
 				m.setBody("Your submission with ticker" + s.getTicker() + "(to the conference with title " + conference.getTitle() + ") has been " + s.getStatus());
-				m.setSender(principal);
-				final Collection<Actor> recipients = new ArrayList<Actor>();
-				recipients.add(s.getAuthor());
-				m.setRecivers(recipients);
-				m.setTopic(topic);
-				this.messageService.send(m);
+
 				s.setIsNotified(true);
 				this.submissionRepository.save(s);
+
+			} else {
+				m.setSubject("Your submission is still under reviewed");
+				m.setBody("Your submission with ticker" + s.getTicker() + "(to the conference with title " + conference.getTitle()
+					+ ") is still under reviewed. There may no be available reviewers. Please, wait until the notification deadline is elapsed. Sorry for the incovenience.");
 			}
+
+			this.messageService.send(m);
+
+		}
 	}
 
 	public Collection<Conference> findAllFinal() {
@@ -388,18 +405,15 @@ public class ConferenceService {
 		return this.conferenceRepository.exists(id);
 	}
 
-
 	public void runReviewerAssignation(final int conferenceId) {
 
 		final Administrator principal = this.administratorService.findByPrincipal();
 		final Conference conference = this.findOne(conferenceId);
 		Assert.notNull(conference);
-		//final Date now = new Date();
-		//Assert.isTrue(now.before(conference.getNotification()), "the notification deadline has elapsed");
+		final Date now = new Date();
+		Assert.isTrue(now.before(conference.getNotification()), "the notification deadline has elapsed");
 
-		//TODO under-reviewed
-		//final Collection<Submission> submissionsToAssign = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
-		final Collection<Submission> submissionsToAssign = this.submissionService.findSubmissionsByConference(conferenceId);
+		final Collection<Submission> submissionsToAssign = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 
 		Assert.isTrue(!submissionsToAssign.isEmpty(), "all submissions are already been decided");
 		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conferenceId);

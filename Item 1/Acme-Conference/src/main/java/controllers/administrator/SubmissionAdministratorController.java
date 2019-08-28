@@ -2,6 +2,7 @@
 package controllers.administrator;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -96,25 +97,27 @@ public class SubmissionAdministratorController extends AbstractController {
 
 		final Collection<Reviewer> reviewers = this.submissionService.availableReviewers(submissionId);
 
-		Boolean alreadyAssignThree = false;
+		Boolean notificationElapsed = false;
 
-		if (this.reportService.findReportsBySubmission(submissionId).size() >= 3)
-			alreadyAssignThree = true;
+		final Date now = new Date();
+		if (now.after(submission.getConference().getNotification()))
+			notificationElapsed = true;
 
-		if (submission != null) {
+		if (submission != null && notificationElapsed == false) {
 			result = new ModelAndView("submission/listReviewers");
 			result.addObject("submissionId", submissionId);
 			result.addObject("reviewers", reviewers);
 			result.addObject("isAdministrator", true);
 			result.addObject("isAuthor", false);
-			result.addObject("alreadyAssignThree", alreadyAssignThree);
 			result.addObject("toAssign", true);
 			result.addObject("conferenceId", submission.getConference().getId());
 			result.addObject("requestURI", "submission/administrator/assign.do");
 			result.addObject("lang", lang);
+		} else if (submission != null && notificationElapsed == true) {
+			result = this.conferenceAdministratorController.display(submission.getConference().getId());
+			result.addObject("notificationMsg", "conference.notification.elapsed");
 		} else
 			result = new ModelAndView("redirect:misc/403");
-
 		return result;
 	}
 	@RequestMapping(value = "/assignToReviewer", method = RequestMethod.GET)
