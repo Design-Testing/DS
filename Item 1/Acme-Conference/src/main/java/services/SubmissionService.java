@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.SubmissionRepository;
@@ -94,7 +92,6 @@ public class SubmissionService {
 	//		return res;
 	//	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Submission submits(final Submission submission, final Paper reviewPaper) {
 		Submission res;
 		final Author principal = this.authorService.findByPrincipal();
@@ -107,9 +104,9 @@ public class SubmissionService {
 		Assert.isTrue(now.before(submission.getConference().getSubmission()), "submission deadline is elapsed");
 		submission.setMoment(new Date(System.currentTimeMillis() - 1000));
 		submission.setIsNotified(false);
-
 		final Paper paperSaved = this.paperService.save(reviewPaper);
 		submission.setReviewPaper(paperSaved);
+		System.out.println(submission.getTicker());
 		res = this.submissionRepository.save(submission);
 		Assert.notNull(res);
 		return res;
