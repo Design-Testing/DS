@@ -243,7 +243,8 @@ public class ConferenceService {
 	 * then the corresponding submissions are accepted.
 	 **/
 
-	public void decideOnConference(final int conferenceId) {
+	public Boolean decideOnConference(final int conferenceId) {
+		Boolean anyStatusUpdated = false;
 		this.administratorService.findByPrincipal();
 		final Conference retrieved = this.findOne(conferenceId);
 		Assert.notNull(retrieved);
@@ -251,9 +252,14 @@ public class ConferenceService {
 		//TODO submission deadline
 		//Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
 		final Collection<Submission> submissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
+
+		if (!submissions.isEmpty())
+			anyStatusUpdated = true;
+
 		for (final Submission s : submissions)
 			this.submissionService.decideOnSubmission(s.getId());
 
+		return anyStatusUpdated;
 	}
 	public ConferenceForm constructPruned(final Conference conference) {
 		final ConferenceForm pruned = new ConferenceForm();

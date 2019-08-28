@@ -160,6 +160,12 @@ public class ReviewerService {
 		return reviewer;
 	}
 
+	public Collection<Reviewer> findReviewersAssignedToSubmission(final int submissionId) {
+		final Collection<Reviewer> result = this.reviewerRepository.findReviewersAssignedToSubmission(submissionId);
+		Assert.notNull(result);
+		return result;
+	}
+
 	public Collection<Reviewer> findAll() {
 		final Collection<Reviewer> result = this.reviewerRepository.findAll();
 		Assert.notNull(result);

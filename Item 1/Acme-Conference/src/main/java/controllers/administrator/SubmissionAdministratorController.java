@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AdministratorService;
-import services.ReportService;
+import services.ReviewerService;
 import services.SubmissionService;
 import controllers.AbstractController;
 import domain.Reviewer;
@@ -30,7 +30,7 @@ public class SubmissionAdministratorController extends AbstractController {
 	private SubmissionService					submissionService;
 
 	@Autowired
-	private ReportService						reportService;
+	private ReviewerService						reviewerService;
 
 	@Autowired
 	private ConferenceAdministratorController	conferenceAdministratorController;
@@ -139,4 +139,27 @@ public class SubmissionAdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/listAssignedReviewers", method = RequestMethod.GET)
+	public ModelAndView listAssignedReviewers(@RequestParam final int submissionId) {
+		ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+
+		final Submission submission = this.submissionService.findOne(submissionId);
+
+		if (submission != null) {
+
+			final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAssignedToSubmission(submissionId);
+
+			result = new ModelAndView("reviewer/list");
+			result.addObject("reviewers", reviewers);
+			result.addObject("submission", submission);
+			result.addObject("isAdministrator", true);
+			result.addObject("isAuthor", false);
+			result.addObject("requestURI", "submission/administrator/listAssignedReviewers.do");
+		} else
+			result = new ModelAndView("redirect:misc/403");
+
+		return result;
+	}
 }
