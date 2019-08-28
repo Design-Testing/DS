@@ -1,10 +1,9 @@
 
 package controllers;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import services.MessageService;
 import services.TopicService;
 import domain.Actor;
 import domain.Message;
-import domain.Topic;
 
 @Controller
 @RequestMapping("/message")
@@ -43,49 +41,35 @@ public class MessageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		ModelAndView result;
-		final Actor principal = this.actorService.findByPrincipal();
-		result = new ModelAndView("message/edit");
-
-		final Collection<Topic> topics = this.topicService.findAll();
-
+	public ModelAndView create(@RequestParam final String origen, final Integer entityId) {
 		final Message message = this.messageService.create();
-
-		final Collection<Actor> actors = this.actorService.findAll();
-		result.addObject("actors", actors);
-		final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-		result.addObject("isAdmin", isAdmin);
-		result.addObject("topics", topics);
-		result.addObject("m", message);
+		final ModelAndView result = this.createEditModelAndView(message);
+		result.addObject("origen", origen);
+		result.addObject("entityId", entityId);
+		String action = "message/edit.do?origen=" + origen;
+		if (entityId != null)
+			action += "&entityId" + entityId;
+		result.addObject("action", action);
 		return result;
 	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(@ModelAttribute("m") @Valid final Message message, final BindingResult binding) {
+	public ModelAndView edit(@ModelAttribute("m") @Valid final Message message, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 
-		final Actor principal = this.actorService.findByPrincipal();
-		if (!binding.hasErrors()) {
-			this.messageService.send(message);
-			result = new ModelAndView("message/list");
-			result.addObject("topics", this.topicService.findAll());
-			final Collection<Actor> actors = this.actorService.findAll();
-			result.addObject("actors", actors);
-
-			result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
-		} else {
-			result = new ModelAndView("message/edit");
-			final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-			result.addObject("isAdmin", isAdmin);
-			result.addObject("errors", binding.getAllErrors());
-			result.addObject("m", message);
-		}
-
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(message, null);
+		else
+			try {
+				this.messageService.send(message);
+				result = this.multipleSources(request);
+			} catch (final Throwable oops) {
+				String errorMessage = "message.commit.error";
+				if (oops.getMessage().contains(".error"))
+					errorMessage = oops.getMessage();
+				result = this.createEditModelAndView(message, errorMessage);
+			}
 		return result;
-
 	}
-
 	@RequestMapping(value = "/outbox", method = RequestMethod.GET)
 	public ModelAndView outbox() {
 		ModelAndView result;
@@ -94,26 +78,29 @@ public class MessageController extends AbstractController {
 		result = new ModelAndView("message/list");
 
 		result.addObject("topics", this.topicService.findAll());
-
 		final Collection<Actor> actors = this.actorService.findAll();
 		result.addObject("actors", actors);
-
 		result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
+		result.addObject("origen", "outbox");
+		result.addObject("requestURI", "message/outbox.do");
+
 		return result;
 	}
 
 	@RequestMapping(value = "/inbox", method = RequestMethod.GET)
 	public ModelAndView inbox() {
 		ModelAndView result;
+
 		final Actor principal = this.actorService.findByPrincipal();
 
 		result = new ModelAndView("message/list");
 		result.addObject("topics", this.topicService.findAll());
-
 		final Collection<Actor> actors = this.actorService.findAll();
 		result.addObject("actors", actors);
-
 		result.addObject("messages", this.messageService.findAllByRecipient(principal.getId()));
+		result.addObject("origen", "inbox");
+		result.addObject("requestURI", "message/inbox.do");
+
 		return result;
 	}
 
@@ -121,18 +108,15 @@ public class MessageController extends AbstractController {
 	public ModelAndView listAll() {
 		ModelAndView result;
 		final Actor principal = this.actorService.findByPrincipal();
-		result = new ModelAndView("message/list");
 
+		result = new ModelAndView("message/list");
 		final Collection<Actor> actors = this.actorService.findAll();
 		result.addObject("actors", actors);
-
 		result.addObject("topics", this.topicService.findAll());
+		result.addObject("messages", this.messageService.findAllByPrincipal(principal.getId()));
+		result.addObject("origen", "all");
+		result.addObject("requestURI", "message/listAll.do");
 
-		final List<Message> mensajes = new ArrayList<>();
-		mensajes.addAll(this.messageService.findAllByRecipient(principal.getId()));
-		mensajes.addAll(this.messageService.findAllBySender(principal.getId()));
-
-		result.addObject("messages", mensajes);
 		return result;
 	}
 
@@ -141,13 +125,14 @@ public class MessageController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("message/list");
-
 		result.addObject("topics", this.topicService.findAll());
-
 		final Collection<Actor> actors = this.actorService.findAll();
 		result.addObject("actors", actors);
-
 		result.addObject("messages", this.messageService.findAllByTopic(topicId));
+		result.addObject("origen", "topic");
+		result.addObject("entityId", topicId);
+		result.addObject("requestURI", "message/listByTopic.do");
+
 		return result;
 	}
 
@@ -156,13 +141,13 @@ public class MessageController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("message/list");
-
 		result.addObject("topics", this.topicService.findAll());
-
 		final Collection<Actor> actors = this.actorService.findAll();
 		result.addObject("actors", actors);
-
 		result.addObject("messages", this.messageService.findAllBySender(actorId));
+		result.addObject("entityId", actorId);
+		result.addObject("requestURI", "message/listBySender.do");
+
 		return result;
 	}
 
@@ -170,96 +155,141 @@ public class MessageController extends AbstractController {
 	public ModelAndView listByRecipient(@RequestParam final int actorId) {
 		ModelAndView result;
 
+		final Actor principal = this.actorService.findByPrincipal();
+
 		result = new ModelAndView("message/list");
-
 		result.addObject("topics", this.topicService.findAll());
-
 		final Collection<Actor> actors = this.actorService.findAll();
 		result.addObject("actors", actors);
+		result.addObject("messages", this.messageService.findAllByRecipient(principal.getId(), actorId));
+		result.addObject("origen", "recipient");
+		result.addObject("entityId", actorId);
+		result.addObject("requestURI", "message/listByRecipient.do");
 
-		result.addObject("messages", this.messageService.findAllByRecipient(actorId));
 		return result;
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int messageId) {
-		ModelAndView result;
-		final Actor principal = this.actorService.findByPrincipal();
+	public ModelAndView delete(@RequestParam final int messageId, final HttpServletRequest request) {
+		final ModelAndView result = this.multipleSources(request);
+
 		final Message message = this.messageService.findOne(messageId);
-		this.messageService.delete(message);
-		result = new ModelAndView("message/list");
 
-		final Collection<Actor> actors = this.actorService.findAll();
-		result.addObject("actors", actors);
+		try {
+			this.messageService.delete(message);
+		} catch (final Throwable oops) {
+			result.addObject("msg", oops.getMessage());
+		}
 
-		result.addObject("topics", this.topicService.findAll());
-
-		result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
 		return result;
 	}
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int messageId) {
 		ModelAndView result;
-		final Actor principal = this.actorService.findByPrincipal();
+
 		final Message message = this.messageService.findOne(messageId);
 
 		result = new ModelAndView("message/display");
-
 		result.addObject("m", message);
+
 		return result;
 	}
 
 	@RequestMapping(value = "/broadcastAuthors", method = RequestMethod.POST)
-	public ModelAndView broadcastAuthors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding) {
+	public ModelAndView broadcastAuthors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 
-		final Actor principal = this.actorService.findByPrincipal();
-		if (!binding.hasErrors()) {
-			this.messageService.broadcastToAllAuthors(message);
-			result = new ModelAndView("message/list");
-			result.addObject("topics", this.topicService.findAll());
-			final Collection<Actor> actors = this.actorService.findAll();
-			result.addObject("actors", actors);
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(message, null);
+		else
+			try {
+				this.messageService.broadcastToAllAuthors(message);
+				result = this.multipleSources(request);
+			} catch (final Throwable oops) {
+				String errorMessage = "message.commit.error";
+				if (oops.getMessage().contains(".error"))
+					errorMessage = oops.getMessage();
+				result = this.createEditModelAndView(message, errorMessage);
+			}
+		return result;
+	}
 
-			result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
-		} else {
+	@RequestMapping(value = "/broadcastActors", method = RequestMethod.POST)
+	public ModelAndView broadcastActors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding, final HttpServletRequest request) {
+		ModelAndView result;
 
-			result = new ModelAndView("message/edit");
-			final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-			result.addObject("isAdmin", isAdmin);
-			result.addObject("errors", binding.getAllErrors());
-			result.addObject("m", message);
-		}
-
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(message, null);
+		else
+			try {
+				this.messageService.broadcastToAllActors(message);
+				result = this.multipleSources(request);
+			} catch (final Throwable oops) {
+				String errorMessage = "message.commit.error";
+				if (oops.getMessage().contains(".error"))
+					errorMessage = oops.getMessage();
+				result = this.createEditModelAndView(message, errorMessage);
+			}
 		return result;
 
 	}
 
-	@RequestMapping(value = "/broadcastActors", method = RequestMethod.POST)
-	public ModelAndView broadcastActors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding) {
+	// --------------------------------------------------------
+	// Ancillary methods
+	// --------------------------------------------------------
+
+	private ModelAndView multipleSources(final HttpServletRequest request) {
 		ModelAndView result;
-
-		final Actor principal = this.actorService.findByPrincipal();
-
-		if (!binding.hasErrors()) {
-			this.messageService.broadcastToAllActors(message);
-			result = new ModelAndView("message/list");
-			result.addObject("topics", this.topicService.findAll());
-			final Collection<Actor> actors = this.actorService.findAll();
-			result.addObject("actors", actors);
-
-			result.addObject("messages", this.messageService.findAllBySender(principal.getId()));
-		} else {
-			result = new ModelAndView("message/edit");
-			final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
-			result.addObject("isAdmin", isAdmin);
-			result.addObject("errors", binding.getAllErrors());
-			result.addObject("m", message);
+		String paramId;
+		Integer entityId;
+		final String paramOrigen = request.getParameter("origen");
+		switch (paramOrigen) {
+		case "inbox":
+			result = new ModelAndView("redirect:/message/inbox.do");
+			break;
+		case "outbox":
+			result = new ModelAndView("redirect:/message/outbox.do");
+			break;
+		case "recipient":
+			paramId = request.getParameter("entityId");
+			entityId = paramId.isEmpty() ? null : Integer.parseInt(paramId);
+			result = new ModelAndView("redirect:/message/listByRecipient.do?actorId=" + entityId);
+			break;
+		case "sender":
+			paramId = request.getParameter("entityId");
+			entityId = paramId.isEmpty() ? null : Integer.parseInt(paramId);
+			result = new ModelAndView("redirect:/message/listBySender.do?actorId=" + entityId);
+			break;
+		case "topic":
+			paramId = request.getParameter("entityId");
+			entityId = paramId.isEmpty() ? null : Integer.parseInt(paramId);
+			result = new ModelAndView("redirect:/message/listByTopic.do?topicId=" + entityId);
+			break;
+		default:
+			result = new ModelAndView("redirect:/message/listAll.do");
+			break;
 		}
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Message message) {
+		return this.createEditModelAndView(message, null);
+	}
+
+	protected ModelAndView createEditModelAndView(final Message message, final String messageCode) {
+		ModelAndView result;
+		final Actor principal = this.actorService.findByPrincipal();
+		result = new ModelAndView("message/edit");
+		result.addObject("m", message);
+		result.addObject("topics", this.topicService.findAll());
+		final Collection<Actor> actors = this.actorService.findAll();
+		result.addObject("actors", actors);
+		result.addObject("message", messageCode);
+		final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
+		result.addObject("isAdmin", isAdmin);
 
 		return result;
-
 	}
 
 }

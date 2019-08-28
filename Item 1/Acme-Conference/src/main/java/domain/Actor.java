@@ -1,43 +1,38 @@
 
 package domain;
 
-import java.util.List;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
 import security.UserAccount;
-import cz.jirutka.validator.collection.constraints.EachNotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class Actor extends DomainEntity {
 
-	private String			name;
-	private String			middleName;
-	private List<String>	surname;
-	private String			photo;
-	private String			email;
-	private String			phone;
-	private String			address;
-	private Double			score;
-	private Finder			finder;
+	private String		name;
+	private String		middleName;
+	private String		surname;
+	private String		photo;
+	private String		email;
+	private String		phone;
+	private String		address;
+	private Double		score;
+	private Finder		finder;
 	// private Boolean				spammer;
 
 	//Relational attributes
-	private UserAccount		userAccount;
+	private UserAccount	userAccount;
 
 
 	@NotBlank
@@ -58,14 +53,13 @@ public class Actor extends DomainEntity {
 		this.middleName = middleName;
 	}
 
-	@ElementCollection
-	@NotEmpty
-	@EachNotBlank
-	public List<String> getSurname() {
+	@SafeHtml
+	@NotBlank
+	public String getSurname() {
 		return this.surname;
 	}
 
-	public void setSurname(final List<String> surname) {
+	public void setSurname(final String surname) {
 		this.surname = surname;
 	}
 

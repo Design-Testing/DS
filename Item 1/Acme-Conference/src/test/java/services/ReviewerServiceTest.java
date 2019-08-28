@@ -2,7 +2,6 @@
 package services;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -57,7 +56,7 @@ public class ReviewerServiceTest extends AbstractTest {
 		reviewer.setEmail("theboss@jmsx.es");
 		reviewer.setName("Pepe");
 		reviewer.setMiddleName("Bolino");
-		reviewer.setSurname(Arrays.asList("Shur-name"));
+		reviewer.setSurname("Shur-name");
 
 		reviewer = this.revieweristratorService.save(reviewer);
 		Assert.isTrue(reviewer.getId() != 0);

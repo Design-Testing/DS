@@ -150,7 +150,6 @@
 					<li><a href="message/inbox.do"><spring:message code="master.page.message.inbox" /></a></li>
 					<li><a href="message/outbox.do"><spring:message code="master.page.message.outbox" /></a></li>
 					<li><a href="message/listAll.do"><spring:message code="master.page.message.all" /></a></li>
-					<li><a href="message/create.do"><spring:message code="master.page.message.new" /></a></li>
 				</ul>
 			</li>
 			<li>

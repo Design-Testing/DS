@@ -314,11 +314,7 @@
 	<bean id="administrator1" class="domain.Administrator">
 		<!-- Actor -->
 		<property name="name" value="Admin1" />
-		<property name="surname">
-			<list>
-				<value>Admin1</value>
-			</list>
-		</property>
+		<property name="surname" value="surname1" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="admin1@gmail.es" />
 		<property name="phone" value="+34647607406" />
@@ -330,11 +326,7 @@
 	<bean id="administrator2" class="domain.Administrator">
 		<!-- Actor -->
 		<property name="name" value="Admin2" />
-		<property name="surname">
-			<list>
-				<value>Admin2</value>
-			</list>
-		</property>
+		<property name="surname" value="surname1" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="admin2@gmail.es" />
 		<property name="phone" value="+34647307406" />
@@ -390,11 +382,7 @@
 	<bean id="reviewer1" class="domain.Reviewer">
 		<!-- Actor -->
 		<property name="name" value="Reviewer1" />
-		<property name="surname">
-			<list>
-				<value>SurnameReviewer1</value>
-			</list>
-		</property>
+		<property name="surname" value="surname1" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="reviewer1@gmail.es" />
 		<property name="phone" value="+34647487526" />
@@ -416,11 +404,7 @@
 	<bean id="reviewer2" class="domain.Reviewer">
 		<!-- Actor -->
 		<property name="name" value="Reviewer2" />
-		<property name="surname">
-			<list>
-				<value>SurnameReviewer2</value>
-			</list>
-		</property>
+		<property name="surname" value="surname1" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="reviewer2@gmail.es" />
 		<property name="phone" value="+34647467526" />
@@ -441,11 +425,7 @@
 	<bean id="reviewer3" class="domain.Reviewer">
 		<!-- Actor -->
 		<property name="name" value="Carlos" />
-		<property name="surname">
-			<list>
-				<value>González</value>
-			</list>
-		</property>
+		<property name="surname" value="Gonzalez" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="carlosgonzalez@gmail.es" />
 		<property name="phone" value="+34647467526" />
@@ -471,11 +451,7 @@
 	<bean id="author1" class="domain.Author">
 		<!-- Actor -->
 		<property name="name" value="Author1" />
-		<property name="surname">
-			<list>
-				<value>SurnameAuthor1</value>
-			</list>
-		</property>
+		<property name="surname" value="surname1" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="author1@gmail.es" />
 		<property name="phone" value="+34658787526" />
@@ -487,11 +463,7 @@
 	<bean id="author2" class="domain.Author">
 		<!-- Actor -->
 		<property name="name" value="Author2" />
-		<property name="surname">
-			<list>
-				<value>SurnameAuthor2</value>
-			</list>
-		</property>
+		<property name="surname" value="surname1" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="author2@gmail.es" />
 		<property name="phone" value="+34758787526" />
@@ -507,11 +479,7 @@
 	<bean id="sponsor1" class="domain.Sponsor">
 		<!-- Actor -->
 		<property name="name" value="sponsor1" />
-		<property name="surname">
-			<list>
-				<value>Surnamesponsor1</value>
-			</list>
-		</property>
+		<property name="surname" value="surname1" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="sponsor1@gmail.es" />
 		<property name="phone" value="+34658787526" />
@@ -523,11 +491,7 @@
 	<bean id="sponsor2" class="domain.Sponsor">
 		<!-- Actor -->
 		<property name="name" value="sponsor2" />
-		<property name="surname">
-			<list>
-				<value>Surnamesponsor2</value>
-			</list>
-		</property>
+		<property name="surname" value="surname1" />
 		<property name="photo" value="http://tinyurl.com/picture.png" />
 		<property name="email" value="sponsor2@gmail.es" />
 		<property name="phone" value="+34758787526" />

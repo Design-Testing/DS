@@ -1,38 +1,33 @@
 
 package forms;
 
-import java.util.List;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
-import cz.jirutka.validator.collection.constraints.EachNotBlank;
 import domain.DomainEntity;
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class ActorForm extends DomainEntity {
 
-	private String			name;
-	private String			middleName;
-	private List<String>	surname;
-	private String			photo;
-	private String			email;
-	private String			phone;
-	private String			address;
+	private String	name;
+	private String	middleName;
+	private String	surname;
+	private String	photo;
+	private String	email;
+	private String	phone;
+	private String	address;
 
 	//Relational attributes
-	private String			userAccountuser;
-	private String			userAccountpassword;
+	private String	userAccountuser;
+	private String	userAccountpassword;
 
 
 	@Size(min = 5, max = 32)
@@ -70,14 +65,13 @@ public class ActorForm extends DomainEntity {
 		this.middleName = middleName;
 	}
 
-	@ElementCollection
-	@NotEmpty
-	@EachNotBlank
-	public List<String> getSurname() {
+	@NotBlank
+	@SafeHtml
+	public String getSurname() {
 		return this.surname;
 	}
 
-	public void setSurname(final List<String> surname) {
+	public void setSurname(final String surname) {
 		this.surname = surname;
 	}
 

@@ -47,7 +47,9 @@ public class MessageService {
 
 	public Message findOne(final int messageId) {
 		Assert.isTrue(messageId != 0);
+		final Actor principal = this.actorService.findByPrincipal();
 		final Message result = this.messageRepository.findOne(messageId);
+		Assert.isTrue(this.messageRepository.findByPrincipal(messageId, principal.getId()), "message.not.principal.error");
 		Assert.notNull(result);
 		return result;
 	}
@@ -216,6 +218,13 @@ public class MessageService {
 		return res;
 	}
 
+	public Collection<Message> findAllByPrincipal(final int principalId) {
+		Assert.isTrue(principalId != 0);
+		final Collection<Message> res = this.messageRepository.findAllByPrincipal(principalId);
+		Assert.notNull(res);
+		return res;
+	}
+
 	public void delete(Message message) {
 		message = this.messageRepository.findOne(message.getId());
 		final Actor principal = this.actorService.findByPrincipal();
@@ -225,5 +234,11 @@ public class MessageService {
 			this.deleteFromFolder(message, this.folderService.findInboxByUserId(principal.getUserAccount().getId()));
 		else
 			this.deleteFromFolder(message, this.folderService.findOutboxByUserId(principal.getUserAccount().getId()));
+	}
+
+	public Collection<Message> findAllByRecipient(final int principalId, final int actorId) {
+		final Collection<Message> res = this.messageRepository.findAllByRecipient(principalId, actorId);
+		Assert.notNull(res);
+		return res;
 	}
 }
