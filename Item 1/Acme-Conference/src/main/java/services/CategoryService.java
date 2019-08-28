@@ -1,7 +1,9 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository	categoryRepository;
+
+	@Autowired
+	private ConferenceService	conferenceService;
 
 
 	public Collection<Category> findCategoriesWithNameConference() {
@@ -60,7 +65,16 @@ public class CategoryService {
 	public void delete(final Integer categoryId) {
 		Assert.notNull(categoryId);
 		Assert.isTrue(!(this.categoryRepository.findOne(categoryId).getTitleEn().equals("CONFERENCE")), "You can´t delete root category 'Conference'.");
-		this.categoryRepository.delete(categoryId);
+		this.conferenceService.reassignConferences(categoryId);
+		final List<Category> categoriasDependientes = new ArrayList<Category>(this.categoryRepository.findCategoriesWichFatherIs(categoryId));
+		if (categoriasDependientes.isEmpty())
+			this.categoryRepository.delete(categoryId);
+		else {
+			for (int i = 0; i < categoriasDependientes.size(); i++)
+				this.delete(categoriasDependientes.get(i).getId());//Esto hay que cambiarlo en caso de que se quieran reasignar en vez de eliminar todas las hijas
+			this.categoryRepository.delete(categoryId);
+		}
+
 	}
 
 	public Collection<String> findCategoriesName(final String lang) {

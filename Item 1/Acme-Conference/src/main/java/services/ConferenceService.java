@@ -4,6 +4,7 @@ package services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -387,6 +388,7 @@ public class ConferenceService {
 		return this.conferenceRepository.exists(id);
 	}
 
+
 	public void runReviewerAssignation(final int conferenceId) {
 
 		final Administrator principal = this.administratorService.findByPrincipal();
@@ -424,6 +426,19 @@ public class ConferenceService {
 						this.messageService.send(m);
 					}
 				}
+
+	}
+
+	public Collection<Conference> reassignConferences(final int categoryId) {
+		final List<Conference> toReassign = new ArrayList<Conference>(this.conferenceRepository.findByCategory(categoryId));
+		final Category father = this.categoryService.findOne(categoryId).getFather();
+		System.out.println(toReassign);
+		System.out.println(father);
+		for (int i = 0; i < toReassign.size(); i++)
+			toReassign.get(i).setCategory(father);
+		this.conferenceRepository.save(toReassign);
+
+		return toReassign;
 
 	}
 
