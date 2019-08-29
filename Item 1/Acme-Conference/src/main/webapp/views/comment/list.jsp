@@ -32,5 +32,10 @@
 		<spring:message code="${msg}" />
 	</h3>
 </jstl:if>
-
-<acme:button url="comment/create.do?entity=${entity}&entityId=${id}" name="create" code="comment.create" />
+<jstl:choose>
+	<jstl:when test="${entity eq 'report'}">
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:button url="comment/create.do?entity=${entity}&entityId=${id}" name="create" code="comment.create" />
+	</jstl:otherwise>
+</jstl:choose>

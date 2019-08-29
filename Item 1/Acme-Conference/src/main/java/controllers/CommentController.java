@@ -70,7 +70,7 @@ public class CommentController extends AbstractController {
 		//			break;
 
 		result.addObject("id", id);
-		result.addObject("entity", "conference");
+		result.addObject("entity", entity);
 		result.addObject("lang", this.lang);
 
 		final SecurityContext context = SecurityContextHolder.getContext();

@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.validation.ValidationException;
 
@@ -91,6 +92,8 @@ public class RegistrationService {
 		final Author principal = this.authorService.findByPrincipal();
 		Assert.isTrue(!this.tarjetaCaducada(registration.getCreditCard()), "creditCard.no.validate.error");
 		Assert.isTrue(this.isValidInteger(registration.getCreditCard().getNumber()), "creditCard.number.no.integer.error");
+		final Date now = new Date();
+		Assert.isTrue(registration.getConference().getStartDate().after(now), "conference.has.not.started.error");
 
 		if (registration.getId() == 0) {
 			registration.setAuthor(principal);

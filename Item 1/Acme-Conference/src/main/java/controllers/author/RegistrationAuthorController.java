@@ -21,7 +21,6 @@ import services.RegistrationService;
 import controllers.AbstractController;
 import domain.Author;
 import domain.Conference;
-import domain.CreditCard;
 import domain.Registration;
 import forms.RegistrationForm;
 
@@ -219,15 +218,15 @@ public class RegistrationAuthorController extends AbstractController {
 		return pruned;
 	}
 
-	private CreditCard constructCreditCard(final RegistrationForm registrationForm) {
-		final CreditCard creditCard = new CreditCard();
-		creditCard.setHolderName(registrationForm.getHolderName());
-		creditCard.setCvv(registrationForm.getCvv());
-		creditCard.setExpirationMonth(registrationForm.getExpirationMonth());
-		creditCard.setExpirationYear(registrationForm.getExpirationYear());
-		creditCard.setMake(registrationForm.getCvv());
-		creditCard.setNumber(registrationForm.getNumber());
-		return creditCard;
-	}
+	//	private CreditCard constructCreditCard(final RegistrationForm registrationForm) {
+	//		final CreditCard creditCard = new CreditCard();
+	//		creditCard.setHolderName(registrationForm.getHolderName());
+	//		creditCard.setCvv(registrationForm.getCvv());
+	//		creditCard.setExpirationMonth(registrationForm.getExpirationMonth());
+	//		creditCard.setExpirationYear(registrationForm.getExpirationYear());
+	//		creditCard.setMake(registrationForm.getCvv());
+	//		creditCard.setNumber(registrationForm.getNumber());
+	//		return creditCard;
+	//	}
 
 }

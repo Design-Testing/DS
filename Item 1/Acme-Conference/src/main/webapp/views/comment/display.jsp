@@ -30,7 +30,7 @@
 	<acme:display code="comment.tutorial" value="${comment.activity.title}" url="tutorial/display.do?tutorialId=${comment.activity.id}"/>
 </jstl:if>
 <jstl:if test="${not empty comment.report}">
-	<acme:display code="comment.report" value="${comment.report.title}" url="report/display.do?tutorialId=${comment.report.id}"/>
+	<acme:display code="comment.report" value="${comment.report.decision}"/>
 </jstl:if>
 
 <acme:button url="${lastURL}" name="back" code="comment.back" />

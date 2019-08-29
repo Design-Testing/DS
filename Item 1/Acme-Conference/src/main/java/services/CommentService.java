@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.CommentRepository;
+import domain.Actor;
 import domain.Comment;
 import domain.Conference;
 import domain.Panel;
@@ -192,7 +193,8 @@ public class CommentService {
 
 	public Collection<Comment> findByReport(final int id) {
 		Assert.isTrue(id != 0);
-		final Collection<Comment> res = this.commentRepository.findByReport(id);
+		final Actor principal = this.actorService.findByPrincipal();
+		final Collection<Comment> res = this.commentRepository.findByReport(id, principal.getId());
 		Assert.notNull(res);
 		return res;
 	}

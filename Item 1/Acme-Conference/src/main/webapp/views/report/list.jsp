@@ -33,4 +33,15 @@
 			</button>
 		</jstl:if>
 	</display:column>
+	<display:column>
+		<acme:button url="comment/list.do?entity=report&id=${row.id}"
+			name="list" code="comments" />
+	</display:column>
+	<display:column>
+		<jstl:if test="${row.isDraft}">
+			<acme:button
+				url="comment/create.do?entityId=${row.id}&entity=report"
+				name="new" code="add.comment" />
+		</jstl:if>
+	</display:column>
 </display:table>
