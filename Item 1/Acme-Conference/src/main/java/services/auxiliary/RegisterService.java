@@ -116,7 +116,6 @@ public class RegisterService {
 		Reviewer result;
 		final UserAccount ua = reviewer.getUserAccount();
 		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		this.reviewerService.findByPrincipal();
 		final String hash = encoder.encodePassword(ua.getPassword(), null);
 		if (reviewer.getId() == 0) {
 			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");

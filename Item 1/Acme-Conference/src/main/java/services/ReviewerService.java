@@ -21,7 +21,7 @@ import utilities.HashPassword;
 import domain.Actor;
 import domain.Finder;
 import domain.Reviewer;
-import forms.ReviewerForm;
+import forms.ActorForm;
 
 @Service
 @Transactional
@@ -42,6 +42,9 @@ public class ReviewerService {
 	@Autowired
 	private Validator			validator;
 
+	@Autowired
+	private FolderService		folderService;
+
 
 	public Reviewer create() {
 		final Reviewer reviewer = new Reviewer();
@@ -55,6 +58,14 @@ public class ReviewerService {
 		return result;
 	}
 
+	public Boolean checkForEmailInUse(final String email) {
+		Boolean res = false;
+		final String inUse = this.reviewerRepository.checkForEmailInUse(email);
+		if (inUse != null)
+			res = true;
+		return res;
+	}
+
 	public Reviewer save(final Reviewer reviewer) {
 		Assert.notNull(reviewer);
 		Reviewer result;
@@ -64,10 +75,11 @@ public class ReviewerService {
 			final String password = HashPassword.hashPassword(reviewer.getUserAccount().getPassword());
 			final Finder finder = this.finderService.createForNewActor();
 			reviewer.setFinder(finder);
-			this.actorService.setUserAccount(Authority.REVIEWER, reviewer, username, password);
-			reviewer.getUserAccount().setUsername(username);
-			reviewer.getUserAccount().setPassword(password);
-			result = this.reviewerRepository.save(reviewer);
+			final Reviewer withUserAccount = (Reviewer) this.actorService.setUserAccount(Authority.AUTHOR, reviewer, username, password);
+			Assert.isTrue(this.checkForEmailInUse(withUserAccount.getEmail()) == false, "Email is already in use");
+			result = this.reviewerRepository.save(withUserAccount);
+
+			this.folderService.setFoldersByDefault(result);
 
 		} else {
 			final String password = HashPassword.hashPassword(reviewer.getUserAccount().getPassword());
@@ -89,6 +101,12 @@ public class ReviewerService {
 		this.reviewerRepository.delete(reviewer);
 	}
 
+	public Collection<Reviewer> findAll() {
+		final Collection<Reviewer> res = this.reviewerRepository.findAll();
+		Assert.notNull(res);
+		return res;
+	}
+
 	/* ========================= OTHER METHODS =========================== */
 
 	public Reviewer findByPrincipal() {
@@ -97,7 +115,7 @@ public class ReviewerService {
 
 		final Reviewer reviewer = this.findByUserId(user.getId());
 		Assert.notNull(reviewer);
-		final boolean bool = this.actorService.checkAuthority(reviewer, Authority.REVIEWER);
+		final boolean bool = this.actorService.checkAuthority(reviewer, Authority.AUTHOR);
 		Assert.isTrue(bool);
 
 		return reviewer;
@@ -113,43 +131,46 @@ public class ReviewerService {
 		this.reviewerRepository.flush();
 	}
 
-	public Reviewer reconstruct(final ReviewerForm reviewerForm, final BindingResult binding) {
+	public Reviewer reconstruct(final ActorForm actorForm, final BindingResult binding) {
 		Reviewer reviewer;
 
-		if (reviewerForm.getId() == 0) {
+		if (actorForm.getId() == 0) {
 			reviewer = this.create();
-			reviewer.setName(reviewerForm.getName());
-			reviewer.setSurname(reviewerForm.getSurname());
-			reviewer.setPhoto(reviewerForm.getPhoto());
-			reviewer.setPhone(reviewerForm.getPhone());
-			reviewer.setEmail(reviewerForm.getEmail());
-			reviewer.setKeywords(reviewerForm.getKeywords());
-			reviewer.setAddress(reviewerForm.getAddress());
-			reviewer.setVersion(reviewerForm.getVersion());
+			reviewer.setName(actorForm.getName());
+			reviewer.setSurname(actorForm.getSurname());
+			reviewer.setMiddleName(actorForm.getMiddleName());
+			reviewer.setPhoto(actorForm.getPhoto());
+			reviewer.setPhone(actorForm.getPhone());
+			Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
+			reviewer.setEmail(actorForm.getEmail());
+			reviewer.setAddress(actorForm.getAddress());
+			reviewer.setVersion(actorForm.getVersion());
 			reviewer.setFinder(this.finderService.create());
+			//			reviewer.setScore(0.0);
+			//			reviewer.setSpammer(false);
 			final UserAccount account = this.userAccountService.create();
 			final Collection<Authority> authorities = new ArrayList<>();
 			final Authority auth = new Authority();
-			auth.setAuthority(Authority.REVIEWER);
+			auth.setAuthority(Authority.AUTHOR);
 			authorities.add(auth);
 			account.setAuthorities(authorities);
-			account.setUsername(reviewerForm.getUserAccountuser());
-			account.setPassword(reviewerForm.getUserAccountpassword());
+			account.setUsername(actorForm.getUserAccountuser());
+			account.setPassword(actorForm.getUserAccountpassword());
 			reviewer.setUserAccount(account);
 		} else {
-			reviewer = this.reviewerRepository.findOne(reviewerForm.getId());
-			reviewer.setName(reviewerForm.getName());
-			reviewer.setSurname(reviewerForm.getSurname());
-			reviewer.setPhoto(reviewerForm.getPhoto());
-			reviewer.setPhone(reviewerForm.getPhone());
-			reviewer.setEmail(reviewerForm.getEmail());
-			reviewer.setKeywords(reviewerForm.getKeywords());
-			reviewer.setAddress(reviewerForm.getAddress());
-			reviewer.setVersion(reviewerForm.getVersion());
+			reviewer = this.reviewerRepository.findOne(actorForm.getId());
+			reviewer.setName(actorForm.getName());
+			reviewer.setSurname(actorForm.getSurname());
+			reviewer.setPhoto(actorForm.getPhoto());
+			reviewer.setPhone(actorForm.getPhone());
+			Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
+			reviewer.setEmail(actorForm.getEmail());
+			reviewer.setAddress(actorForm.getAddress());
+			reviewer.setVersion(actorForm.getVersion());
 			reviewer.setFinder(this.finderService.findActorFinder());
 			final UserAccount account = this.userAccountService.findOne(reviewer.getUserAccount().getId());
-			account.setUsername(reviewerForm.getUserAccountuser());
-			account.setPassword(reviewerForm.getUserAccountpassword());
+			account.setUsername(actorForm.getUserAccountuser());
+			account.setPassword(actorForm.getUserAccountpassword());
 			reviewer.setUserAccount(account);
 		}
 
@@ -166,14 +187,9 @@ public class ReviewerService {
 		return result;
 	}
 
-	public Collection<Reviewer> findAll() {
-		final Collection<Reviewer> result = this.reviewerRepository.findAll();
-		Assert.notNull(result);
-		return result;
-	}
-
 	public Collection<Reviewer> findReviewersAccordingToConference(final int conferenceId) {
 		final Collection<Reviewer> result = this.reviewerRepository.findReviewersAccordingToConference(conferenceId);
 		return result;
 	}
+
 }

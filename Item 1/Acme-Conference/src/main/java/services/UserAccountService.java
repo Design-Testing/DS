@@ -45,7 +45,7 @@ public class UserAccountService {
 
 	public UserAccount save(UserAccount ua) {
 		Assert.notNull(ua);
-		Assert.isTrue(this.actorService.isUsernameInUse(ua.getUsername()) == false, "Username is already in use");
+		//Assert.isTrue(!this.actorService.isUsernameInUse(ua.getUsername()), "Username is already in use");
 		if (ua.getUsername() != null && ua.getPassword() != null)
 			ua = this.userAccountRepository.save(ua);
 

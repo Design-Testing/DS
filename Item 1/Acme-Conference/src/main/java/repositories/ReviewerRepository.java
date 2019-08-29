@@ -21,4 +21,7 @@ public interface ReviewerRepository extends JpaRepository<Reviewer, Integer> {
 	@Query("select r.reviewer from Report r where r.submission.id=?1")
 	Collection<Reviewer> findReviewersAssignedToSubmission(int submissionId);
 
+	@Query("select a.email from Reviewer a where a.email =?1")
+	String checkForEmailInUse(String email);
+
 }
