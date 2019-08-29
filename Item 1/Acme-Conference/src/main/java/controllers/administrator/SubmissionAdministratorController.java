@@ -96,6 +96,7 @@ public class SubmissionAdministratorController extends AbstractController {
 		final Submission submission = this.submissionService.findOne(submissionId);
 
 		final Collection<Reviewer> reviewers = this.submissionService.availableReviewers(submissionId);
+		System.out.println(reviewers);
 
 		Boolean notificationElapsed = false;
 
