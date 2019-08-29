@@ -18,7 +18,6 @@ import services.ActorService;
 import services.FinderService;
 import services.SponsorService;
 import services.UserAccountService;
-import domain.Finder;
 import domain.Sponsor;
 import forms.ActorForm;
 
@@ -84,7 +83,7 @@ public class SponsorController extends AbstractController {
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveSponsor(@ModelAttribute("sponsor") @Valid final ActorForm actorForm, final BindingResult binding, final HttpServletRequest request) {
-		ModelAndView result;
+		ModelAndView result = null;
 		if (binding.hasErrors()) {
 			result = new ModelAndView("sponsor/signup");
 			result.addObject("errors", binding.getAllErrors());
@@ -92,14 +91,21 @@ public class SponsorController extends AbstractController {
 		} else if (actorForm.getId() == 0)
 			try {
 				Sponsor sponsor = this.sponsorService.reconstruct(actorForm, binding);
-				final Finder finder = this.finderService.createForNewActor();
-				sponsor.setFinder(finder);
 				sponsor = this.sponsorService.save(sponsor);
 				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("sponsor/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+			} catch (final Throwable e) {
+				result = new ModelAndView("sponsor/signup");
+				if (e.getMessage().contains("Username is already in use"))
+					result.addObject("alert", "sponsor.usernameIsUsed");
+				else if (e.getMessage().contains("Email is already in use"))
+					result.addObject("alert", "sponsor.emailIsUsed");
+
+				result.addObject("errors", "commit.error");
+				result.addObject("actorForm", actorForm);
 			}
 		else
 			try {
@@ -110,6 +116,15 @@ public class SponsorController extends AbstractController {
 				result = new ModelAndView("sponsor/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+			} catch (final Throwable e) {
+				result = new ModelAndView("sponsor/signup");
+				if (e.getMessage().contains("Username is already in use"))
+					result.addObject("alert", "sponsor.usernameIsUsed");
+				else if (e.getMessage().contains("Email is already in use"))
+					result.addObject("alert", "sponsor.emailIsUsed");
+
+				result.addObject("errors", "commit.error");
+				result.addObject("actorForm", actorForm);
 			}
 
 		return result;

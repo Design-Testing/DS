@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,7 +81,7 @@ public class ActorService {
 	}
 
 	/* Inicializa una cuenta de usuario y autoridad de un nuevo actor */
-	public Actor setAuthorityUserAccount(final String authority, final Actor actor) {
+	public Actor setUserAccount(final String authority, final Actor actor, final String username, final String password) {
 		Assert.notNull(actor);
 		Assert.isTrue(actor.getId() == 0);
 		final UserAccount userAccount = this.userAccountService.create();
@@ -91,10 +92,10 @@ public class ActorService {
 		if (!authorities.contains(auth))
 			authorities.add(auth);
 		userAccount.setAuthorities(authorities);
+		userAccount.setUsername(username);
+		userAccount.setPassword(password);
 		final UserAccount saved = this.userAccountService.save(userAccount);
 		actor.setUserAccount(saved);
-
-		//this.folderService.setFoldersByDefault(actor); it references to an actor that not exists
 
 		return actor;
 	}
@@ -114,6 +115,15 @@ public class ActorService {
 		newAuth.setAuthority(auth);
 
 		return auths.contains(newAuth);
+	}
+
+	public Boolean isUsernameInUse(final String username) {
+		final List<String> usernames = new ArrayList<String>(this.actorRepository.findUsernames());
+		Boolean res = false;
+		if (usernames.contains(username))
+			res = true;
+
+		return res;
 	}
 
 }
