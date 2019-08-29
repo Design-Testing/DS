@@ -1,5 +1,5 @@
 
-package controllers;
+package controllers.reviewer;
 
 import javax.validation.Valid;
 
@@ -14,10 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ReportService;
+import controllers.AbstractController;
 import domain.Report;
 
 @Controller
-@RequestMapping("/report")
+@RequestMapping("/report/reviewer")
 public class ReportController extends AbstractController {
 
 	@Autowired

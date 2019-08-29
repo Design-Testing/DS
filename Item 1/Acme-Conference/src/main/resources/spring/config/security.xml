@@ -95,8 +95,8 @@
 		<security:intercept-url pattern="/sponsorship/sponsor/**" access="hasRole('SPONSOR')" /> 
 		
 		<!-- REPORT -->
-		<security:intercept-url pattern="/report" access="hasRole('REVIEWER')" /> 
-		
+		<security:intercept-url pattern="/report/reviewer/**" access="hasRole('REVIEWER')" /> 
+		<security:intercept-url pattern="/report/author/**" access="hasRole('AUTHOR')" /> 
 		<!-- DASHBOARD -->
 		<security:intercept-url pattern="/dasboard" access="hasRole('ADMIN')" /> 
 		

@@ -18,7 +18,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	@Query("select c from Comment c where c.activity.id=?1")
 	Collection<Comment> findByActivity(int id);
 
-	@Query("select c from Comment c where c.report.id=?1 and c.report.reviewer.id=?2")
+	@Query("select c from Comment c where c.report.id=?1 and (c.report.reviewer.id=?2 or c.report.submission.author.id=?2)")
 	Collection<Comment> findByReport(int id, Integer principalId);
 
 	// TODO: sustuir Quolet por nombre de nueva entidad y añadir el bloque de codigo

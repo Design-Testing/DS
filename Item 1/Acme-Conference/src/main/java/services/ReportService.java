@@ -95,7 +95,10 @@ public class ReportService {
 	}
 
 	public Collection<Report> findReportsBySubmission(final int submissionId) {
-		final Collection<Report> result = this.reportRepository.findReportsBySubmission(submissionId);
+		final Actor principal = this.actorService.findByPrincipal();
+		if (this.actorService.checkAuthority(principal, Authority.AUTHOR))
+			Assert.isTrue(this.submissionService.findOne(submissionId).getIsNotified());
+		final Collection<Report> result = this.reportRepository.findReportsBySubmission(submissionId, principal.getId());
 		Assert.notNull(result);
 		return result;
 	}
