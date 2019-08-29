@@ -14,12 +14,12 @@
 	<acme:display code="reviewer.name" value="${reviewer.name}" />
 	<acme:display code="reviewer.middleName" value="${reviewer.middleName}" />
 	<acme:display code="reviewer.surname" value="${reviewer.surname}" />
-	<acme:display code="reviewer.photo" value="${reviewer.photo}" />
+	<spring:message code="author.photo" />:<br/>
+	<img src="${author.photo}" alt="<jstl:out value ="${author.photo}"/>" width="220" height="135"/>
 	<acme:display code="reviewer.email" value="${reviewer.email}" />
 	<acme:display code="reviewer.phone" value="${reviewer.phone}" />
 	<acme:display code="reviewer.keywords" value="${reviewer.keywords}" />
 	<acme:display code="reviewer.address" value="${reviewer.address}" />
-	<acme:display code="reviewer.score" value="${reviewer.score}" />
 
 	
 	

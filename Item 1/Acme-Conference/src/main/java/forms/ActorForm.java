@@ -5,6 +5,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -87,6 +88,7 @@ public class ActorForm extends DomainEntity {
 
 	@Column(unique = true)
 	@NotBlank
+	@Pattern(regexp = "^((([\\w]\\s)*[\\w])+<\\w+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}>)$||^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}$")
 	public String getEmail() {
 		return this.email;
 	}

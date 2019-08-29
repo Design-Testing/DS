@@ -116,7 +116,6 @@ public class SponsorService {
 		Sponsor sponsor;
 		if (actorForm.getId() == 0) {
 			sponsor = this.create();
-			sponsor.setScore(0.0);
 			final UserAccount account = this.userAccountService.create();
 			final Collection<Authority> authorities = new ArrayList<>();
 			final Authority auth = new Authority();

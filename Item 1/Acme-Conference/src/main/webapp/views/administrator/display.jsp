@@ -14,11 +14,11 @@
 	<acme:display code="administrator.name" value="${administrator.name}" />
 	<acme:display code="administrator.middleName" value="${administrator.middleName}" />
 	<acme:display code="administrator.surname" value="${administrator.surname}" />
-	<acme:display code="administrator.photo" value="${administrator.photo}" />
+	<spring:message code="author.photo" />:<br/>
+	<img src="${author.photo}" alt="<jstl:out value ="${author.photo}"/>" width="220" height="135"/>
 	<acme:display code="administrator.email" value="${administrator.email}" />
 	<acme:display code="administrator.phone" value="${administrator.phone}" />
 	<acme:display code="administrator.address" value="${administrator.address}" />
-	<acme:display code="administrator.score" value="${administrator.score}" />
 
 	
 	

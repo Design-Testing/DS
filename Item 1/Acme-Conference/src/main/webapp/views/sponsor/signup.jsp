@@ -45,7 +45,7 @@
 	    
     <acme:textbox path="userAccountuser" code="sponsor.userAccount.username"/>
     <br/>
-    <acme:textbox path="userAccountpassword" code="sponsor.userAccount.password"/>
+    <acme:password path="userAccountpassword" code="sponsor.userAccount.password"/>
     <br/>
     <acme:textbox path="name" code="sponsor.name"/>
     <br/>
