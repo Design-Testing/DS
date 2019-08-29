@@ -86,7 +86,6 @@ public class AuthorService {
 			final Actor principal = this.actorService.findByPrincipal();
 			author.getUserAccount().setPassword(password);
 			Assert.isTrue(principal.getId() == author.getId(), "You only can edit your info");
-			Assert.isTrue(this.checkForEmailInUse(author.getEmail()) == false, "Email is already in use");
 			result = this.authorRepository.save(author);
 		}
 		return result;

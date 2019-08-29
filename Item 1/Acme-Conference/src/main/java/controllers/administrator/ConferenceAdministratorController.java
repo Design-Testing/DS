@@ -316,6 +316,8 @@ public class ConferenceAdministratorController extends AbstractController {
 			result.addObject("acceptedSubmissions", acceptedSubmissions);
 			result.addObject("rejectedSubmissions", rejectedSubmissions);
 			result.addObject("underReviewedSubmissions", underReviewedSubmissions);
+			result.addObject("ratioDecidedAssignedSubmissions", this.submissionService.getRatioCalculatedSubmissionsOverAssignedSubmissions(conferenceId));
+
 		} else
 			result = new ModelAndView("redirect:misc/403");
 

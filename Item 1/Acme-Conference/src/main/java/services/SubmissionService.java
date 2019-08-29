@@ -315,11 +315,13 @@ public class SubmissionService {
 	//
 	//	}
 
-	//	private Collection<Submission> findUnderReviewedSubmissions() {
-	//		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();
-	//		Assert.notNull(result);
-	//		return result;
-	//	}
+
+	public Collection<Submission> findUnderReviewedSubmissions() {
+		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();
+		Assert.notNull(result);
+		return result;
+	}
+
 
 	public Collection<Reviewer> availableReviewers(final int submissionId) {
 		final Submission s = this.findOne(submissionId);
@@ -331,6 +333,17 @@ public class SubmissionService {
 			if (existingReport == null)
 				result.add(r);
 		}
+		return result;
+	}
+
+	/**
+	 * If returns 1.0, then all the asigned submissions of the specified conference have its status calculated
+	 * If returns a number between [0.0,1.0), then there are assigned submissions that are not evaluated
+	 **/
+	public Double getRatioCalculatedSubmissionsOverAssignedSubmissions(final int conferenceId) {
+		Double result = this.submissionRepository.getRatioCalculatedSubmissionsOverAssignedSubmissions(conferenceId);
+		if (result == null)
+			result = -1.0;
 		return result;
 	}
 }
