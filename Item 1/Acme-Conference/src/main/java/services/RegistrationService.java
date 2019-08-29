@@ -1,6 +1,7 @@
 
 package services;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 
@@ -153,6 +154,12 @@ public class RegistrationService {
 		try {
 			new Integer(input);
 			res = true;
+		} catch (final NumberFormatException e) {
+			res = false;
+		}
+		try {
+			new BigInteger(input);
+			res = res || true;
 		} catch (final NumberFormatException e) {
 			res = false;
 		}

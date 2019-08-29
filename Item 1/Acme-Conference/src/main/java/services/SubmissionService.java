@@ -315,11 +315,11 @@ public class SubmissionService {
 	//
 	//	}
 
-	private Collection<Submission> findUnderReviewedSubmissions() {
-		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();
-		Assert.notNull(result);
-		return result;
-	}
+	//	private Collection<Submission> findUnderReviewedSubmissions() {
+	//		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();
+	//		Assert.notNull(result);
+	//		return result;
+	//	}
 
 	public Collection<Reviewer> availableReviewers(final int submissionId) {
 		final Submission s = this.findOne(submissionId);

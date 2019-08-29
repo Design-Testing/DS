@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
 import services.FinderService;
 import services.ReviewerService;
-import services.UserAccountService;
 import domain.Finder;
 import domain.Reviewer;
 import forms.ReviewerForm;
@@ -29,18 +27,12 @@ import forms.ReviewerForm;
 public class ReviewerController extends AbstractController {
 
 	@Autowired
-	private ReviewerService		reviewerService;
+	private ReviewerService	reviewerService;
 
 	@Autowired
-	private FinderService		finderService;
+	private FinderService	finderService;
 
-	@Autowired
-	private UserAccountService	userAccountService;
-
-	@Autowired
-	private ActorService		actorService;
-
-	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
+	final String			lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)

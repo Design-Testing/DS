@@ -45,8 +45,6 @@ public class ReviewerService {
 
 	public Reviewer create() {
 		final Reviewer reviewer = new Reviewer();
-		this.actorService.setAuthorityUserAccount(Authority.REVIEWER, reviewer);
-
 		return reviewer;
 	}
 
@@ -66,15 +64,17 @@ public class ReviewerService {
 			final String password = HashPassword.hashPassword(reviewer.getUserAccount().getPassword());
 			final Finder finder = this.finderService.createForNewActor();
 			reviewer.setFinder(finder);
-			this.actorService.setAuthorityUserAccount(Authority.REVIEWER, reviewer);
+			this.actorService.setUserAccount(Authority.REVIEWER, reviewer, username, password);
 			reviewer.getUserAccount().setUsername(username);
 			reviewer.getUserAccount().setPassword(password);
 			result = this.reviewerRepository.save(reviewer);
 
 		} else {
+			final String password = HashPassword.hashPassword(reviewer.getUserAccount().getPassword());
 			final Actor principal = this.actorService.findByPrincipal();
+			reviewer.getUserAccount().setPassword(password);
 			Assert.isTrue(principal.getId() == reviewer.getId(), "You only can edit your info");
-			result = (Reviewer) this.actorService.save(reviewer);
+			result = this.reviewerRepository.save(reviewer);
 		}
 		return result;
 	}
