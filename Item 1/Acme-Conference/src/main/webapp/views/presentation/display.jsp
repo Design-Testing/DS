@@ -93,10 +93,17 @@
 <security:authorize access="hasRole('ADMIN')">
 	<jstl:if test="${isDraft}">
 		<acme:button
-			url="presentation/delete.do?presentationId=${tutorial.id}&conferenceId=${conferenceId}"
+			url="presentation/delete.do?presentationId=${presentation.id}&conferenceId=${conferenceId}"
 			name="edit" code="activity.delete" />
 		<br />
 	</jstl:if>
 </security:authorize>
 <acme:button url="presentation/list.do?conferenceId=${conferenceId}"
 	name="back" code="activity.back" />
+	
+	<jstl:if test="${not empty error}">
+	<h3 style="color: red;">
+		<spring:message code="${error}" />
+	</h3>
+</jstl:if>
+	

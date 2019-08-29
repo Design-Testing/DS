@@ -64,7 +64,7 @@ public class SectionController extends AbstractController {
 		return result;
 	}
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int sectionId, @RequestParam final int tutorialId, final int conferenceId) {
+	public ModelAndView display(@RequestParam final int sectionId, @RequestParam final int tutorialId, final int conferenceId, final boolean isDraft) {
 
 		final ModelAndView result;
 		final Section section = this.sectionService.findOne(sectionId);
@@ -72,6 +72,7 @@ public class SectionController extends AbstractController {
 		result.addObject("section", section);
 		result.addObject("tutorialId", tutorialId);
 		result.addObject("conferenceId", conferenceId);
+		result.addObject("isDraft", isDraft);
 
 		return result;
 	}
@@ -113,10 +114,12 @@ public class SectionController extends AbstractController {
 		else
 			try {
 				this.sectionService.save(section, tutorialId);
-				System.out.println("2222");
 				result = this.tutorialController.display(tutorialId, conferenceId);
-			} catch (final Throwable e) {
-				result = this.createEditModelAndView(section, tutorialId, conferenceId, "section.commit.error");
+			} catch (final Throwable oops) {
+				String error = "section.commit.error";
+				if (oops.getMessage().contains(".error"))
+					error = oops.getMessage();
+				result = this.createEditModelAndView(section, tutorialId, conferenceId, error);
 			}
 		return result;
 	}
@@ -134,12 +137,13 @@ public class SectionController extends AbstractController {
 			res = this.tutorialController.display(tutorialId, conferenceId);
 		} catch (final Throwable oops) {
 			res = new ModelAndView("redirect:display.do?sectionId=" + sectionId + "&tutorialId=" + tutorialId + "&conferenceId=" + conferenceId);
-			final String error = "Cannot delete this section";
+			String error = "delete.error";
+			if (oops.getMessage().contains(".error"))
+				error = oops.getMessage();
 			res.addObject("error", error);
 		}
 		return res;
 	}
-
 	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Section section, final int tutorialId, final int conferenceId) {

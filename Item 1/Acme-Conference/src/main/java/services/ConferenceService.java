@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.ConferenceRepository;
-import repositories.SubmissionRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
@@ -53,9 +52,6 @@ public class ConferenceService {
 
 	@Autowired
 	private MessageService			messageService;
-
-	@Autowired
-	private SubmissionRepository	submissionRepository;
 
 	@Autowired
 	private TopicService			topicService;
@@ -248,7 +244,7 @@ public class ConferenceService {
 		this.administratorService.findByPrincipal();
 		final Conference retrieved = this.findOne(conferenceId);
 		Assert.notNull(retrieved);
-		final Date now = new Date();
+		//final Date now = new Date();
 		//TODO submission deadline
 		//Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
 		final Collection<Submission> submissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
@@ -357,7 +353,7 @@ public class ConferenceService {
 				m.setBody("Your submission with ticker" + s.getTicker() + "(to the conference with title " + conference.getTitle() + ") has been " + s.getStatus());
 
 				s.setIsNotified(true);
-				this.submissionRepository.save(s);
+				this.submissionService.save(s);
 
 			} else {
 				m.setSubject("Your submission is still under reviewed");
@@ -396,6 +392,12 @@ public class ConferenceService {
 
 	public Collection<Conference> findAllByAuthorUserId(final int authorUAId) {
 		final Collection<Conference> result = this.conferenceRepository.findAllByAuthorUserId(authorUAId);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Conference findConferenceByTutorialId(final int tutorialId) {
+		final Conference result = this.conferenceRepository.findConferenceByTutorialId(tutorialId);
 		Assert.notNull(result);
 		return result;
 	}

@@ -23,7 +23,7 @@
     <acme:textbox path="title" code="activity.title"/>
     <br/>
     
-    <acme:textbox path="startMoment" code="activity.startMoment"/>
+    <acme:textbox path="startMoment" code="activity.startMoment" placeholder="yyyy-MM-dd HH:mm"/>
     <br/>
     
     <acme:numberbox path="hours" code="activity.hours" min="0"/>

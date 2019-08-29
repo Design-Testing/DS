@@ -67,7 +67,7 @@
 	</jstl:when>
 	<jstl:when test="${not empty panel.speakers and (s2 le 1)}">
 		<spring:message code="activity.speakers"/>: 
-			<a href="${panel.speakers.get(0)}"><jstl:out value="${panel.speakers.get(0)}"/></a><br />
+			<jstl:out value="${panel.speakers.get(0)}"/><br />
 	</jstl:when>
 	<jstl:otherwise>
 		<spring:message code="activity.speakers" /> <spring:message code="empty" />
@@ -77,12 +77,17 @@
 	
 	<security:authorize access="hasRole('ADMIN')">
 	<jstl:if test="${isDraft}">
-	<acme:button url="panel/delete.do?panelId=${tutorial.id}&conferenceId=${conferenceId}"
+	<acme:button url="panel/delete.do?panelId=${panel.id}&conferenceId=${conferenceId}"
 		name="edit" code="activity.delete" /><br/>
 	</jstl:if>
 	</security:authorize>
 	<acme:button url="panel/list.do?conferenceId=${conferenceId}" name="back" code="activity.back" />
 
+<jstl:if test="${not empty error}">
+	<h3 style="color: red;">
+		<spring:message code="${error}" />
+	</h3>
+</jstl:if>
 
 
 

@@ -13,7 +13,7 @@
 	<jstl:set value="/administrator" var="autorize"/>
 </security:authorize>
 
-<form:form action="presentation/edit.do" modelAttribute="presentation">
+<form:form action="presentation/edit.do?conferenceId=${conferenceId}" modelAttribute="presentation">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
@@ -48,6 +48,18 @@
     <form:errors path="speakers" cssClass="error" />
     <br/>
     <br/>
+    
+     
+    <form:label path="cameraReadyPaper">
+        <spring:message code="presentation.camera.ready.paper"/>:
+    </form:label>
+    <form:select path="cameraReadyPaper" code="presentation.camera.ready.paper">
+    	<form:options items="${papers}" itemLabel="title"/>
+    </form:select>
+    <form:errors path="cameraReadyPaper" cssClass="error" />
+    <br/>
+    <br/>
+    
 
     <!---------------------------- BOTONES -------------------------->
 

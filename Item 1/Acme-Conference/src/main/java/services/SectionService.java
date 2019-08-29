@@ -63,14 +63,18 @@ public class SectionService {
 		//	Assert.isTrue(c.getIsDraft(), "La conferencia asociada al tutorial sobre el que escribimos la seccion tiene que estar en modo draft");
 		final Tutorial tutorial = this.tutorialRepository.findOne(tutorialId);
 		Assert.notNull(tutorial);
-		final Section res = this.sectionRepository.save(section);
+		final Conference c = this.conferenceService.findConferenceByTutorialId(tutorialId);
+		Assert.isTrue(c.getIsDraft(), "conference.not.draft.error");
 		final Collection<Section> sections = tutorial.getSections();
+		final Section res = this.sectionRepository.save(section);
 		if (section.getId() == 0) {
 			sections.add(res);
 			tutorial.setSections(sections);
 			this.tutorialRepository.save(tutorial);
-		} else
-			Assert.isTrue(sections.contains(sections), "Al editar la seccion, el tutorial a la que pertenece debe contenerla en su lista de secciones");
+		} else {
+			final boolean contained = sections.contains(res);
+			Assert.isTrue(contained, "section.contains.error");
+		}
 		return res;
 	}
 	public Collection<Section> findByTutorial(final int tutorialId) {
@@ -85,6 +89,7 @@ public class SectionService {
 		Assert.notNull(section);
 		Assert.isTrue(section.getId() != 0);
 		final Conference conference = this.conferenceService.findOne(conferenceId);
+		Assert.isTrue(conference.getIsDraft(), "conference.not.draft.error");
 		final Tutorial tutorial = this.tutorialRepository.findOne(tutorialId);
 		Collection<Activity> acs = conference.getActivities();
 		acs = this.conferenceService.findConferenceActivities(conferenceId);
