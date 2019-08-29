@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ReportRepository;
+import security.Authority;
+import domain.Actor;
 import domain.Report;
 import domain.Reviewer;
 import domain.Submission;
@@ -25,6 +27,9 @@ public class ReportService {
 
 	@Autowired
 	private ReviewerService		reviewerService;
+
+	@Autowired
+	private ActorService		actorService;
 
 
 	public Report create(final int submissionId, final int reviewerId) {
@@ -67,12 +72,17 @@ public class ReportService {
 
 	public Report findOne(final Integer reportId) {
 		Assert.notNull(reportId);
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.reportRepository.isMyReport(principal.getId(), reportId));
 		final Report res = this.reportRepository.findOne(reportId);
-		Assert.notNull(reportId);
+
+		if (this.actorService.checkAuthority(principal, Authority.AUTHOR))
+			Assert.isTrue(res.getSubmission().getIsNotified());
+
+		Assert.notNull(res);
 
 		return res;
 	}
-
 	public Collection<Report> findAll() {
 		final Collection<Report> res = this.reportRepository.findAll();
 		Assert.notNull(res);

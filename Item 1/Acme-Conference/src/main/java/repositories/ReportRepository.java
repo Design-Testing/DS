@@ -18,6 +18,9 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 	@Query("select r from Report r where r.submission.id=?1 and r.reviewer.id=?2")
 	Report findReportBySubmissionAndReviewer(int submissionId, int reviewerId);
 
+	@Query("select case when count(r) > 0 then true else false end from Report r join r.submission s where r.id=?2 and (s.author.id=?1 or r.reviewer.id=?1)")
+	boolean isMyReport(int actorId, int reportId);
+
 	@Query("select r from Report r where r.reviewer.id=?1")
 	Collection<Report> findReportsByReviewer(int reviewerId);
 

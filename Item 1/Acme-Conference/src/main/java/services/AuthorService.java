@@ -21,7 +21,6 @@ import utilities.HashPassword;
 import domain.Actor;
 import domain.Author;
 import domain.Finder;
-import domain.Folder;
 import forms.ActorForm;
 
 @Service
@@ -59,6 +58,14 @@ public class AuthorService {
 		return result;
 	}
 
+	public Boolean checkForEmailInUse(final String email) {
+		Boolean res = false;
+		final String inUse = this.authorRepository.checkForEmailInUse(email);
+		if (inUse != null)
+			res = true;
+		return res;
+	}
+
 	public Author save(final Author author) {
 		Assert.notNull(author);
 		Author result;
@@ -68,22 +75,19 @@ public class AuthorService {
 			final String password = HashPassword.hashPassword(author.getUserAccount().getPassword());
 			final Finder finder = this.finderService.createForNewActor();
 			author.setFinder(finder);
-			this.actorService.setAuthorityUserAccount(Authority.AUTHOR, author);
-			author.getUserAccount().setUsername(username);
-			author.getUserAccount().setPassword(password);
-			result = this.authorRepository.save(author);
+			final Author withUserAccount = (Author) this.actorService.setUserAccount(Authority.AUTHOR, author, username, password);
+			Assert.isTrue(this.checkForEmailInUse(withUserAccount.getEmail()) == false, "Email is already in use");
+			result = this.authorRepository.save(withUserAccount);
 
-			final Folder inbox = this.folderService.create();
-			inbox.setName("In Box");
-			final Folder outbox = this.folderService.create();
-			outbox.setName("Out Box");
-			this.folderService.save(inbox, result);
-			this.folderService.save(outbox, result);
+			this.folderService.setFoldersByDefault(result);
 
 		} else {
+			final String password = HashPassword.hashPassword(author.getUserAccount().getPassword());
 			final Actor principal = this.actorService.findByPrincipal();
+			author.getUserAccount().setPassword(password);
 			Assert.isTrue(principal.getId() == author.getId(), "You only can edit your info");
-			result = (Author) this.actorService.save(author);
+			Assert.isTrue(this.checkForEmailInUse(author.getEmail()) == false, "Email is already in use");
+			result = this.authorRepository.save(author);
 		}
 		return result;
 	}
@@ -138,6 +142,7 @@ public class AuthorService {
 			author.setMiddleName(actorForm.getMiddleName());
 			author.setPhoto(actorForm.getPhoto());
 			author.setPhone(actorForm.getPhone());
+			Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
 			author.setEmail(actorForm.getEmail());
 			author.setAddress(actorForm.getAddress());
 			author.setVersion(actorForm.getVersion());
@@ -159,6 +164,7 @@ public class AuthorService {
 			author.setSurname(actorForm.getSurname());
 			author.setPhoto(actorForm.getPhoto());
 			author.setPhone(actorForm.getPhone());
+			Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
 			author.setEmail(actorForm.getEmail());
 			author.setAddress(actorForm.getAddress());
 			author.setVersion(actorForm.getVersion());

@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,6 +58,16 @@ public class ReportController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int reportId) {
 		ModelAndView result;
 		result = new ModelAndView("report/edit");
+		final Report report = this.reportService.findOne(reportId);
+		Assert.isTrue(report.getIsDraft());
+		result.addObject("report", report);
+		return result;
+	}
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int reportId) {
+		ModelAndView result;
+		result = new ModelAndView("report/display");
 		result.addObject("report", this.reportService.findOne(reportId));
 		return result;
 	}
