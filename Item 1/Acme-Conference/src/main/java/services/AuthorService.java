@@ -21,6 +21,7 @@ import utilities.HashPassword;
 import domain.Actor;
 import domain.Author;
 import domain.Finder;
+import domain.Folder;
 import forms.ActorForm;
 
 @Service
@@ -42,11 +43,12 @@ public class AuthorService {
 	@Autowired
 	private Validator			validator;
 
+	@Autowired
+	private FolderService		folderService;
+
 
 	public Author create() {
 		final Author author = new Author();
-		this.actorService.setAuthorityUserAccount(Authority.AUTHOR, author);
-
 		return author;
 	}
 
@@ -70,6 +72,13 @@ public class AuthorService {
 			author.getUserAccount().setUsername(username);
 			author.getUserAccount().setPassword(password);
 			result = this.authorRepository.save(author);
+
+			final Folder inbox = this.folderService.create();
+			inbox.setName("In Box");
+			final Folder outbox = this.folderService.create();
+			outbox.setName("Out Box");
+			this.folderService.save(inbox, result);
+			this.folderService.save(outbox, result);
 
 		} else {
 			final Actor principal = this.actorService.findByPrincipal();
