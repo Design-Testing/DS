@@ -52,6 +52,7 @@ public class RegisterService {
 	public Administrator saveAdmin(final Administrator admin, final BindingResult binding) {
 		Administrator result;
 		final UserAccount ua = admin.getUserAccount();
+		this.administratorService.findByPrincipal();
 		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 		final String hash = encoder.encodePassword(ua.getPassword(), null);
 		if (admin.getId() == 0) {
@@ -84,7 +85,6 @@ public class RegisterService {
 		Sponsor result;
 		final UserAccount ua = sponsor.getUserAccount();
 		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		this.sponsorService.findByPrincipal();
 		final String hash = encoder.encodePassword(ua.getPassword(), null);
 		if (sponsor.getId() == 0) {
 			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
@@ -147,7 +147,6 @@ public class RegisterService {
 		Author result;
 		final UserAccount ua = author.getUserAccount();
 		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		this.authorService.findByPrincipal();
 		final String hash = encoder.encodePassword(ua.getPassword(), null);
 		if (author.getId() == 0) {
 			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");

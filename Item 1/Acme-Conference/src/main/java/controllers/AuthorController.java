@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AuthorService;
+import services.ConfigurationParametersService;
 import services.FinderService;
 import domain.Author;
 import forms.ActorForm;
@@ -24,12 +25,15 @@ import forms.ActorForm;
 public class AuthorController extends AbstractController {
 
 	@Autowired
-	private AuthorService	authorService;
+	private AuthorService					authorService;
 
 	@Autowired
-	private FinderService	finderService;
+	private FinderService					finderService;
 
-	final String			lang	= LocaleContextHolder.getLocale().getLanguage();
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
+
+	final String							lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -60,6 +64,8 @@ public class AuthorController extends AbstractController {
 		final ModelAndView result;
 		result = new ModelAndView("author/edit");
 		result.addObject("actorForm", actorForm);
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 		return result;
 	}
 
@@ -71,6 +77,8 @@ public class AuthorController extends AbstractController {
 
 		result = new ModelAndView("author/signup");
 		result.addObject("actorForm", actorForm);
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 		return result;
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
@@ -80,33 +88,22 @@ public class AuthorController extends AbstractController {
 			result = new ModelAndView("author/signup");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("actorForm", actorForm);
-		} else if (actorForm.getId() == 0)
-			try {
-				Author author = this.authorService.reconstruct(actorForm, binding);
-				author = this.authorService.save(author);
-				result = new ModelAndView("forward:/security/login.do");
-			} catch (final ValidationException oops) {
-				result = new ModelAndView("author/signup");
-				result.addObject("actorForm", actorForm);
-				result.addObject("errors", "commit.error");
-			} catch (final Throwable e) {
-				result = new ModelAndView("author/signup");
-				if (e.getMessage().contains("Username is already in use"))
-					result.addObject("alert", "author.usernameIsUsed");
-				else if (e.getMessage().contains("Email is already in use"))
-					result.addObject("alert", "author.emailIsUsed");
-				result.addObject("errors", "commit.error");
-				result.addObject("actorForm", actorForm);
-			}
-		else
+			result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
+		} else
 			try {
 				final Author author = this.authorService.reconstruct(actorForm, binding);
 				this.authorService.save(author);
-				result = this.viewAuthor();
+				if (actorForm.getId() == 0)
+					result = this.viewAuthor();
+				else
+					result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("author/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 			} catch (final Throwable e) {
 				result = new ModelAndView("author/signup");
 				if (e.getMessage().contains("Username is already in use"))
@@ -115,6 +112,8 @@ public class AuthorController extends AbstractController {
 					result.addObject("alert", "author.emailIsUsed");
 				result.addObject("errors", "commit.error");
 				result.addObject("actorForm", actorForm);
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 			}
 
 		return result;
