@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
 import services.AdministratorService;
 import services.ConferenceService;
+import services.PaperService;
 import services.PresentationService;
+import domain.Paper;
 import domain.Presentation;
 
 @Controller
@@ -35,6 +38,12 @@ public class PresentationController extends AbstractController {
 	@Autowired
 	private ConferenceService		conferenceService;
 
+	@Autowired
+	private ActorService			actorService;
+
+	@Autowired
+	private PaperService			paperService;
+
 
 	// CREATE  ---------------------------------------------------------------		
 
@@ -42,7 +51,7 @@ public class PresentationController extends AbstractController {
 	public ModelAndView create(@RequestParam final int conferenceId, final String fromConferenceDisplay) {
 		ModelAndView result;
 		final Presentation presentation = this.presentationService.create();
-		result = this.createEditModelAndView(presentation);
+		result = this.createEditModelAndView(presentation, conferenceId);
 		result.addObject("conferenceId", conferenceId);
 		result.addObject("fromConferenceDisplay", fromConferenceDisplay);
 		return result;
@@ -70,6 +79,8 @@ public class PresentationController extends AbstractController {
 		result = new ModelAndView("presentation/display");
 		result.addObject("presentation", presentation);
 		result.addObject("conferenceId", conferenceId);
+		final boolean isDraft = this.conferenceService.findOne(conferenceId).getIsDraft();
+		result.addObject("isDraft", isDraft);
 
 		return result;
 	}
@@ -83,12 +94,9 @@ public class PresentationController extends AbstractController {
 
 		presentation = this.presentationService.findOne(presentationId);
 
-		if (presentation != null) {
-			result = this.createEditModelAndView(presentation);
-			result.addObject("conferenceId", conferenceId);
-			result.addObject("presentation", presentation);
-
-		} else
+		if (presentation != null)
+			result = this.createEditModelAndView(presentation, conferenceId);
+		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
@@ -106,30 +114,55 @@ public class PresentationController extends AbstractController {
 		conferenceId = paramPresentationId.isEmpty() ? null : Integer.parseInt(paramPresentationId);
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(presentation);
+			result = this.createEditModelAndView(presentation, conferenceId);
 		else
 			try {
 				this.presentationService.save(presentation, conferenceId);
 				result = this.list(conferenceId);
 			} catch (final Throwable e) {
-				result = this.createEditModelAndView(presentation, "presentation.commit.error");
+				result = this.createEditModelAndView(presentation, "presentation.commit.error", conferenceId);
 			}
 		return result;
 	}
-	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final Presentation presentation) {
-		return this.createEditModelAndView(presentation, null);
+	// DELETE -----------------------------------------------------------
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int conferenceId, @RequestParam final int presentationId) {
+
+		ModelAndView res;
+		final Presentation toDelete = this.presentationService.findOne(presentationId);
+
+		try {
+			this.presentationService.delete(toDelete, conferenceId);
+			res = this.list(conferenceId);
+		} catch (final Throwable oops) {
+			res = this.display(presentationId, conferenceId);
+			final String error = "delete.error";
+			res.addObject("error", error);
+		}
+		return res;
 	}
 
-	protected ModelAndView createEditModelAndView(final Presentation presentation, final String messageCode) {
+	// CREATEEDITMODELANDVIEW -----------------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final Presentation presentation, final int conferenceId) {
+		return this.createEditModelAndView(presentation, null, conferenceId);
+	}
+
+	protected ModelAndView createEditModelAndView(final Presentation presentation, final String messageCode, final int conferenceId) {
 		final ModelAndView result;
 
 		this.administratorService.findByPrincipal();
 
+		final Collection<Paper> papers = this.paperService.findAll();
+
 		result = new ModelAndView("presentation/edit");
 		result.addObject("presentation", presentation);
 		result.addObject("message", messageCode);
+		result.addObject("actors", this.actorService.findAll());
+		result.addObject("papers", papers);
+		result.addObject("conferenceId", conferenceId);
 
 		return result;
 	}

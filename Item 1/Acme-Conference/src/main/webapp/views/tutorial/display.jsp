@@ -118,3 +118,11 @@
 
 <acme:button url="tutorial/list.do?conferenceId=${conferenceId}"
 	name="back" code="activity.back" />
+
+	
+	<jstl:if test="${not empty error}">
+	<h3 style="color: red;">
+		<spring:message code="${error}" />
+	</h3>
+</jstl:if>
+	

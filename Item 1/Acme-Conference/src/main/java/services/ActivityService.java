@@ -62,7 +62,7 @@ public class ActivityService {
 		//	Assert.isTrue(conference.getIsDraft(), "La conferencia asociada a la actividad que estar en modo draft");
 		Assert.notNull(conference);
 		Assert.notEmpty(activity.getSpeakers());
-		final Collection<Activity> activities = conference.getActivities();
+		final Collection<Activity> activities = this.conferenceService.findConferenceActivities(conferenceId);
 		if (activity.getId() != 0)
 			Assert.isTrue(activities.contains(activity));
 		final Activity res = this.activityRepository.save(activity);
@@ -98,7 +98,7 @@ public class ActivityService {
 		this.administratorService.findByPrincipal();
 		Assert.isTrue(this.activityRepository.findOne(activity.getId()).equals(activity), "No se puede borrar una actividad que no existe");
 		final Conference conference = this.conferenceService.findOne(conferenceId);
-		final Collection<Activity> acs = conference.getActivities();
+		final Collection<Activity> acs = this.conferenceService.findConferenceActivities(conferenceId);
 		Assert.isTrue(acs.contains(activity));
 		acs.remove(activity);
 		this.conferenceService.save(conference);

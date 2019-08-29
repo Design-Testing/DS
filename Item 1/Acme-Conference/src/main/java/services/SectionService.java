@@ -65,14 +65,16 @@ public class SectionService {
 		Assert.notNull(tutorial);
 		final Conference c = this.conferenceService.findConferenceByTutorialId(tutorialId);
 		Assert.isTrue(c.getIsDraft(), "conference.not.draft.error");
-		final Section res = this.sectionRepository.save(section);
 		final Collection<Section> sections = tutorial.getSections();
+		final Section res = this.sectionRepository.save(section);
 		if (section.getId() == 0) {
 			sections.add(res);
 			tutorial.setSections(sections);
 			this.tutorialRepository.save(tutorial);
-		} else
-			Assert.isTrue(sections.contains(sections), "Al editar la seccion, el tutorial a la que pertenece debe contenerla en su lista de secciones");
+		} else {
+			final boolean contained = sections.contains(res);
+			Assert.isTrue(contained, "section.contains.error");
+		}
 		return res;
 	}
 	public Collection<Section> findByTutorial(final int tutorialId) {

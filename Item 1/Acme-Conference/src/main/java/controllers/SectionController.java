@@ -114,7 +114,6 @@ public class SectionController extends AbstractController {
 		else
 			try {
 				this.sectionService.save(section, tutorialId);
-				System.out.println("2222");
 				result = this.tutorialController.display(tutorialId, conferenceId);
 			} catch (final Throwable oops) {
 				String error = "section.commit.error";

@@ -11,7 +11,7 @@
 
 <spring:message code="section.img" var="altern"/>
 <acme:display code="section.title" value="${section.title}" />
-<acme:display code="section.summary" value="${section.title}" />
+<acme:display code="section.summary" value="${section.summary}" />
 <acme:img code="section.picture" url="${section.pictures}" alt="${altern}"/><br/><br/>
 
 <security:authorize access="hasRole('ADMIN')">

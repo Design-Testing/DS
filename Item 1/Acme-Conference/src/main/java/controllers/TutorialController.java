@@ -85,12 +85,9 @@ public class TutorialController extends AbstractController {
 
 		tutorial = this.tutorialService.findOne(tutorialId);
 
-		if (tutorial != null) {
+		if (tutorial != null)
 			result = this.createEditModelAndView(tutorial, conferenceId);
-			result.addObject("conferenceId", conferenceId);
-			result.addObject("tutorial", tutorial);
-
-		} else
+		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
@@ -132,7 +129,7 @@ public class TutorialController extends AbstractController {
 			res = this.list(conferenceId);
 		} catch (final Throwable oops) {
 			res = this.display(tutorialId, conferenceId);
-			final String error = "Cannot delete this tutorial";
+			final String error = "delete.error";
 			res.addObject("error", error);
 		}
 		return res;
