@@ -9,41 +9,10 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-	<acme:showActivity title="${panel.title}"
-	attachments="${panel.attachments}" hours="${panel.hours}"
-	minutes="${panel.minutes}" room="${panel.minutes}"
-	speakers="${panel.speakers}" summary="${panel.summary}"
-	lang="${lang}" />
 
-<jstl:choose>
-	<jstl:when test="${not empty panel.startMoment}">
-		<jstl:choose>
-			<jstl:when test="${lang eq 'en' }">
-				<spring:message code="activity.startMoment" />: <fmt:formatDate
-					value="${panel.startMoment}" type="both" pattern="yyyy/MM/dd HH:mm" />
-			</jstl:when>
-			<jstl:otherwise>
-				<spring:message code="activity.startMoment" />: <fmt:formatDate
-					value="${panel.startMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
-			</jstl:otherwise>
-		</jstl:choose>
-		<br />
-	</jstl:when>
-	<jstl:otherwise>
-		<spring:message code="activity.startMoment" />
-		<spring:message code="empty" />
-		<br />
-	</jstl:otherwise>
-</jstl:choose>
-	
-	<security:authorize access="hasRole('ADMIN')">
-	<jstl:if test="${isDraft}">
-	<acme:button url="panel/delete.do?panelId=${tutorial.id}&conferenceId=${conferenceId}"
-		name="edit" code="activity.delete" /><br/>
-	</jstl:if>
-	</security:authorize>
-	<acme:button url="panel/list.do?conferenceId=${conferenceId}" name="back" code="activity.back" />
-
-
-
+<acme:display code="report.originality" value="${report.originality}"/>
+<acme:display code="report.quality" value="${report.quality}"/>
+<acme:display code="report.readability" value="${report.readability}"/>
+<acme:display code="report.decision" value="${report.decision}"/>
+<acme:button code="report.listComment" name="list" url="comment/list.do?entity=report&id=${report.id}"/>
 
