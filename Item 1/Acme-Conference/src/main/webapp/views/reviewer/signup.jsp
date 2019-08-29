@@ -45,7 +45,7 @@
 	    
     <acme:textbox path="userAccountuser" code="reviewer.userAccount.username"/>
     <br/>
-    <acme:textbox path="userAccountpassword" code="reviewer.userAccount.password"/>
+    <acme:password path="userAccountpassword" code="reviewer.userAccount.password"/>
     <br/>
     <acme:textbox path="name" code="reviewer.name"/>
     <br/>

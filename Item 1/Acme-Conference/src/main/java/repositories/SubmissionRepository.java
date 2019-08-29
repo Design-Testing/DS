@@ -37,4 +37,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Integer>
 	@Query("select s from Submission s where s.status='UNDER-REVIEWED'")
 	Collection<Submission> findUnderReviewedSubmissions();
 
+	/** If returns 1.0, then all the asigned submissions of the specificied conference have its status calculated **/
+	@Query("select sum(case when (r.submission.status='ACCEPTED' or r.submission.status='REJECTED') then 1.0 else 0.0 end) / sum(1.0) from Report r where r.submission.conference.id=?1")
+	Double getRatioCalculatedSubmissionsOverAssignedSubmissions(int conferenceId);
 }

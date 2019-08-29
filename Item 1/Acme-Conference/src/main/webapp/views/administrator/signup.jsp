@@ -45,7 +45,7 @@
 	    
     <acme:textbox path="userAccountuser" code="administrator.userAccount.username"/>
     <br/>
-    <acme:textbox path="userAccountpassword" code="administrator.userAccount.password"/>
+    <acme:password path="userAccountpassword" code="administrator.userAccount.password"/>
     <br/>
     <acme:textbox path="name" code="administrator.name"/>
     <br/>

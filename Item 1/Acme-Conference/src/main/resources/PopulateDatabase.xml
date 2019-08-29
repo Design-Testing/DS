@@ -396,7 +396,7 @@
 			<list>
 				<value>linux</value>
 				<value>windows</value>
-				<value>iris</value>
+				<value>desarrollo</value>
 			</list>
 		</property>
 	</bean>
@@ -417,7 +417,7 @@
 		<property name="keywords">
 			<list>
 				<value>linux</value>
-				<value>iris</value>
+				<value>iOS</value>
 			</list>
 		</property>
 	</bean>
@@ -840,11 +840,11 @@
 		<property name="title" value="Herramientas de desarrollo para iOS" />
 		<property name="acronym" value="iOS" />
 		<property name="venue" value="iOS" />
-		<property name="submission" value="2019/08/29 18:12" />
-		<property name="notification" value="2019/08/29 18:15" />
-		<property name="cameraReady" value="2019/08/29 18:18" />
-		<property name="startDate" value="2019/08/29 18:20" />
-		<property name="endDate" value="2019/08/29 18:23" />
+		<property name="submission" value="2019/09/15 18:12" />
+		<property name="notification" value="2019/09/15 18:15" />
+		<property name="cameraReady" value="2019/09/15 18:18" />
+		<property name="startDate" value="2019/09/15 18:20" />
+		<property name="endDate" value="2019/09/15 18:23" />
 		<property name="summary" value="Summary of conference 8" />
 		<property name="fee" value="1520.89" />
 		<property name="isDraft" value="false" />

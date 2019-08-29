@@ -13,17 +13,9 @@
 	<acme:display code="author.userAccount.username" value="${author.userAccount.username}" />
 	<acme:display code="author.name" value="${author.name}" />
 	<acme:display code="author.middleName" value="${author.middleName}" />
-	
-	<dt><spring:message code="author.surname" />:</dt>
-	<dd>
-		<jstl:forEach items="${author.surname}" var="surname">
-    			<jstl:out value="${surname}"/>
-    	</jstl:forEach></dd>
-	
-	<dt><spring:message code="author.photo" />:</dt>
-	<dd>
+	<acme:display code="author.surname" value="${author.surname}" />
+	<spring:message code="author.photo" />:<br/>
 	<img src="${author.photo}" alt="<jstl:out value ="${author.photo}"/>" width="220" height="135"/>
-	</dd>
 	<acme:display code="author.email" value="${author.email}" />
 	<acme:display code="author.phone" value="${author.phone}" />
 	<acme:display code="author.address" value="${author.address}" />

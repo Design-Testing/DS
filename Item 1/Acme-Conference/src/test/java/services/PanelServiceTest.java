@@ -1,9 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,34 +10,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 import security.LoginService;
 import utilities.AbstractTest;
-import domain.Author;
+import domain.Panel;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
 })
 @Transactional
-public class AuthorServiceTest extends AbstractTest {
+public class PanelServiceTest extends AbstractTest {
 
 	@Autowired
-	AuthorService	authorService;
+	PanelService	panelService;
 
 	@Autowired
 	LoginService	loginService;
 
 
 	@Test
-	public void createTest() {
-		final Author author = this.authorService.create();
+	public void createPanelWithAuthenticationTest() {
+		super.authenticate("admin1");
+		final Panel panel = this.panelService.create();
 	}
 
-	@Test
-	public void saveTest() {
-		super.authenticate("author1");
-		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
-		final Author author = authors.get(0);
-		author.setName("Test");
-		this.authorService.save(author);
-
+	@Test(expected = IllegalArgumentException.class)
+	public void createPanelWithoutAuthenticationTest() {
+		final Panel panel = this.panelService.create();
 	}
 }

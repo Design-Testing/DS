@@ -8,9 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
@@ -27,7 +27,6 @@ public class Actor extends DomainEntity {
 	private String		email;
 	private String		phone;
 	private String		address;
-	private Double		score;
 	private Finder		finder;
 	// private Boolean				spammer;
 
@@ -75,6 +74,7 @@ public class Actor extends DomainEntity {
 
 	@Column(unique = true)
 	@NotBlank
+	@Pattern(regexp = "^((([\\w]\\s)*[\\w])+<\\w+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}>)$||^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}$")
 	public String getEmail() {
 		return this.email;
 	}
@@ -99,15 +99,6 @@ public class Actor extends DomainEntity {
 
 	public void setAddress(final String address) {
 		this.address = address;
-	}
-
-	@Range(min = -1, max = 1)
-	public Double getScore() {
-		return this.score;
-	}
-
-	public void setScore(final Double score) {
-		this.score = score;
 	}
 
 	@Valid
