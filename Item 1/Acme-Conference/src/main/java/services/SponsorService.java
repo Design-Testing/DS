@@ -19,6 +19,8 @@ import security.LoginService;
 import security.UserAccount;
 import utilities.HashPassword;
 import domain.Actor;
+import domain.Finder;
+import domain.Folder;
 import domain.Sponsor;
 import forms.ActorForm;
 
@@ -38,10 +40,15 @@ public class SponsorService {
 	@Autowired
 	private Validator			validator;
 
+	@Autowired
+	private FolderService		folderService;
+
+	@Autowired
+	private FinderService		finderService;
+
 
 	public Sponsor create() {
 		final Sponsor s = new Sponsor();
-		this.actorService.setAuthorityUserAccount(Authority.SPONSOR, s);
 		return s;
 	}
 
@@ -83,10 +90,20 @@ public class SponsorService {
 		if (s.getId() == 0) {
 			final String username = s.getUserAccount().getUsername();
 			final String password = HashPassword.hashPassword(s.getUserAccount().getPassword());
+			final Finder finder = this.finderService.createForNewActor();
+			s.setFinder(finder);
 			this.actorService.setAuthorityUserAccount(Authority.SPONSOR, s);
 			s.getUserAccount().setUsername(username);
 			s.getUserAccount().setPassword(password);
 			result = this.sponsorRepository.save(s);
+
+			final Folder inbox = this.folderService.create();
+			inbox.setName("In Box");
+			final Folder outbox = this.folderService.create();
+			outbox.setName("Out Box");
+			this.folderService.save(inbox, result);
+			this.folderService.save(outbox, result);
+
 		} else {
 			final String password = HashPassword.hashPassword(s.getUserAccount().getPassword());
 			final Actor principal = this.actorService.findByPrincipal();
