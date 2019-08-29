@@ -14,5 +14,14 @@
 <acme:display code="report.quality" value="${report.quality}"/>
 <acme:display code="report.readability" value="${report.readability}"/>
 <acme:display code="report.decision" value="${report.decision}"/>
+
+<security:authorize access="hasRole('AUTHOR')">
+	<acme:button code="report.submission" name="submission" url="submission/author/display.do?submissionId=${report.submission.id}"/>
+</security:authorize>
+
+<security:authorize access="hasRole('REVIEWER')">
+	<acme:button code="report.submission" name="submission" url="submission/reviewer/display.do?submissionId=${report.submission.id}"/>
+</security:authorize>
+
 <acme:button code="report.listComment" name="list" url="comment/list.do?entity=report&id=${report.id}"/>
 
