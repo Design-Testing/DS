@@ -248,7 +248,7 @@ public class ConferenceService {
 		this.administratorService.findByPrincipal();
 		final Conference retrieved = this.findOne(conferenceId);
 		Assert.notNull(retrieved);
-		final Date now = new Date();
+		//final Date now = new Date();
 		//TODO submission deadline
 		//Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
 		final Collection<Submission> submissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
@@ -396,6 +396,12 @@ public class ConferenceService {
 
 	public Collection<Conference> findAllByAuthorUserId(final int authorUAId) {
 		final Collection<Conference> result = this.conferenceRepository.findAllByAuthorUserId(authorUAId);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Conference findConferenceByTutorialId(final int tutorialId) {
+		final Conference result = this.conferenceRepository.findConferenceByTutorialId(tutorialId);
 		Assert.notNull(result);
 		return result;
 	}

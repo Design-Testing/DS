@@ -87,15 +87,17 @@
 
 	<display:column>
 			<acme:button
-				url="section/display.do?sectionId=${row.id}&tutorialId=${tutorial.id}&conferenceId=${conferenceId}"
+				url="section/display.do?sectionId=${row.id}&tutorialId=${tutorial.id}&conferenceId=${conferenceId}&isDraft=${isDraft}"
 				name="edit" code="tutorial.section.display" />
 	</display:column>
 
 	<display:column>
 		<security:authorize access="hasRole('ADMIN')">
+		<jstl:if test="${isDraft}">
 			<acme:button
 				url="section/edit.do?sectionId=${row.id}&tutorialId=${tutorial.id}&conferenceId=${conferenceId}"
 				name="edit" code="tutorial.section.edit" />
+		</jstl:if>
 		</security:authorize>
 	</display:column>
 </display:table>
