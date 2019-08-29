@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AdministratorService;
+import services.ConfigurationParametersService;
 import services.FinderService;
 import domain.Administrator;
 import domain.Finder;
@@ -25,12 +26,15 @@ import forms.ActorForm;
 public class AdministratorController extends AbstractController {
 
 	@Autowired
-	private AdministratorService	administratorService;
+	private AdministratorService			administratorService;
 
 	@Autowired
-	private FinderService			finderService;
+	private FinderService					finderService;
 
-	final String					lang	= LocaleContextHolder.getLocale().getLanguage();
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
+
+	final String							lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -61,6 +65,7 @@ public class AdministratorController extends AbstractController {
 		final ModelAndView result;
 		result = new ModelAndView("administrator/edit");
 		result.addObject("actorForm", actorForm);
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		return result;
 	}
 
@@ -72,6 +77,8 @@ public class AdministratorController extends AbstractController {
 
 		result = new ModelAndView("administrator/signup");
 		result.addObject("actorForm", actorForm);
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 		return result;
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
@@ -81,6 +88,8 @@ public class AdministratorController extends AbstractController {
 			result = new ModelAndView("administrator/signup");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("actorForm", actorForm);
+			result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 		} else if (actorForm.getId() == 0)
 			try {
 				Administrator administrator = this.administratorService.reconstruct(actorForm, binding);
@@ -89,9 +98,15 @@ public class AdministratorController extends AbstractController {
 				administrator = this.administratorService.save(administrator);
 				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
+				final String error = "commit.error";
 				result = new ModelAndView("administrator/signup");
+				if (oops.getMessage().contains("username is register"))
+					result.addObject("alert", "actor.edit.usernameIsUsed");
+				result.addObject("errors", binding.getAllErrors());
 				result.addObject("actorForm", actorForm);
-				result.addObject("errors", "commit.error");
+				result.addObject("errors", error);
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 			}
 		else
 			try {
@@ -102,6 +117,8 @@ public class AdministratorController extends AbstractController {
 				result = new ModelAndView("administrator/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 			}
 
 		return result;

@@ -84,27 +84,31 @@ public class ReviewerController extends AbstractController {
 			result = new ModelAndView("reviewer/signup");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("reviewerForm", reviewerForm);
-		} else if (reviewerForm.getId() == 0)
-			try {
-				Reviewer reviewer = this.reviewerService.reconstruct(reviewerForm, binding);
-				final Finder finder = this.finderService.createForNewActor();
-				reviewer.setFinder(finder);
-				reviewer = this.reviewerService.save(reviewer);
-				result = new ModelAndView("forward:/security/login.do");
-			} catch (final ValidationException oops) {
-				result = new ModelAndView("reviewer/signup");
-				result.addObject("reviewerForm", reviewerForm);
-				result.addObject("errors", "commit.error");
-			}
-		else
+		} else
 			try {
 				final Reviewer reviewer = this.reviewerService.reconstruct(reviewerForm, binding);
 				this.reviewerService.save(reviewer);
-				result = this.viewReviewer();
+				if (reviewerForm.getId() == 0) {
+					final Finder finder = this.finderService.createForNewActor();
+					reviewer.setFinder(finder);
+					this.reviewerService.save(reviewer);
+					result = new ModelAndView("forward:/security/login.do");
+				} else {
+					this.reviewerService.save(reviewer);
+					result = this.viewReviewer();
+				}
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("reviewer/signup");
 				result.addObject("reviewerForm", reviewerForm);
 				result.addObject("errors", "commit.error");
+			} catch (final Throwable e) {
+				result = new ModelAndView("reviewer/signup");
+				if (e.getMessage().contains("Username is already in use"))
+					result.addObject("alert", "reviewer.usernameIsUsed");
+				else if (e.getMessage().contains("Email is already in use"))
+					result.addObject("alert", "reviewer.emailIsUsed");
+				result.addObject("errors", "commit.error");
+				result.addObject("reviewerForm", reviewerForm);
 			}
 
 		return result;

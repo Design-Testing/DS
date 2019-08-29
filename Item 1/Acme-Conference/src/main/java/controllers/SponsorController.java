@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.ConfigurationParametersService;
 import services.FinderService;
 import services.SponsorService;
 import services.UserAccountService;
@@ -26,18 +27,21 @@ import forms.ActorForm;
 public class SponsorController extends AbstractController {
 
 	@Autowired
-	private SponsorService		sponsorService;
+	private SponsorService					sponsorService;
 
 	@Autowired
-	private FinderService		finderService;
+	private FinderService					finderService;
 
 	@Autowired
-	private UserAccountService	userAccountService;
+	private UserAccountService				userAccountService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 
-	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
+
+	final String							lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -68,6 +72,8 @@ public class SponsorController extends AbstractController {
 		final ModelAndView result;
 		result = new ModelAndView("sponsor/edit");
 		result.addObject("actorForm", actorForm);
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 		return result;
 	}
 
@@ -88,6 +94,8 @@ public class SponsorController extends AbstractController {
 			result = new ModelAndView("sponsor/signup");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("sponsor", actorForm);
+			result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 		} else if (actorForm.getId() == 0)
 			try {
 				Sponsor sponsor = this.sponsorService.reconstruct(actorForm, binding);
@@ -97,6 +105,8 @@ public class SponsorController extends AbstractController {
 				result = new ModelAndView("sponsor/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 			} catch (final Throwable e) {
 				result = new ModelAndView("sponsor/signup");
 				if (e.getMessage().contains("Username is already in use"))
@@ -106,6 +116,8 @@ public class SponsorController extends AbstractController {
 
 				result.addObject("errors", "commit.error");
 				result.addObject("actorForm", actorForm);
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 			}
 		else
 			try {
@@ -116,6 +128,8 @@ public class SponsorController extends AbstractController {
 				result = new ModelAndView("sponsor/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 			} catch (final Throwable e) {
 				result = new ModelAndView("sponsor/signup");
 				if (e.getMessage().contains("Username is already in use"))
@@ -125,6 +139,8 @@ public class SponsorController extends AbstractController {
 
 				result.addObject("errors", "commit.error");
 				result.addObject("actorForm", actorForm);
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
 			}
 
 		return result;

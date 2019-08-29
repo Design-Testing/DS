@@ -20,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.UserAccount;
 import services.AdministratorService;
+import services.ConferenceService;
 import services.SectionService;
+import domain.Conference;
 import domain.Section;
 
 @Controller
@@ -37,6 +39,9 @@ public class SectionController extends AbstractController {
 
 	@Autowired
 	private TutorialController		tutorialController;
+
+	@Autowired
+	private ConferenceService		conferenceService;
 
 
 	// CREATE  ---------------------------------------------------------------		
@@ -60,6 +65,8 @@ public class SectionController extends AbstractController {
 		result.addObject("sections", sections);
 		result.addObject("tutorialId", tutorialId);
 		result.addObject("conferenceId", conferenceId);
+		final Conference c = this.conferenceService.findOne(conferenceId);
+		result.addObject("isDraft", c.getIsDraft());
 
 		return result;
 	}

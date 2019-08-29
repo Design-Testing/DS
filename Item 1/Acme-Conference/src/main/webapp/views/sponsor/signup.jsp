@@ -68,7 +68,7 @@
     <acme:textbox path="address" code="sponsor.address"/>
     <br/>
     
-    <jstl:if test="${not empty msgerror  }">
+    <jstl:if test="${not empty msgerror}">
     	<h5 style="color: red;"><spring:message code="${msgerror}"/></h5>
     </jstl:if>
   

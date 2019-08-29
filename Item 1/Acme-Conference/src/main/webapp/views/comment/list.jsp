@@ -19,7 +19,7 @@
 	</display:column>
 
 	<display:column>
-	<jstl:if test="${not empty principalId and not empty row.author and (principalId eq row.author.id)}">
+	<jstl:if test="${not empty principalId and not empty row.author and (principalId eq row.author.id) and (entity eq 'report')}">
 		<acme:button url="comment/edit.do?commentId=${row.id}" name="display"
 			code="comment.edit" />
 	</jstl:if>
