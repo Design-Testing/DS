@@ -37,7 +37,7 @@ public class Submission extends DomainEntity {
 
 	@NotBlank
 	@Column(unique = true)
-	@Pattern(regexp = "^([A-Z]{3}-[0-9A-Z]{4})||([a-z]{3}-[0-9A-Z]{4})$")
+	@Pattern(regexp = "^([A-Z]{3}-[0-9A-Z]{4})$")
 	public String getTicker() {
 		return this.ticker;
 	}

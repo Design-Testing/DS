@@ -1,6 +1,7 @@
 
 package services;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -262,6 +263,7 @@ public class SubmissionService {
 	public String generateTicker() {
 		String res = "";
 		final String abecedary = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		final String numbers = "0123456789";
 		final Integer n1 = (int) Math.floor(Math.random() * 25 + 1);
 		final Integer n2 = (int) Math.floor(Math.random() * 25 + 1);
 		final Integer n3 = (int) Math.floor(Math.random() * 25 + 1);
@@ -269,14 +271,18 @@ public class SubmissionService {
 
 		final Author author = this.authorService.findByPrincipal();
 
-		final Character initial1 = author.getName().charAt(0);
+		Character initial1 = author.getName().charAt(0);
 		Character initial2 = null;
 		if (author.getMiddleName() != null && author.getMiddleName() != "")
 			initial2 = author.getMiddleName().charAt(0);
 		else
 			initial2 = 'X';
 
-		final Character initial3 = author.getSurname().charAt(0);
+		Character initial3 = author.getSurname().charAt(0);
+
+		initial1 = Character.toUpperCase(initial1);
+		initial2 = Character.toUpperCase(initial2);
+		initial3 = Character.toUpperCase(initial3);
 
 		res = "" + initial1 + "" + initial2 + "" + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
 
@@ -286,6 +292,30 @@ public class SubmissionService {
 		return res;
 	}
 
+	public static void main(final String[] args) {
+		final String abecedary = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		final String numbers = "0123456789";
+		final SecureRandom random = new SecureRandom();
+
+		final String data = abecedary + numbers;
+		final StringBuilder sb = new StringBuilder(4);
+		for (int i = 0; i < 4; i++) {
+
+			// 0-62 (exclusive), random returns 0-61
+			final int rndCharAt = random.nextInt(data.length());
+			final char rndChar = data.charAt(rndCharAt);
+
+			// debug
+			//System.out.format("%d\t:\t%c%n", rndCharAt, rndChar);
+
+			sb.append(rndChar);
+
+		}
+
+		final String result = sb.toString();
+		System.out.println(result);
+
+	}
 	//	public void runReviewerAssignation() {
 	//		this.administratorService.findByPrincipal();
 	//		final Collection<Submission> submissionsToAssign = this.findUnderReviewedSubmissions();
