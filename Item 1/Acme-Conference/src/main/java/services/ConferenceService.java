@@ -402,16 +402,68 @@ public class ConferenceService {
 		return result;
 	}
 
-	public Collection<Conference> conferenceAvailable(final int authorUAId) {
-		final Collection<Conference> hwConference = this.findAllByAuthorUserId(authorUAId);
-		final Collection<Conference> conference = this.findAll();
-		conference.removeAll(hwConference);
-		return conference;
+	//	public Collection<Conference> conferenceAvailable(final int authorUAId) {
+	//		final Collection<Conference> hwConference = this.findAllByAuthorUserId(authorUAId);
+	//		final Collection<Conference> conference = this.findAll();
+	//		conference.removeAll(hwConference);
+	//		return conference;
+	//	}
+
+	public Collection<Conference> conferenceAvailable(final int authorId) {
+		Assert.isTrue(authorId != 0);
+		final Collection<Conference> res = this.conferenceRepository.findConferenceAvailableToRegistration(authorId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Conference> findConferenceWithRegistration(final int authorId) {
+		Assert.isTrue(authorId != 0);
+		final Collection<Conference> res = this.conferenceRepository.findConferenceWithRegistration(authorId);
+		Assert.notNull(res);
+		return res;
 	}
 
 	public boolean exists(final int id) {
 		return this.conferenceRepository.exists(id);
 	}
+
+	//	public void runReviewerAssignation(final int conferenceId) {
+	//
+	//		final Administrator principal = this.administratorService.findByPrincipal();
+	//		final Conference conference = this.findOne(conferenceId);
+	//		Assert.notNull(conference);
+	//		final Date now = new Date();
+	//		Assert.isTrue(now.before(conference.getNotification()), "the notification deadline has elapsed");
+	//
+	//		final Collection<Submission> submissionsToAssign = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
+	//
+	//		Assert.isTrue(!submissionsToAssign.isEmpty(), "all submissions are already been decided");
+	//		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conferenceId);
+	//		Assert.isTrue(!reviewers.isEmpty(), "no reviewers available to be assigned");
+	//
+	//		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
+	//		final Topic topic = topics.iterator().next();
+	//
+	//		for (final Submission s : submissionsToAssign)
+	//			if (this.reportService.findReportsBySubmission(s.getId()).size() < 3)
+	//				for (final Reviewer r : reviewers) {
+	//					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
+	//					if (existingReport == null && this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
+	//						Report newReport = this.reportService.create(s.getId(), r.getId());
+	//						newReport = this.reportService.save(newReport, s, r);
+	//						final Message m = this.messageService.create();
+	//						m.setSubject("You has been assigned a new submission");
+	//						m.setBody("You has been assigned to the submission with ticker " + s.getTicker());
+	//						m.setSender(principal);
+	//						final Collection<Actor> recipients = new ArrayList<Actor>();
+	//						recipients.add(r);
+	//						m.setRecivers(recipients);
+	//						m.setTopic(topic);
+	//						this.messageService.send(m);
+	//					}
+	//				}
+	//
+	//	}
 
 	public void runReviewerAssignation(final int conferenceId) {
 
@@ -430,11 +482,11 @@ public class ConferenceService {
 		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
 		final Topic topic = topics.iterator().next();
 
-		for (final Submission s : submissionsToAssign)
-			if (this.reportService.findReportsBySubmission(s.getId()).size() < 3)
-				for (final Reviewer r : reviewers) {
+		for (final Reviewer r : reviewers)
+			for (final Submission s : submissionsToAssign)
+				if (this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
 					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
-					if (existingReport == null && this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
+					if (existingReport == null) {
 						Report newReport = this.reportService.create(s.getId(), r.getId());
 						newReport = this.reportService.save(newReport, s, r);
 						final Message m = this.messageService.create();

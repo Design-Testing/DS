@@ -93,7 +93,8 @@ public class ConferenceController extends AbstractController {
 			authAuthor.setAuthority("AUTHOR");
 			if (logged.getUserAccount().getAuthorities().contains(authAuthor)) {
 				isAuthor = true;
-				result.addObject("conferenceAvailable", this.conferenceService.conferenceAvailable(logged.getUserAccount().getId()));
+				result.addObject("conferenceAvailable", this.conferenceService.conferenceAvailable(logged.getId()));
+				result.addObject("conferenceWithRegistration", this.conferenceService.findConferenceWithRegistration(logged.getId()));
 			}
 
 		}

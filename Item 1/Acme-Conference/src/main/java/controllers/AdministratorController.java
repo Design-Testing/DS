@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
 import services.AdministratorService;
 import services.FinderService;
-import services.UserAccountService;
 import domain.Administrator;
 import domain.Finder;
 import forms.ActorForm;
@@ -31,12 +29,6 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private FinderService			finderService;
-
-	@Autowired
-	private UserAccountService		userAccountService;
-
-	@Autowired
-	private ActorService			actorService;
 
 	final String					lang	= LocaleContextHolder.getLocale().getLanguage();
 

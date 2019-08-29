@@ -78,15 +78,23 @@
 				<jstl:set var="ctrl" value="1" />
 			</jstl:if>
 		</jstl:forEach>
+		<jstl:forEach var="u" items="${conferenceWithRegistration}">
+			<jstl:if test="${u eq row}">
+				<jstl:set var="ctrl" value="2" />
+			</jstl:if>
+		</jstl:forEach>
 		<display:column>
 			<jstl:choose>
 				<jstl:when test="${ctrl == 1}">
 					<acme:button url="registration/author/create.do?conferenceId=${row.id}"
 						name="create" code="register" />
 				</jstl:when>
-				<jstl:otherwise>
+				<jstl:when test="${ctrl == 2}">
 					<acme:button url="registration/author/displayFromConference.do?conferenceId=${row.id}"
 						name="display" code="conference.registered" />
+				</jstl:when>
+				<jstl:otherwise>
+					<spring:message code="cannot.register"/>
 				</jstl:otherwise>
 			</jstl:choose>
 		</display:column>

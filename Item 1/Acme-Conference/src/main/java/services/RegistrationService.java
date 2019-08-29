@@ -1,6 +1,7 @@
 
 package services;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 
@@ -93,7 +94,7 @@ public class RegistrationService {
 		Assert.isTrue(!this.tarjetaCaducada(registration.getCreditCard()), "creditCard.no.validate.error");
 		Assert.isTrue(this.isValidInteger(registration.getCreditCard().getNumber()), "creditCard.number.no.integer.error");
 		final Date now = new Date();
-		Assert.isTrue(registration.getConference().getStartDate().after(now), "conference.has.not.started.error");
+		Assert.isTrue(registration.getConference().getStartDate().before(now), "conference.has.not.started.error");
 
 		if (registration.getId() == 0) {
 			registration.setAuthor(principal);
@@ -153,6 +154,12 @@ public class RegistrationService {
 		try {
 			new Integer(input);
 			res = true;
+		} catch (final NumberFormatException e) {
+			res = false;
+		}
+		try {
+			new BigInteger(input);
+			res = res || true;
 		} catch (final NumberFormatException e) {
 			res = false;
 		}

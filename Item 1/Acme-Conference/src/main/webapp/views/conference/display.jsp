@@ -144,7 +144,13 @@
 
 	<h3><spring:message code="conference.submissions" /></h3>
 	
-
+	<jstl:if test="${ratioDecidedAssignedSubmissions == 1.0 }">
+    	<h4 style="color: blue;"><spring:message code="conferece.all.assigned.submissions.decided"/></h4>
+    </jstl:if>
+	
+	<jstl:if test="${ratioDecidedAssignedSubmissions < 1.0 and  ratioDecidedAssignedSubmissions >= 0.0}">
+    	<h4 style="color: blue;"><spring:message code="conferece.not.all.assigned.submissions.decided"/></h4>
+    </jstl:if>
 	
 	<jstl:if test="${not empty submissions and conference.isDraft eq false  }" >
 			<acme:button url="conference/administrator/runAssignation.do?conferenceId=${conference.id}" name="display" code="conference.run.assignation"/>
@@ -153,6 +159,8 @@
 
 			<acme:button url="conference/administrator/notifyStatus.do?conferenceId=${conference.id}" name="display" code="conference.notify"/>
 	</jstl:if>
+	
+	
 	
 	<jstl:if test="${not empty notificationMsg  }">
     	<h4 style="color: red;"><spring:message code="${notificationMsg}"/></h4>
