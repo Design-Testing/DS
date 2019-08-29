@@ -406,11 +406,25 @@ public class ConferenceService {
 		return result;
 	}
 
-	public Collection<Conference> conferenceAvailable(final int authorUAId) {
-		final Collection<Conference> hwConference = this.findAllByAuthorUserId(authorUAId);
-		final Collection<Conference> conference = this.findAll();
-		conference.removeAll(hwConference);
-		return conference;
+	//	public Collection<Conference> conferenceAvailable(final int authorUAId) {
+	//		final Collection<Conference> hwConference = this.findAllByAuthorUserId(authorUAId);
+	//		final Collection<Conference> conference = this.findAll();
+	//		conference.removeAll(hwConference);
+	//		return conference;
+	//	}
+
+	public Collection<Conference> conferenceAvailable(final int authorId) {
+		Assert.isTrue(authorId != 0);
+		final Collection<Conference> res = this.conferenceRepository.findConferenceAvailableToRegistration(authorId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Conference> findConferenceWithRegistration(final int authorId) {
+		Assert.isTrue(authorId != 0);
+		final Collection<Conference> res = this.conferenceRepository.findConferenceWithRegistration(authorId);
+		Assert.notNull(res);
+		return res;
 	}
 
 	public boolean exists(final int id) {
