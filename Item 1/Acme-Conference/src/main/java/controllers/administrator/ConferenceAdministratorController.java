@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import repositories.CategoryRepository;
 import services.AdministratorService;
+import services.CategoryService;
 import services.ConferenceService;
 import services.SubmissionService;
 import controllers.AbstractController;
@@ -40,7 +40,7 @@ public class ConferenceAdministratorController extends AbstractController {
 	private SubmissionService		submissionService;
 
 	@Autowired
-	private CategoryRepository		categoryRepository;
+	private CategoryService			categoryService;
 
 
 	// LIST --------------------------------------------------------
@@ -209,7 +209,7 @@ public class ConferenceAdministratorController extends AbstractController {
 		result = new ModelAndView("conference/edit");
 		result.addObject("conferenceForm", conferenceForm); //this.constructPruned(position)
 		result.addObject("isAdministrator", true);
-		result.addObject("categories", this.categoryRepository.findAll());
+		result.addObject("categories", this.categoryService.findAll());
 		result.addObject("message", null);
 		return result;
 	}
@@ -228,7 +228,7 @@ public class ConferenceAdministratorController extends AbstractController {
 			result = new ModelAndView("conference/edit");
 			result.addObject("conferenceForm", this.conferenceService.constructPruned(conference)); //this.constructPruned(position)
 			result.addObject("isAdministrator", true);
-			result.addObject("categories", this.categoryRepository.findAll());
+			result.addObject("categories", this.categoryService.findAll());
 		}
 
 		else
@@ -246,7 +246,7 @@ public class ConferenceAdministratorController extends AbstractController {
 			result = new ModelAndView("conference/edit");
 			result.addObject("conferenceForm", conferenceForm);
 			result.addObject("isAdministrator", true);
-			result.addObject("categories", this.categoryRepository.findAll());
+			result.addObject("categories", this.categoryService.findAll());
 			result.addObject("errors", binding.getAllErrors());
 		} else
 			try {
@@ -257,13 +257,13 @@ public class ConferenceAdministratorController extends AbstractController {
 				result = new ModelAndView("conference/edit");
 				result.addObject("conferenceForm", conferenceForm);
 				result.addObject("isAdministrator", true);
-				result.addObject("categories", this.categoryRepository.findAll());
+				result.addObject("categories", this.categoryService.findAll());
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("conference/edit");
 				result.addObject("conferenceForm", conferenceForm);
 				result.addObject("isAdministrator", true);
-				result.addObject("categories", this.categoryRepository.findAll());
+				result.addObject("categories", this.categoryService.findAll());
 				if (oops.getMessage().equals("no deadline or date can be null"))
 					result.addObject("msgerror", "conference.error.empty");
 				if (oops.getMessage().equals("submission before notification"))

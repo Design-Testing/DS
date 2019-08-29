@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.ConferenceRepository;
-import repositories.SubmissionRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
@@ -53,9 +52,6 @@ public class ConferenceService {
 
 	@Autowired
 	private MessageService			messageService;
-
-	@Autowired
-	private SubmissionRepository	submissionRepository;
 
 	@Autowired
 	private TopicService			topicService;
@@ -357,7 +353,7 @@ public class ConferenceService {
 				m.setBody("Your submission with ticker" + s.getTicker() + "(to the conference with title " + conference.getTitle() + ") has been " + s.getStatus());
 
 				s.setIsNotified(true);
-				this.submissionRepository.save(s);
+				this.submissionService.save(s);
 
 			} else {
 				m.setSubject("Your submission is still under reviewed");

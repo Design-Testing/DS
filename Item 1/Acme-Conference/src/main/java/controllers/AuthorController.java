@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import services.AuthorService;
 import services.FinderService;
 import domain.Author;
-import domain.Finder;
 import forms.ActorForm;
 
 @Controller
@@ -84,14 +83,20 @@ public class AuthorController extends AbstractController {
 		} else if (actorForm.getId() == 0)
 			try {
 				Author author = this.authorService.reconstruct(actorForm, binding);
-				final Finder finder = this.finderService.createForNewActor();
-				author.setFinder(finder);
 				author = this.authorService.save(author);
 				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("author/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+			} catch (final Throwable e) {
+				result = new ModelAndView("author/signup");
+				if (e.getMessage().contains("Username is already in use"))
+					result.addObject("alert", "author.usernameIsUsed");
+				else if (e.getMessage().contains("Email is already in use"))
+					result.addObject("alert", "author.emailIsUsed");
+				result.addObject("errors", "commit.error");
+				result.addObject("actorForm", actorForm);
 			}
 		else
 			try {
@@ -102,6 +107,14 @@ public class AuthorController extends AbstractController {
 				result = new ModelAndView("author/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+			} catch (final Throwable e) {
+				result = new ModelAndView("author/signup");
+				if (e.getMessage().contains("Username is already in use"))
+					result.addObject("alert", "author.usernameIsUsed");
+				else if (e.getMessage().contains("Email is already in use"))
+					result.addObject("alert", "author.emailIsUsed");
+				result.addObject("errors", "commit.error");
+				result.addObject("actorForm", actorForm);
 			}
 
 		return result;

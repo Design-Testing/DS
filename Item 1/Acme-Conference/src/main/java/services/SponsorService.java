@@ -20,7 +20,6 @@ import security.UserAccount;
 import utilities.HashPassword;
 import domain.Actor;
 import domain.Finder;
-import domain.Folder;
 import domain.Sponsor;
 import forms.ActorForm;
 
@@ -83,33 +82,32 @@ public class SponsorService {
 		return s;
 	}
 
+	public Boolean checkForEmailInUse(final String email) {
+		Boolean res = false;
+		final String inUse = this.sponsorRepository.checkForEmailInUse(email);
+		if (inUse != null)
+			res = true;
+		return res;
+	}
 	public Sponsor save(final Sponsor s) {
 		Assert.notNull(s);
 		Sponsor result;
-		//this.actorService.checkForSpamWords(s);
 		if (s.getId() == 0) {
 			final String username = s.getUserAccount().getUsername();
 			final String password = HashPassword.hashPassword(s.getUserAccount().getPassword());
 			final Finder finder = this.finderService.createForNewActor();
 			s.setFinder(finder);
-			this.actorService.setAuthorityUserAccount(Authority.SPONSOR, s);
-			s.getUserAccount().setUsername(username);
-			s.getUserAccount().setPassword(password);
-			result = this.sponsorRepository.save(s);
-
-			final Folder inbox = this.folderService.create();
-			inbox.setName("In Box");
-			final Folder outbox = this.folderService.create();
-			outbox.setName("Out Box");
-			this.folderService.save(inbox, result);
-			this.folderService.save(outbox, result);
+			final Sponsor withUserAccount = (Sponsor) this.actorService.setUserAccount(Authority.SPONSOR, s, username, password);
+			Assert.isTrue(this.checkForEmailInUse(withUserAccount.getEmail()) == false, "Email is already in use");
+			result = this.sponsorRepository.save(withUserAccount);
+			this.folderService.setFoldersByDefault(result);
 
 		} else {
 			final String password = HashPassword.hashPassword(s.getUserAccount().getPassword());
 			final Actor principal = this.actorService.findByPrincipal();
 			s.getUserAccount().setPassword(password);
 			Assert.isTrue(principal.getId() == s.getId(), "You only can edit your info");
-			result = (Sponsor) this.actorService.save(s);
+			result = this.sponsorRepository.save(s);
 		}
 		return result;
 	}
@@ -119,7 +117,6 @@ public class SponsorService {
 		if (actorForm.getId() == 0) {
 			sponsor = this.create();
 			sponsor.setScore(0.0);
-			//sponsor.setSpammer(false);
 			final UserAccount account = this.userAccountService.create();
 			final Collection<Authority> authorities = new ArrayList<>();
 			final Authority auth = new Authority();
@@ -136,7 +133,7 @@ public class SponsorService {
 			account.setPassword(actorForm.getUserAccountpassword());
 			sponsor.setUserAccount(account);
 		}
-
+		Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
 		sponsor.setName(actorForm.getName());
 		sponsor.setMiddleName(actorForm.getMiddleName());
 		sponsor.setSurname(actorForm.getSurname());

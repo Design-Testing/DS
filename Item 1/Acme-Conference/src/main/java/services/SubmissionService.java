@@ -1,6 +1,7 @@
 
 package services;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -70,27 +71,15 @@ public class SubmissionService {
 		return res;
 	}
 
-	//	public Submission save(final Submission submission, final Conference conference, final Author author, final Paper cameraReadyPaper, final Paper reviewPaper) {
-	//		Assert.notNull(submission);
-	//		Assert.notNull(conference);
-	//		Assert.notNull(author);
-	//		Assert.notNull(cameraReadyPaper);
-	//		Assert.notNull(reviewPaper);
-	//
-	//		Assert.isTrue(Pattern.matches("yyyy-MM-dd HH:mm", submission.getMoment().toString()));
-	//		Assert.isTrue(Pattern.matches("^([A-Z]{3}-[0-9A-Z]{4})$", submission.getTicker()));
-	//		Assert.isTrue(Pattern.matches("^(UNDER-REVIEWED|ACCEPTED|REJECTED)$", submission.getStatus()));
-	//
-	//		submission.setConference(conference);
-	//		submission.setAuthor(author);
-	//		submission.setCameraReadyPaper(cameraReadyPaper);
-	//		submission.setReviewPaper(reviewPaper);
-	//
-	//		final Submission res = this.submissionRepository.save(submission);
-	//		Assert.notNull(res);
-	//
-	//		return res;
-	//	}
+	/** Solo se llama en el conference service para setearle el atribtuo isNotified **/
+	public Submission save(final Submission submission) {
+		Assert.notNull(submission);
+
+		final Submission res = this.submissionRepository.save(submission);
+		Assert.notNull(res);
+
+		return res;
+	}
 
 	public Submission submits(final Submission submission, final Paper reviewPaper) {
 		Submission res;
@@ -261,24 +250,44 @@ public class SubmissionService {
 	/** El ticker es ABC-XXXX donde ABC son las inciales del autor y XXXX cuatro letras randoms en mayuscula **/
 	public String generateTicker() {
 		String res = "";
+
 		final String abecedary = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		final Integer n1 = (int) Math.floor(Math.random() * 25 + 1);
-		final Integer n2 = (int) Math.floor(Math.random() * 25 + 1);
-		final Integer n3 = (int) Math.floor(Math.random() * 25 + 1);
-		final Integer n4 = (int) Math.floor(Math.random() * 25 + 1);
+		final String numbers = "0123456789";
+		final SecureRandom random = new SecureRandom();
+
+		final String data = abecedary + numbers;
+		final StringBuilder sb = new StringBuilder(4);
+		for (int i = 0; i < 4; i++) {
+
+			// 0-62 (exclusive), random returns 0-61
+			final int rndCharAt = random.nextInt(data.length());
+			final char rndChar = data.charAt(rndCharAt);
+
+			// debug
+			//System.out.format("%d\t:\t%c%n", rndCharAt, rndChar);
+
+			sb.append(rndChar);
+
+		}
+
+		final String randomString = sb.toString();
 
 		final Author author = this.authorService.findByPrincipal();
 
-		final Character initial1 = author.getName().charAt(0);
+		Character initial1 = author.getName().charAt(0);
 		Character initial2 = null;
 		if (author.getMiddleName() != null && author.getMiddleName() != "")
 			initial2 = author.getMiddleName().charAt(0);
 		else
 			initial2 = 'X';
 
-		final Character initial3 = author.getSurname().charAt(0);
+		Character initial3 = author.getSurname().charAt(0);
 
-		res = "" + initial1 + "" + initial2 + "" + initial3 + "-" + abecedary.charAt(n1) + abecedary.charAt(n2) + abecedary.charAt(n3) + abecedary.charAt(n4);
+		initial1 = Character.toUpperCase(initial1);
+		initial2 = Character.toUpperCase(initial2);
+		initial3 = Character.toUpperCase(initial3);
+
+		res = "" + initial1 + "" + initial2 + "" + initial3 + "-" + randomString;
 
 		final Collection<Submission> submissions = this.submissionRepository.getSubmissionWithTicker(res);
 		if (!submissions.isEmpty())
