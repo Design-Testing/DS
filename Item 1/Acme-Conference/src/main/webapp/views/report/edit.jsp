@@ -61,3 +61,4 @@
     <button class="button" onclick="location.href = 'comment/list.do?entity=report&id=${report.id}'">
         <spring:message code="report.listComment"/>
     </button>
+    <acme:button code="report.submission" name="submission" url="submission/reviewer/display.do?submissionId=${report.submission.id}"/>

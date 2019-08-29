@@ -80,3 +80,8 @@
 		<acme:button url="submission/author/mySubmissions.do" name="back" code="submission.back" />
 	</jstl:when>
 </jstl:choose>
+<security:authorize access="hasRole('AUTHOR')">
+<jstl:if test="${submission.isNotified}">
+	<acme:button code="submission.reports" name="list" url="report/author/listBySubmission.do?submissionId=${submission.id}"/>
+</jstl:if>
+</security:authorize>
