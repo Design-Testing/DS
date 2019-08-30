@@ -129,8 +129,12 @@ public class DashboardService {
 		return res;
 	}
 
-	// AUTHOR SCORE
-
+	/**
+	 * Compute authors scores and save them with his new score
+	 * 
+	 * @return Double Maximum score (maximum number of occurrencies)
+	 * @author a8081
+	 * */
 	public Double computeAuthorsScore() {
 		this.administratorService.findByPrincipal();
 		final Collection<Author> authors = this.authorService.findAll();
@@ -161,6 +165,13 @@ public class DashboardService {
 			}
 		return maximumScore;
 	}
+
+	/**
+	 * Get all buzz words of the system
+	 * 
+	 * @return Collection<String> Buzz words
+	 * @author a8081
+	 * */
 	public Collection<String> findAllBuzzWords() {
 		final Collection<String> res = new ArrayList<>();
 
@@ -185,6 +196,13 @@ public class DashboardService {
 
 		return res;
 	}
+
+	/**
+	 * Get words inside conference titles and summaries that aren't void words
+	 * 
+	 * @return Collection<String> Not void words of the system
+	 * @author a8081
+	 * */
 	private Collection<String> findBuzzWords() {
 		final Collection<String> res = new ArrayList<>();
 
@@ -201,6 +219,12 @@ public class DashboardService {
 		return res;
 	}
 
+	/**
+	 * max function of Java 8 stream custom
+	 * 
+	 * @return Integer Maximum integer inside the collection
+	 * @author a8081
+	 * */
 	private Integer max(final Collection<Integer> input) {
 		int max = 0;
 
