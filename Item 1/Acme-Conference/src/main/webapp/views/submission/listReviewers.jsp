@@ -16,7 +16,7 @@
 <h3><spring:message code="submission.noReviewersKeywords" /></h3>
 </jstl:if>
 
-<jstl:if test="${not empty empty reviewers}">
+<jstl:if test="${not empty reviewers}">
 
 <display:table name="reviewers" id="row"
 		requestURI="${requestURI}" pagesize="5"

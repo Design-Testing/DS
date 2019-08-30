@@ -103,6 +103,12 @@ public class ReportService {
 		return result;
 	}
 
+	public Collection<Report> findAllReportsBySubmission(final int submissionId) {
+		final Collection<Report> result = this.reportRepository.findAllReportsBySubmission(submissionId);
+		Assert.notNull(result);
+		return result;
+	}
+
 	public Collection<Report> findReportsByReviewer(final int reviewerId) {
 		final Collection<Report> result = this.reportRepository.findReportsByReviewer(reviewerId);
 		Assert.notNull(result);

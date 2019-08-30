@@ -81,9 +81,7 @@ public class SubmissionAdministratorController extends AbstractController {
 	// ASSIGN TO REVIEWER --------------------------------------------------------
 
 	/**
-	 * debe estar dentro del display de conference, al lado de cada submission
-	 * OJO: solo en las submissions que estan en esatdo UNDER-REVIEW y además tiene
-	 * que tener menos de 3 reviewers asignados
+	 * debe estar dentro del display de conference, al lado de cada submission UNDER-REVIEWED
 	 **/
 	@RequestMapping(value = "/assign", method = RequestMethod.GET)
 	public ModelAndView assign(@RequestParam final int submissionId) {
