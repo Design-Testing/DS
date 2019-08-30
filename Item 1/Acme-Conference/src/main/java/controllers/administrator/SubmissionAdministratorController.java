@@ -54,6 +54,54 @@ public class SubmissionAdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/acceptedSubmissions", method = RequestMethod.GET)
+	public ModelAndView listAccepted() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Submission> submissions = this.submissionService.findAcceptedSubmissions();
+
+		result = new ModelAndView("submission/list");
+		result.addObject("submissions", submissions);
+		result.addObject("isAdministrator", true);
+		result.addObject("isAuthor", false);
+		result.addObject("requestURI", "submission/administrator/acceptedSubmissions.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/rejectedSubmissions", method = RequestMethod.GET)
+	public ModelAndView listRejected() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Submission> submissions = this.submissionService.findRejectedSubmissions();
+
+		result = new ModelAndView("submission/list");
+		result.addObject("submissions", submissions);
+		result.addObject("isAdministrator", true);
+		result.addObject("isAuthor", false);
+		result.addObject("requestURI", "submission/administrator/rejectedSubmissions.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/underReviewedSubmissions", method = RequestMethod.GET)
+	public ModelAndView listUnderReviewed() {
+		final ModelAndView result;
+
+		this.administratorService.findByPrincipal();
+		final Collection<Submission> submissions = this.submissionService.findUnderReviewedSubmissions();
+
+		result = new ModelAndView("submission/list");
+		result.addObject("submissions", submissions);
+		result.addObject("isAdministrator", true);
+		result.addObject("isAuthor", false);
+		result.addObject("requestURI", "submission/administrator/underReviewedSubmissions.do");
+
+		return result;
+	}
+
 	// DISPLAY --------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
