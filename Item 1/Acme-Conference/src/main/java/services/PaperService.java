@@ -59,4 +59,11 @@ public class PaperService {
 		Assert.notNull(paperId);
 		this.paperRepository.delete(paperId);
 	}
+
+	public Collection<Paper> findByAuthorUAId(final int authorId) {
+		Assert.isTrue(authorId != 0);
+		final Collection<Paper> res = this.paperRepository.findByAuthorUAId(authorId);
+		return res;
+	}
+
 }
