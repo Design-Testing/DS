@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +18,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import services.ActorService;
+import services.AuthorService;
+import services.ConferenceService;
 import services.MessageService;
 import services.TopicService;
 import domain.Actor;
+import domain.Author;
 import domain.Message;
 
 @Controller
@@ -27,13 +31,19 @@ import domain.Message;
 public class MessageController extends AbstractController {
 
 	@Autowired
-	private MessageService	messageService;
+	private MessageService		messageService;
 
 	@Autowired
-	private ActorService	actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private TopicService	topicService;
+	private TopicService		topicService;
+
+	@Autowired
+	private ConferenceService	conferenceService;
+
+	@Autowired
+	private AuthorService		authorService;
 
 
 	public MessageController() {
@@ -215,6 +225,38 @@ public class MessageController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/broadcastAuthorsSubmissionConference", method = RequestMethod.GET)
+	public ModelAndView broadcastAuthorsSubmissionConference(@RequestParam final String origen, final Integer conferenceId) {
+		final Message message = this.messageService.create();
+		final ModelAndView result = this.createEditModelAndView(message);
+		final Collection<Author> autores = this.authorService.findAuthorsByConferenceToSubmissions(conferenceId);
+
+		final Collection<Actor> actores = new ArrayList<Actor>();
+		actores.addAll(autores);
+		message.setRecivers(actores);
+		result.addObject("isBroadcast", true);
+		result.addObject("origen", origen);
+		result.addObject("entityId", null);
+		final String action = "message/edit.do?origen=" + origen;
+		result.addObject("action", action);
+		return result;
+	}
+	@RequestMapping(value = "/broadcastAuthorsRegistrationConference", method = RequestMethod.GET)
+	public ModelAndView broadcastAuthorsRegistrationConference(@RequestParam final String origen, final Integer conferenceId) {
+		final Message message = this.messageService.create();
+		final ModelAndView result = this.createEditModelAndView(message);
+		final Collection<Author> autores = this.authorService.findAuthorsByConferenceToRegistrations(conferenceId);
+
+		final Collection<Actor> actores = new ArrayList<Actor>();
+		actores.addAll(autores);
+		message.setRecivers(actores);
+		result.addObject("isBroadcast", true);
+		result.addObject("origen", origen);
+		result.addObject("entityId", null);
+		final String action = "message/edit.do?origen=" + origen;
+		result.addObject("action", action);
+		return result;
+	}
 	@RequestMapping(value = "/broadcastActors", method = RequestMethod.POST)
 	public ModelAndView broadcastActors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
@@ -288,6 +330,7 @@ public class MessageController extends AbstractController {
 		result.addObject("message", messageCode);
 		final boolean isAdmin = this.actorService.checkAuthority(principal, Authority.ADMIN);
 		result.addObject("isAdmin", isAdmin);
+		result.addObject("conferences", this.conferenceService.findAll());
 
 		return result;
 	}

@@ -136,13 +136,74 @@
 <br>
 
 
+
+<!------------------------------------------------------------------------------->
+<!-------------- TUTORIALS, PRESENTATIONS AND PANELS ---------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<acme:button url="tutorial/list.do?conferenceId=${conference.id}" name="tutorials" code="conference.tutorials" />
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${conference.isDraft}">
+		<acme:button
+			url="tutorial/create.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay"
+			name="edit" code="activity.create" /><br/><br/>
+	</jstl:if>
+</security:authorize>
+<acme:button url="panel/list.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay" name="panels" code="conference.panels" />
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${conference.isDraft}">
+		<acme:button
+			url="panel/create.do?conferenceId=${conference.id}"
+			name="edit" code="activity.create" /><br/><br/>
+	</jstl:if>
+</security:authorize>
+<acme:button url="presentation/list.do?conferenceId=${conference.id}" name="presentations" code="conference.presentations" />
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:if test="${conference.isDraft}">
+		<acme:button
+			url="presentation/create.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay"
+			name="edit" code="activity.create" /><br/><br/>
+	</jstl:if>
+</security:authorize>
+
+<br>
+<br>
+<br>
+
+<!------------------------------------------------------------------------------->
+<!------------------------------- BROADCASTS ------------------------------------>
+<!------------------------------------------------------------------------------->
+<jstl:if test="${isAdministrator eq true }" >
+
+<h2><spring:message code="title.conference.send.broadcasts" /></h2>
+
+<jstl:if test="${hasRegistrations eq true }" >
+<acme:button url="message/broadcastAuthorsRegistrationConference.do?origen=outbox&conferenceId=${conference.id}" name="broadcast" code="conference.broadcast.registration"/>
+</jstl:if>
+<jstl:if test="${hasRegistrations eq false }" >
+<spring:message code="no.registrations.conference" />
+</jstl:if>
+<br>
+<br>
+<jstl:if test="${not empty submissions and conference.isDraft eq false  }" >
+<acme:button url="message/broadcastAuthorsSubmissionConference.do?origen=outbox&conferenceId=${conference.id}" name="broadcast" code="conference.broadcast.submission"/>
+</jstl:if>
+<jstl:if test="${empty submissions }" >
+<spring:message code="no.submissions.conference" />
+</jstl:if>
+<br>
+<br>
+<br>
+
+</jstl:if>
 <!------------------------------------------------------------------------------->
 <!------------------------------- SUBMISSIONS ----------------------------------->
 <!------------------------------------------------------------------------------->
 
 <jstl:if test="${isAdministrator eq true  }" >
 
-	<h3><spring:message code="conference.submissions" /></h3>
+	<h2><spring:message code="conference.submissions" /></h2>
 	
 	<jstl:if test="${ratioDecidedAssignedSubmissions == 1.0 }">
     	<h4 style="color: blue;"><spring:message code="conferece.all.assigned.submissions.decided"/></h4>
@@ -153,6 +214,7 @@
     </jstl:if>
 	
 	<jstl:if test="${not empty submissions and conference.isDraft eq false  }" >
+			
 			<acme:button url="conference/administrator/runAssignation.do?conferenceId=${conference.id}" name="display" code="conference.run.assignation"/>
 			
 			<acme:button url="conference/administrator/decideOnConference.do?conferenceId=${conference.id}" name="display" code="conference.run.decision"/>
@@ -295,30 +357,6 @@
 <!------------------------------- BACK BUTTONS ----------------------------------->
 <!-------------------------------------------------------------------------------->
 
-<acme:button url="tutorial/list.do?conferenceId=${conference.id}" name="tutorials" code="conference.tutorials" />
-<security:authorize access="hasRole('ADMIN')">
-	<jstl:if test="${conference.isDraft}">
-		<acme:button
-			url="tutorial/create.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay"
-			name="edit" code="activity.create" /><br/><br/>
-	</jstl:if>
-</security:authorize>
-<acme:button url="panel/list.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay" name="panels" code="conference.panels" />
-<security:authorize access="hasRole('ADMIN')">
-	<jstl:if test="${conference.isDraft}">
-		<acme:button
-			url="panel/create.do?conferenceId=${conference.id}"
-			name="edit" code="activity.create" /><br/><br/>
-	</jstl:if>
-</security:authorize>
-<acme:button url="presentation/list.do?conferenceId=${conference.id}" name="presentations" code="conference.presentations" />
-<security:authorize access="hasRole('ADMIN')">
-	<jstl:if test="${conference.isDraft}">
-		<acme:button
-			url="presentation/create.do?conferenceId=${conference.id}&fromConferenceDisplay=fromConferenceDisplay"
-			name="edit" code="activity.create" /><br/><br/>
-	</jstl:if>
-</security:authorize>
 <br/><br/>
 <jstl:choose>
 	<jstl:when test="${isAdministrator eq true }">
@@ -328,7 +366,4 @@
 		<acme:button url="conference/list.do" name="back" code="conference.back" />
 	</jstl:otherwise>
 </jstl:choose>
-
-
-
 
