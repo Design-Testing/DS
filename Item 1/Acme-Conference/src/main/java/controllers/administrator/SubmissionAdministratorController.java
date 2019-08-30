@@ -96,7 +96,6 @@ public class SubmissionAdministratorController extends AbstractController {
 		final Submission submission = this.submissionService.findOne(submissionId);
 
 		final Collection<Reviewer> reviewers = this.submissionService.availableReviewers(submissionId);
-		System.out.println(reviewers);
 
 		Boolean notificationElapsed = false;
 
@@ -129,14 +128,10 @@ public class SubmissionAdministratorController extends AbstractController {
 
 		this.submissionService.assignToReviewer(submissionId, reviewerId);
 
-		final Collection<Submission> submissions = this.submissionService.findAll();
-
-		result = new ModelAndView("submission/list");
-		result.addObject("submissions", submissions);
+		result = this.conferenceAdministratorController.display(this.submissionService.findOne(submissionId).getConference().getId());
 		result.addObject("isAdministrator", true);
 		result.addObject("isAuthor", false);
-		result.addObject("requestURI", "submission/administrator/submissions.do");
-		result.addObject("messageSuccessAssign", true);
+		result.addObject("message.success.assign.reviewer", "message.success.assign.reviewer");
 		return result;
 	}
 

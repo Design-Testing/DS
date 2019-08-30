@@ -179,6 +179,10 @@
     	<h4 style="color: green;"><spring:message code="message.make.desicion.successful"/></h4>
 	</jstl:if>
 	
+	<jstl:if test="${not empty message.run.assignation.success}">
+    	<h4 style="color: green;"><spring:message code="message.run.assignation.success"/></h4>
+	</jstl:if>
+	
 	
 
 

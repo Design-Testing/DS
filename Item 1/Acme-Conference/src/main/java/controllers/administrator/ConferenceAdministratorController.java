@@ -368,7 +368,6 @@ public class ConferenceAdministratorController extends AbstractController {
 			try {
 				this.conferenceService.notifyStatus(conferenceId);
 				result = this.display(conferenceId);
-				//result.addObject("message.notification.successful", "message.notification.successful");
 				result.addObject("message.notification.successful", "message.notification.successful");
 			} catch (final Throwable oops) {
 				result = this.display(conferenceId);
@@ -398,7 +397,7 @@ public class ConferenceAdministratorController extends AbstractController {
 
 			this.conferenceService.runReviewerAssignation(conferenceId);
 			result = this.display(conferenceId);
-			result.addObject("notificationMsg", "conference.run.assignation.success");
+			result.addObject("message.run.assignation.success", "message.run.assignation.success");
 
 		} catch (final Throwable oops) {
 			result = this.display(conferenceId);
