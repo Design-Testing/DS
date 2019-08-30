@@ -140,7 +140,7 @@ public class DashboardService {
 			Double score = 0.;
 			for (final Paper cameraReadyPaper : this.paperService.findByAuthorUAId(author.getUserAccount().getId()))
 				for (final String bw : buzzWords)
-					if (cameraReadyPaper.getTitle().toLowerCase().matches("(.*)" + bw + "(.*)") || cameraReadyPaper.getSummary().toLowerCase().matches("(.*)" + bw + "(.*)"))
+					if (cameraReadyPaper.getTitle().toLowerCase().matches("(.*)" + bw + "(.*)") || cameraReadyPaper.getSummary().toLowerCase().toLowerCase().matches("(.*)" + bw + "(.*)"))
 						score += 1;
 
 			if (score > maximumScore)
@@ -168,9 +168,9 @@ public class DashboardService {
 		for (final String w : words) {
 			final Integer v = buzzWFreq.get(w);
 			if (v != null)
-				buzzWFreq.put(w.toLowerCase(), v + 1);
+				buzzWFreq.put(w, v + 1);
 			else
-				buzzWFreq.put(w.toLowerCase(), 1);
+				buzzWFreq.put(w, 1);
 		}
 
 		final Double max = this.max(buzzWFreq.values()) * 0.8;
@@ -186,7 +186,7 @@ public class DashboardService {
 
 		for (final Conference conference : this.conferenceService.findLast12MonthOrFuture()) {
 			String all = conference.getTitle() + " " + conference.getSummary();
-			all = all.replaceAll("\\d", "");
+			all = all.toLowerCase().replaceAll("\\d", "");
 
 			for (final String voidWord : this.configurationParametersService.find().getVoidWords())
 				all = all.replaceAll("\\b" + voidWord + "\\b", "");
