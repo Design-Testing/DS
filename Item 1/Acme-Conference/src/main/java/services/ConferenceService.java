@@ -239,8 +239,7 @@ public class ConferenceService {
 	 * then the corresponding submissions are accepted.
 	 **/
 
-	public Boolean decideOnConference(final int conferenceId) {
-		Boolean anyStatusUpdated = false;
+	public void decideOnConference(final int conferenceId) {
 		this.administratorService.findByPrincipal();
 		final Conference retrieved = this.findOne(conferenceId);
 		Assert.notNull(retrieved);
@@ -249,13 +248,11 @@ public class ConferenceService {
 		//Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
 		final Collection<Submission> submissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 
-		if (!submissions.isEmpty())
-			anyStatusUpdated = true;
+		Assert.isTrue(!submissions.isEmpty(), "All the submissions of this conference has already been decided");
 
 		for (final Submission s : submissions)
 			this.submissionService.decideOnSubmission(s.getId());
 
-		return anyStatusUpdated;
 	}
 	public ConferenceForm constructPruned(final Conference conference) {
 		final ConferenceForm pruned = new ConferenceForm();
@@ -482,6 +479,8 @@ public class ConferenceService {
 		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
 		final Topic topic = topics.iterator().next();
 
+		Boolean anyReviewerAssigned = false;
+
 		for (final Reviewer r : reviewers)
 			for (final Submission s : submissionsToAssign)
 				if (this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
@@ -498,8 +497,11 @@ public class ConferenceService {
 						m.setRecivers(recipients);
 						m.setTopic(topic);
 						this.messageService.send(m);
+						anyReviewerAssigned = true;
 					}
 				}
+
+		Assert.isTrue(anyReviewerAssigned, "no reviewers available to be assigned"); //para notificar que no se ha realizado ningún cambio
 
 	}
 

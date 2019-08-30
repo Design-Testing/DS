@@ -336,18 +336,20 @@ public class ConferenceAdministratorController extends AbstractController {
 
 		if (conference != null)
 			try {
-				final Boolean isAnyStatusUpdated = this.conferenceService.decideOnConference(conferenceId);
+				this.conferenceService.decideOnConference(conferenceId);
 				result = this.display(conferenceId);
-				if (isAnyStatusUpdated == true)
-					result.addObject("message.make.desicion.successful", "message.make.desicion.successful");
-				else
-					result.addObject("notificationMsg", "conference.no.status.updated");
+				result.addObject("notificationMsgSuccess", "message.make.desicion.successful");
+
 			} catch (final Throwable oops) {
 				result = this.display(conferenceId);
 				if (oops.getMessage().equals("submission deadline must be elapsed"))
 					result.addObject("notificationMsg", "conference.submission.not.elapsed");
+				if (oops.getMessage().equals("no reports decided"))
+					result.addObject("notificationMsg", "conference.no.status.updated");
+				if (oops.getMessage().equals("All the submissions of this conference has already been decided"))
+					result.addObject("notificationMsg", "message.all.submissions.already.decided");
 				else
-					result.addObject("notificationMsg", "commit.error");
+					result.addObject("notificationMsgDecision", oops.getMessage());
 
 			}
 		else
@@ -368,7 +370,7 @@ public class ConferenceAdministratorController extends AbstractController {
 			try {
 				this.conferenceService.notifyStatus(conferenceId);
 				result = this.display(conferenceId);
-				result.addObject("message.notification.successful", "message.notification.successful");
+				result.addObject("notificationMsgSuccess", "message.notification.successful");
 			} catch (final Throwable oops) {
 				result = this.display(conferenceId);
 				if (oops.getMessage().equals("notification deadline is elapsed"))
@@ -397,7 +399,7 @@ public class ConferenceAdministratorController extends AbstractController {
 
 			this.conferenceService.runReviewerAssignation(conferenceId);
 			result = this.display(conferenceId);
-			result.addObject("message.run.assignation.success", "message.run.assignation.success");
+			result.addObject("notificationMsgSuccess", "message.run.assignation.success");
 
 		} catch (final Throwable oops) {
 			result = this.display(conferenceId);

@@ -166,22 +166,15 @@
     	<h4 style="color: red;"><spring:message code="${notificationMsg}"/></h4>
     </jstl:if>
 	
+	<jstl:if test="${not empty notificationMsgDecision }">
+    	<h4 style="color: red;"><jstl:out value="${notificationMsgDecision}"/></h4>
+    </jstl:if>
 
-	<jstl:if test="${not empty message.success.assign.reviewer}">
-    	<h4 style="color: green;"><spring:message code="message.success.assign.reviewer"/></h4>
+	<jstl:if test="${not empty notificationMsgSuccess}">
+    	<h4 style="color: green;"><spring:message code="${notificationMsgSuccess}"/></h4>
 	</jstl:if>
 	
-	<jstl:if test="${not empty message.notification.successful}">
-    	<h4 style="color: green;"><spring:message code="message.notification.successful"/></h4>
-	</jstl:if>
 	
-	<jstl:if test="${not empty message.make.desicion.successful}">
-    	<h4 style="color: green;"><spring:message code="message.make.desicion.successful"/></h4>
-	</jstl:if>
-	
-	<jstl:if test="${not empty message.run.assignation.success}">
-    	<h4 style="color: green;"><spring:message code="message.run.assignation.success"/></h4>
-	</jstl:if>
 	
 	
 

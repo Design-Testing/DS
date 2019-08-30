@@ -167,34 +167,29 @@ public class SubmissionService {
 
 	}
 
-	//TODO pasar a queries
 	/** Calcula resultado de una submission. Este metodo es llamado desde decideOnConference en ConferenceService **/
 	public void decideOnSubmission(final int submissionId) {
 		this.administratorService.findByPrincipal();
 		final Submission retrieved = this.findOne(submissionId);
 		Assert.notNull(retrieved);
-		Integer numberAccept = 0;
-		Integer numberReject = 0;
-		Integer numberBorderLine = 0;
+		Assert.isTrue(retrieved.getStatus().equals("UNDER-REVIEWED"));
+		final Double numberAccept = this.reportService.countFinalAcceptReportBySubmission(submissionId);
+		final Double numberReject = this.reportService.countFinalRejectReportBySubmission(submissionId);
+		final Double numberBorderLine = this.reportService.countFinalBorderLineReportBySubmission(submissionId);
 		final Collection<Report> reports = this.reportService.findReportsBySubmission(submissionId);
-		if (!reports.isEmpty()) {
-			for (final Report r : reports)
-				if (r.getDecision().equals("ACCEPT") && r.getIsDraft() == false)
-					numberAccept = numberAccept + 1;
-				else if (r.getDecision().equals("REJECT") && r.getIsDraft() == false)
-					numberReject = numberReject + 1;
-				else if (r.getDecision().equals("BORDER-LINE") && r.getIsDraft() == false)
-					numberBorderLine = numberBorderLine + 1;
-			if (numberAccept > numberReject)
+		final Double numberTotalReports = new Double(reports.size());
+		final Double numberDecidedReports = numberAccept + numberBorderLine + numberReject;
+		Assert.isTrue(numberDecidedReports == numberTotalReports, "Not all reports of submission " + retrieved.getTicker() + " has been completed");
+
+		if (numberAccept > numberReject)
+			this.acceptSubmission(submissionId);
+		else if (numberAccept == numberReject) {
+			if (numberBorderLine > 0)
 				this.acceptSubmission(submissionId);
-			else if (numberAccept == numberReject) {
-				if (numberBorderLine > 0)
-					this.acceptSubmission(submissionId);
-				else
-					this.acceptSubmission(submissionId);
-			} else if (numberReject > numberAccept)
-				this.rejectSubmission(submissionId);
-		}
+			else
+				this.acceptSubmission(submissionId);
+		} else if (numberReject > numberAccept)
+			this.rejectSubmission(submissionId);
 	}
 
 	public Submission findOne(final Integer submissionId) {
@@ -315,13 +310,11 @@ public class SubmissionService {
 	//
 	//	}
 
-
 	public Collection<Submission> findUnderReviewedSubmissions() {
 		final Collection<Submission> result = this.submissionRepository.findUnderReviewedSubmissions();
 		Assert.notNull(result);
 		return result;
 	}
-
 
 	public Collection<Reviewer> availableReviewers(final int submissionId) {
 		final Submission s = this.findOne(submissionId);

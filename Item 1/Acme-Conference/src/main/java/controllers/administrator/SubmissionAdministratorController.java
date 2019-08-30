@@ -131,7 +131,7 @@ public class SubmissionAdministratorController extends AbstractController {
 		result = this.conferenceAdministratorController.display(this.submissionService.findOne(submissionId).getConference().getId());
 		result.addObject("isAdministrator", true);
 		result.addObject("isAuthor", false);
-		result.addObject("message.success.assign.reviewer", "message.success.assign.reviewer");
+		result.addObject("notificationMsgSuccess", "message.success.assign.reviewer");
 		return result;
 	}
 

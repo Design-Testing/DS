@@ -113,4 +113,25 @@ public class ReportService {
 		final Report result = this.reportRepository.findReportBySubmissionAndReviewer(submissionId, reviewerId);
 		return result;
 	}
+
+	public Double countFinalAcceptReportBySubmission(final int submissionId) {
+		Double result = this.reportRepository.countFinalAcceptReportBySubmission(submissionId);
+		if (result == null)
+			result = 0.0;
+		return result;
+	}
+
+	public Double countFinalRejectReportBySubmission(final int submissionId) {
+		Double result = this.reportRepository.countFinalRejectReportBySubmission(submissionId);
+		if (result == null)
+			result = 0.0;
+		return result;
+	}
+
+	public Double countFinalBorderLineReportBySubmission(final int submissionId) {
+		Double result = this.reportRepository.countFinalBorderLineReportBySubmission(submissionId);
+		if (result == null)
+			result = 0.0;
+		return result;
+	}
 }
