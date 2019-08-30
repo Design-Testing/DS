@@ -330,5 +330,15 @@
 </jstl:choose>
 
 
+<security:authorize access="hasRole('ADMIN')">
+	<acme:button url="message/broadcastAuthorsRegistrationConference.do?origen=outbox&conferenceId=${conference.id}" name="broadcast" code="conference.broadcast.registration"/>
+	<jstl:if test="${acceptedSubmissions.size > 0 or rejectedSubmissions.size > 0 or underReviewedSubmissions.size > 0}">
+		<acme:button url="message/broadcastAuthorsSubmissionConference.do?origen=outbox&conferenceId=${conference.id}" name="broadcast" code="conference.broadcast.submission"/>
+	</jstl:if>
+</security:authorize>
+
+
+
+
 
 

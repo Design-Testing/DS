@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -180,6 +181,20 @@ public class AuthorService {
 			throw new ValidationException();
 
 		return author;
+	}
+
+	public List<Author> findAuthorsByConferenceToSubmissions(final int conferenceId) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.ADMIN));
+		final List<Author> authors = (List<Author>) this.authorRepository.findAuthorsToSubmissionToConference(conferenceId);
+		return authors;
+	}
+
+	public List<Author> findAuthorsByConferenceToRegistrations(final int conferenceId) {
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, Authority.ADMIN));
+		final List<Author> authors = (List<Author>) this.authorRepository.findAuthorsToRegistrationToConference(conferenceId);
+		return authors;
 	}
 
 }
