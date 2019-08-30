@@ -94,7 +94,7 @@ public class AuthorController extends AbstractController {
 			try {
 				final Author author = this.authorService.reconstruct(actorForm, binding);
 				this.authorService.save(author);
-				if (actorForm.getId() == 0)
+				if (actorForm.getId() != 0)
 					result = this.viewAuthor();
 				else
 					result = new ModelAndView("forward:/security/login.do");

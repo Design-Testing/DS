@@ -163,7 +163,8 @@ public class AuthorService {
 			author.setSurname(actorForm.getSurname());
 			author.setPhoto(actorForm.getPhoto());
 			author.setPhone(actorForm.getPhone());
-			Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
+			if (!author.getEmail().equals(actorForm.getEmail()))
+				Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
 			author.setEmail(actorForm.getEmail());
 			author.setAddress(actorForm.getAddress());
 			author.setVersion(actorForm.getVersion());

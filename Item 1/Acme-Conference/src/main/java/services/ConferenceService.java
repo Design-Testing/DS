@@ -521,4 +521,8 @@ public class ConferenceService {
 
 	}
 
+	public Collection<Conference> findLast12MonthOrFuture() {
+		return this.conferenceRepository.findLast12MonthOrFuture();
+	}
+
 }

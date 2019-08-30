@@ -21,7 +21,7 @@ import utilities.HashPassword;
 import domain.Actor;
 import domain.Finder;
 import domain.Reviewer;
-import forms.ActorForm;
+import forms.ReviewerForm;
 
 @Service
 @Transactional
@@ -75,7 +75,7 @@ public class ReviewerService {
 			final String password = HashPassword.hashPassword(reviewer.getUserAccount().getPassword());
 			final Finder finder = this.finderService.createForNewActor();
 			reviewer.setFinder(finder);
-			final Reviewer withUserAccount = (Reviewer) this.actorService.setUserAccount(Authority.AUTHOR, reviewer, username, password);
+			final Reviewer withUserAccount = (Reviewer) this.actorService.setUserAccount(Authority.REVIEWER, reviewer, username, password);
 			Assert.isTrue(this.checkForEmailInUse(withUserAccount.getEmail()) == false, "Email is already in use");
 			result = this.reviewerRepository.save(withUserAccount);
 
@@ -115,7 +115,7 @@ public class ReviewerService {
 
 		final Reviewer reviewer = this.findByUserId(user.getId());
 		Assert.notNull(reviewer);
-		final boolean bool = this.actorService.checkAuthority(reviewer, Authority.AUTHOR);
+		final boolean bool = this.actorService.checkAuthority(reviewer, Authority.REVIEWER);
 		Assert.isTrue(bool);
 
 		return reviewer;
@@ -131,46 +131,49 @@ public class ReviewerService {
 		this.reviewerRepository.flush();
 	}
 
-	public Reviewer reconstruct(final ActorForm actorForm, final BindingResult binding) {
+	public Reviewer reconstruct(final ReviewerForm reviewerForm, final BindingResult binding) {
 		Reviewer reviewer;
 
-		if (actorForm.getId() == 0) {
+		if (reviewerForm.getId() == 0) {
 			reviewer = this.create();
-			reviewer.setName(actorForm.getName());
-			reviewer.setSurname(actorForm.getSurname());
-			reviewer.setMiddleName(actorForm.getMiddleName());
-			reviewer.setPhoto(actorForm.getPhoto());
-			reviewer.setPhone(actorForm.getPhone());
-			Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
-			reviewer.setEmail(actorForm.getEmail());
-			reviewer.setAddress(actorForm.getAddress());
-			reviewer.setVersion(actorForm.getVersion());
+			reviewer.setName(reviewerForm.getName());
+			reviewer.setSurname(reviewerForm.getSurname());
+			reviewer.setMiddleName(reviewerForm.getMiddleName());
+			reviewer.setPhoto(reviewerForm.getPhoto());
+			reviewer.setPhone(reviewerForm.getPhone());
+			Assert.isTrue(this.checkForEmailInUse(reviewerForm.getEmail()) == false, "Email is already in use");
+			reviewer.setEmail(reviewerForm.getEmail());
+			reviewer.setAddress(reviewerForm.getAddress());
+			reviewer.setVersion(reviewerForm.getVersion());
+			reviewer.setKeywords(reviewerForm.getKeywords());
 			reviewer.setFinder(this.finderService.create());
 			//			reviewer.setScore(0.0);
 			//			reviewer.setSpammer(false);
 			final UserAccount account = this.userAccountService.create();
 			final Collection<Authority> authorities = new ArrayList<>();
 			final Authority auth = new Authority();
-			auth.setAuthority(Authority.AUTHOR);
+			auth.setAuthority(Authority.REVIEWER);
 			authorities.add(auth);
 			account.setAuthorities(authorities);
-			account.setUsername(actorForm.getUserAccountuser());
-			account.setPassword(actorForm.getUserAccountpassword());
+			account.setUsername(reviewerForm.getUserAccountuser());
+			account.setPassword(reviewerForm.getUserAccountpassword());
 			reviewer.setUserAccount(account);
 		} else {
-			reviewer = this.reviewerRepository.findOne(actorForm.getId());
-			reviewer.setName(actorForm.getName());
-			reviewer.setSurname(actorForm.getSurname());
-			reviewer.setPhoto(actorForm.getPhoto());
-			reviewer.setPhone(actorForm.getPhone());
-			Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "Email is already in use");
-			reviewer.setEmail(actorForm.getEmail());
-			reviewer.setAddress(actorForm.getAddress());
-			reviewer.setVersion(actorForm.getVersion());
+			reviewer = this.reviewerRepository.findOne(reviewerForm.getId());
+			reviewer.setName(reviewerForm.getName());
+			reviewer.setSurname(reviewerForm.getSurname());
+			reviewer.setPhoto(reviewerForm.getPhoto());
+			reviewer.setPhone(reviewerForm.getPhone());
+			reviewer.setKeywords(reviewerForm.getKeywords());
+			if (!reviewer.getEmail().equals(reviewerForm.getEmail()))
+				Assert.isTrue(this.checkForEmailInUse(reviewerForm.getEmail()) == false, "Email is already in use");
+			reviewer.setEmail(reviewerForm.getEmail());
+			reviewer.setAddress(reviewerForm.getAddress());
+			reviewer.setVersion(reviewerForm.getVersion());
 			reviewer.setFinder(this.finderService.findActorFinder());
 			final UserAccount account = this.userAccountService.findOne(reviewer.getUserAccount().getId());
-			account.setUsername(actorForm.getUserAccountuser());
-			account.setPassword(actorForm.getUserAccountpassword());
+			account.setUsername(reviewerForm.getUserAccountuser());
+			account.setPassword(reviewerForm.getUserAccountpassword());
 			reviewer.setUserAccount(account);
 		}
 

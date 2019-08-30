@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.FinderService;
 import services.ReviewerService;
 import domain.Reviewer;
-import forms.ActorForm;
+import forms.ReviewerForm;
 
 @Controller
 @RequestMapping("/reviewer")
@@ -46,20 +46,21 @@ public class ReviewerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView editReviewer() {
 		final Reviewer reviewer = this.reviewerService.findByPrincipal();
-		final ActorForm actorForm = new ActorForm();
-		actorForm.setAddress(reviewer.getAddress());
-		actorForm.setEmail(reviewer.getEmail());
-		actorForm.setId(reviewer.getId());
-		actorForm.setMiddleName(reviewer.getMiddleName());
-		actorForm.setName(reviewer.getName());
-		actorForm.setPhone(reviewer.getPhone());
-		actorForm.setPhoto(reviewer.getPhoto());
-		actorForm.setSurname(reviewer.getSurname());
-		actorForm.setUserAccountpassword(reviewer.getUserAccount().getPassword());
-		actorForm.setUserAccountuser(reviewer.getUserAccount().getUsername());
+		final ReviewerForm reviewerForm = new ReviewerForm();
+		reviewerForm.setAddress(reviewer.getAddress());
+		reviewerForm.setEmail(reviewer.getEmail());
+		reviewerForm.setId(reviewer.getId());
+		reviewerForm.setMiddleName(reviewer.getMiddleName());
+		reviewerForm.setName(reviewer.getName());
+		reviewerForm.setPhone(reviewer.getPhone());
+		reviewerForm.setPhoto(reviewer.getPhoto());
+		reviewerForm.setKeywords(reviewer.getKeywords());
+		reviewerForm.setSurname(reviewer.getSurname());
+		reviewerForm.setUserAccountpassword(reviewer.getUserAccount().getPassword());
+		reviewerForm.setUserAccountuser(reviewer.getUserAccount().getUsername());
 		final ModelAndView result;
 		result = new ModelAndView("reviewer/edit");
-		result.addObject("actorForm", actorForm);
+		result.addObject("reviewerForm", reviewerForm);
 		return result;
 	}
 
@@ -67,27 +68,27 @@ public class ReviewerController extends AbstractController {
 	public ModelAndView signupReviewer() {
 		final ModelAndView result;
 
-		final ActorForm actorForm = new ActorForm();
+		final ReviewerForm reviewerForm = new ReviewerForm();
 
 		result = new ModelAndView("reviewer/signup");
-		result.addObject("actorForm", actorForm);
+		result.addObject("reviewerForm", reviewerForm);
 		return result;
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveReviewer(@ModelAttribute("actorForm") @Valid final ActorForm actorForm, final BindingResult binding, final HttpServletRequest request) {
+	public ModelAndView saveReviewer(@ModelAttribute("reviewerForm") @Valid final ReviewerForm reviewerForm, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
 			result = new ModelAndView("reviewer/signup");
 			result.addObject("errors", binding.getAllErrors());
-			result.addObject("actorForm", actorForm);
-		} else if (actorForm.getId() == 0)
+			result.addObject("reviewerForm", reviewerForm);
+		} else if (reviewerForm.getId() == 0)
 			try {
-				Reviewer reviewer = this.reviewerService.reconstruct(actorForm, binding);
+				Reviewer reviewer = this.reviewerService.reconstruct(reviewerForm, binding);
 				reviewer = this.reviewerService.save(reviewer);
 				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("reviewer/signup");
-				result.addObject("actorForm", actorForm);
+				result.addObject("reviewerForm", reviewerForm);
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable e) {
 				result = new ModelAndView("reviewer/signup");
@@ -96,16 +97,16 @@ public class ReviewerController extends AbstractController {
 				else if (e.getMessage().contains("Email is already in use"))
 					result.addObject("alert", "reviewer.emailIsUsed");
 				result.addObject("errors", "commit.error");
-				result.addObject("actorForm", actorForm);
+				result.addObject("reviewerForm", reviewerForm);
 			}
 		else
 			try {
-				final Reviewer reviewer = this.reviewerService.reconstruct(actorForm, binding);
+				final Reviewer reviewer = this.reviewerService.reconstruct(reviewerForm, binding);
 				this.reviewerService.save(reviewer);
 				result = this.viewReviewer();
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("reviewer/signup");
-				result.addObject("actorForm", actorForm);
+				result.addObject("reviewerForm", reviewerForm);
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable e) {
 				result = new ModelAndView("reviewer/signup");
@@ -114,7 +115,7 @@ public class ReviewerController extends AbstractController {
 				else if (e.getMessage().contains("Email is already in use"))
 					result.addObject("alert", "reviewer.emailIsUsed");
 				result.addObject("errors", "commit.error");
-				result.addObject("actorForm", actorForm);
+				result.addObject("reviewerForm", reviewerForm);
 			}
 
 		return result;
