@@ -82,7 +82,7 @@ public class ReviewerService {
 			this.folderService.setFoldersByDefault(result);
 
 		} else {
-			final String password = HashPassword.hashPassword(reviewer.getUserAccount().getPassword());
+			final String password = reviewer.getUserAccount().getPassword();
 			final Actor principal = this.actorService.findByPrincipal();
 			reviewer.getUserAccount().setPassword(password);
 			Assert.isTrue(principal.getId() == reviewer.getId(), "You only can edit your info");
