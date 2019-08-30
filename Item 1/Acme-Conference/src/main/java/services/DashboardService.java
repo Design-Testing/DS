@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,13 +137,16 @@ public class DashboardService {
 		final Collection<String> buzzWords = this.findAllBuzzWords();
 		Double maximumScore = 0.;
 
+		//"(.*)" + bw + "(.*)"
 		for (final Author author : authors) {
 			Double score = 0.;
 			for (final Paper cameraReadyPaper : this.paperService.findByAuthorUAId(author.getUserAccount().getId()))
-				for (final String bw : buzzWords)
-					if (cameraReadyPaper.getTitle().toLowerCase().matches("(.*)" + bw + "(.*)") || cameraReadyPaper.getSummary().toLowerCase().toLowerCase().matches("(.*)" + bw + "(.*)"))
-						score += 1;
-
+				for (final String bw : buzzWords) {
+					final String all = cameraReadyPaper.getTitle() + " " + cameraReadyPaper.getSummary();
+					final int matches = StringUtils.countMatches(all.toLowerCase(), bw);
+					if (matches > 0)
+						score += matches;
+				}
 			if (score > maximumScore)
 				maximumScore = score;
 
