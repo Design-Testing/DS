@@ -130,7 +130,7 @@ public class DashboardService {
 
 	// AUTHOR SCORE
 
-	public Double computeScores() {
+	public Double computeAuthorsScore() {
 		this.administratorService.findByPrincipal();
 		final Collection<Author> authors = this.authorService.findAll();
 		final Collection<String> buzzWords = this.findAllBuzzWords();
@@ -140,7 +140,7 @@ public class DashboardService {
 			Double score = 0.;
 			for (final Paper cameraReadyPaper : this.paperService.findByAuthorUAId(author.getUserAccount().getId()))
 				for (final String bw : buzzWords)
-					if (cameraReadyPaper.getTitle().matches("(.*) " + bw + " (.*)") || cameraReadyPaper.getSummary().matches("(.*) " + bw + " (.*)"))
+					if (cameraReadyPaper.getTitle().toLowerCase().matches("(.*)" + bw + "(.*)") || cameraReadyPaper.getSummary().toLowerCase().matches("(.*)" + bw + "(.*)"))
 						score += 1;
 
 			if (score > maximumScore)
@@ -168,9 +168,9 @@ public class DashboardService {
 		for (final String w : words) {
 			final Integer v = buzzWFreq.get(w);
 			if (v != null)
-				buzzWFreq.put(w, v + 1);
+				buzzWFreq.put(w.toLowerCase(), v + 1);
 			else
-				buzzWFreq.put(w, 1);
+				buzzWFreq.put(w.toLowerCase(), 1);
 		}
 
 		final Double max = this.max(buzzWFreq.values()) * 0.8;
@@ -189,7 +189,7 @@ public class DashboardService {
 			all = all.replaceAll("\\d", "");
 
 			for (final String voidWord : this.configurationParametersService.find().getVoidWords())
-				all = all.replaceAll("(.*) " + voidWord + " (.*)", "");
+				all = all.replaceAll("\\b" + voidWord + "\\b", "");
 
 			res.addAll(Arrays.asList(all.split("\\W+")));
 		}

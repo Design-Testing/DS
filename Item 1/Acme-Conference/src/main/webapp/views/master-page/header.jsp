@@ -36,6 +36,7 @@
 			<li><a class="fNiv" href="topic/list.do"><spring:message code="master.page.topics" /></a></li>
 			<li><a class="fNiv" href="dashboard/get.do"><spring:message code="master.page.dashboard" /></a></li>
 			<li><a class="fNiv" href="category/administrator/list.do"><spring:message code="master.page.categories" /></a></li>
+			<li><a class="fNiv" href="administrator/author/list.do"><spring:message code="master.page.authors" /></a></li>
 			<li><a class="fNiv" href="configurationParameters/administrator/display.do"><spring:message code="master.page.config" /></a></li>
 			
 			
