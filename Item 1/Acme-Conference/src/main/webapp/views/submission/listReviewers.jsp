@@ -16,7 +16,7 @@
 <h3><spring:message code="submission.noReviewersKeywords" /></h3>
 </jstl:if>
 
-<jstl:if test="${not empty empty reviewers}">
+<jstl:if test="${not empty reviewers}">
 
 <display:table name="reviewers" id="row"
 		requestURI="${requestURI}" pagesize="5"
@@ -25,9 +25,11 @@
 	
 	<display:column property="name" titleKey="submission.reviewer.name" />
 	
-	<display:column property="keywords" titleKey="submission.reviewer.keywords" />
-	
-	
+	<display:column titleKey="submission.reviewer.keywords" >
+					<jstl:forEach items="${row.keywords}" var="keyword">
+					<jstl:out value="${keyword}" />, 
+					</jstl:forEach>
+    </display:column>
 	
 
 		<display:column>

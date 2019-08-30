@@ -176,10 +176,10 @@ public class SubmissionService {
 		final Double numberAccept = this.reportService.countFinalAcceptReportBySubmission(submissionId);
 		final Double numberReject = this.reportService.countFinalRejectReportBySubmission(submissionId);
 		final Double numberBorderLine = this.reportService.countFinalBorderLineReportBySubmission(submissionId);
-		final Collection<Report> reports = this.reportService.findReportsBySubmission(submissionId);
-		final Double numberTotalReports = new Double(reports.size());
+		final Collection<Report> reports = this.reportService.findAllReportsBySubmission(submissionId);
+		final Double numberTotalReports = Double.valueOf(reports.size() * 1.0);
 		final Double numberDecidedReports = numberAccept + numberBorderLine + numberReject;
-		Assert.isTrue(numberDecidedReports == numberTotalReports, "Not all reports of submission " + retrieved.getTicker() + " has been completed");
+		Assert.isTrue(numberDecidedReports.equals(numberTotalReports), "Not all reports of submission " + retrieved.getTicker() + " has been completed");
 
 		if (numberAccept > numberReject)
 			this.acceptSubmission(submissionId);
