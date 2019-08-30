@@ -13,7 +13,7 @@
 	<jstl:set value="/administrator" var="autorize"/>
 </security:authorize>
 
-<form:form action="report/edit.do" modelAttribute="report">
+<form:form action="report/reviewer/edit.do" modelAttribute="report">
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
@@ -33,9 +33,10 @@
 		<spring:message code="report.decision" />:
 	</label>
 	<select id="decision" name="decision">
-		<option value="REJECT">REJECT</option>
-		<option value="BORDER-LINE">BORDER-LINE</option>
-		<option value="ACCEPT">ACCEPT</option>
+		
+		<option value="REJECT" <jstl:if test="${report.decision eq 'REJECT'}">selected</jstl:if>>REJECT</option>
+		<option value="BORDER-LINE" <jstl:if test="${report.decision eq 'BORDER-LINE'}">selected</jstl:if>>BORDER-LINE</option>
+		<option value="ACCEPT" <jstl:if test="${report.decision eq 'ACCEPT'}">selected</jstl:if>>ACCEPT</option>
 	</select>
 	<br>
 	

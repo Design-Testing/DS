@@ -19,7 +19,7 @@ import domain.Report;
 
 @Controller
 @RequestMapping("/report/reviewer")
-public class ReportController extends AbstractController {
+public class ReportReviewerController extends AbstractController {
 
 	@Autowired
 	private ReportService	reportService;
@@ -28,7 +28,7 @@ public class ReportController extends AbstractController {
 
 
 	// Constructors -----------------------------------------------------------
-	public ReportController() {
+	public ReportReviewerController() {
 		super();
 	}
 
@@ -45,7 +45,7 @@ public class ReportController extends AbstractController {
 		ModelAndView result;
 		if (!binding.hasErrors()) {
 			this.reportService.save(report, report.getSubmission(), report.getReviewer());
-			result = new ModelAndView("redirect:/report/list.do");
+			result = new ModelAndView("redirect:/report/reviewer/list.do");
 		} else {
 			result = new ModelAndView("report/edit");
 			result.addObject("report", report);
