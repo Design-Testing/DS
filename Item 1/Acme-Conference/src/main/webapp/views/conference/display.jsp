@@ -133,9 +133,13 @@
 
 <br>
 <br>
+
+<jstl:if test="${isAdministrator eq true  }" >
+<acme:button url="message/broadcastAuthorsRegistrationConference.do?origen=outbox&conferenceId=${conference.id}" name="broadcast" code="conference.broadcast.registration"/>
+</jstl:if>
 <br>
-
-
+<br>
+<br>
 <!------------------------------------------------------------------------------->
 <!------------------------------- SUBMISSIONS ----------------------------------->
 <!------------------------------------------------------------------------------->
@@ -153,6 +157,8 @@
     </jstl:if>
 	
 	<jstl:if test="${not empty submissions and conference.isDraft eq false  }" >
+			<acme:button url="message/broadcastAuthorsSubmissionConference.do?origen=outbox&conferenceId=${conference.id}" name="broadcast" code="conference.broadcast.submission"/>
+			<br>
 			<acme:button url="conference/administrator/runAssignation.do?conferenceId=${conference.id}" name="display" code="conference.run.assignation"/>
 			
 			<acme:button url="conference/administrator/decideOnConference.do?conferenceId=${conference.id}" name="display" code="conference.run.decision"/>
@@ -328,17 +334,4 @@
 		<acme:button url="conference/list.do" name="back" code="conference.back" />
 	</jstl:otherwise>
 </jstl:choose>
-
-
-<security:authorize access="hasRole('ADMIN')">
-	<acme:button url="message/broadcastAuthorsRegistrationConference.do?origen=outbox&conferenceId=${conference.id}" name="broadcast" code="conference.broadcast.registration"/>
-	<jstl:if test="${acceptedSubmissions.size > 0 or rejectedSubmissions.size > 0 or underReviewedSubmissions.size > 0}">
-		<acme:button url="message/broadcastAuthorsSubmissionConference.do?origen=outbox&conferenceId=${conference.id}" name="broadcast" code="conference.broadcast.submission"/>
-	</jstl:if>
-</security:authorize>
-
-
-
-
-
 
