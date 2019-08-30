@@ -25,9 +25,11 @@
 	
 	<display:column property="name" titleKey="submission.reviewer.name" />
 	
-	<display:column property="keywords" titleKey="submission.reviewer.keywords" />
-	
-	
+	<display:column titleKey="submission.reviewer.keywords" >
+					<jstl:forEach items="${row.keywords}" var="keyword">
+					<jstl:out value="${keyword}" />, 
+					</jstl:forEach>
+    </display:column>
 	
 
 		<display:column>

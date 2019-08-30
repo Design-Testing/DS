@@ -29,8 +29,12 @@
 <acme:display code="submission.reviewPaper.title" value="${submission.reviewPaper.title}" />
 <acme:display code="submission.reviewPaper.summary" value="${submission.reviewPaper.summary}" />
 <acme:display code="submission.reviewPaper.document" value="${submission.reviewPaper.document}" url="${submission.reviewPaper.document}" />
-<acme:display code="submission.reviewPaper.authors" value="${submission.reviewPaper.authors}" />
-
+<spring:message code="submission.reviewPaper.authors" />:
+<ul>
+	<jstl:forEach items="${submission.reviewPaper.authors}" var="author">
+		<li><jstl:out value="${author}" /></li>
+	</jstl:forEach>
+</ul>
 
 <br>
 <br>
@@ -42,7 +46,12 @@
 <acme:display code="submission.cameraReadyPaper.title" value="${submission.cameraReadyPaper.title}" />
 <acme:display code="submission.cameraReadyPaper.summary" value="${submission.cameraReadyPaper.summary}" />
 <acme:display code="submission.cameraReadyPaper.document" value="${submission.cameraReadyPaper.document}" />
-<acme:display code="submission.cameraReadyPaper.authors" value="${submission.cameraReadyPaper.authors}" />
+<spring:message code="submission.cameraReadyPaper.authors" />:
+<ul>
+	<jstl:forEach items="${submission.cameraReadyPaper.authors}" var="author">
+		<li><jstl:out value="${author}" /></li>
+	</jstl:forEach>
+</ul>
 
 <br>
 <jstl:if test="${availableCameraReadyDeadline eq true }">

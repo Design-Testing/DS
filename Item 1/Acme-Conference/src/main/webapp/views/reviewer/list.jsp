@@ -20,7 +20,13 @@
     			<display:column property="name" titleKey="reviewer.name" />
     			<display:column property="middleName" titleKey="reviewer.middleName" />
     			<display:column property="surname" titleKey="reviewer.surname" />
-    			<display:column property="keywords" titleKey="reviewer.keywords" />
+    			<display:column titleKey="reviewer.keywords" >
+					<jstl:forEach items="${row.keywords}" var="keyword">
+					<jstl:out value="${keyword}" />, 
+					</jstl:forEach>
+    			</display:column>
+    			
+
 			
 		
 </display:table>
