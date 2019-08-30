@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,13 +137,16 @@ public class DashboardService {
 		final Collection<String> buzzWords = this.findAllBuzzWords();
 		Double maximumScore = 0.;
 
+		//"(.*)" + bw + "(.*)"
 		for (final Author author : authors) {
 			Double score = 0.;
 			for (final Paper cameraReadyPaper : this.paperService.findByAuthorUAId(author.getUserAccount().getId()))
-				for (final String bw : buzzWords)
-					if (cameraReadyPaper.getTitle().toLowerCase().matches("(.*)" + bw + "(.*)") || cameraReadyPaper.getSummary().toLowerCase().matches("(.*)" + bw + "(.*)"))
-						score += 1;
-
+				for (final String bw : buzzWords) {
+					final String all = cameraReadyPaper.getTitle() + " " + cameraReadyPaper.getSummary();
+					final int matches = StringUtils.countMatches(all.toLowerCase(), bw);
+					if (matches > 0)
+						score += matches;
+				}
 			if (score > maximumScore)
 				maximumScore = score;
 
@@ -168,9 +172,9 @@ public class DashboardService {
 		for (final String w : words) {
 			final Integer v = buzzWFreq.get(w);
 			if (v != null)
-				buzzWFreq.put(w.toLowerCase(), v + 1);
+				buzzWFreq.put(w, v + 1);
 			else
-				buzzWFreq.put(w.toLowerCase(), 1);
+				buzzWFreq.put(w, 1);
 		}
 
 		final Double max = this.max(buzzWFreq.values()) * 0.8;
@@ -186,7 +190,7 @@ public class DashboardService {
 
 		for (final Conference conference : this.conferenceService.findLast12MonthOrFuture()) {
 			String all = conference.getTitle() + " " + conference.getSummary();
-			all = all.replaceAll("\\d", "");
+			all = all.toLowerCase().replaceAll("\\d", "");
 
 			for (final String voidWord : this.configurationParametersService.find().getVoidWords())
 				all = all.replaceAll("\\b" + voidWord + "\\b", "");
