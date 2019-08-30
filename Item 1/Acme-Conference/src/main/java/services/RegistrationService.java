@@ -62,7 +62,6 @@ public class RegistrationService {
 	}
 
 	public Collection<Registration> findByConference(final int conferenceId) {
-		this.authorService.findByPrincipal();
 		Assert.isTrue(conferenceId != 0);
 		final Collection<Registration> registration = this.registrationRepository.findByConference(conferenceId);
 		Assert.notNull(registration);
