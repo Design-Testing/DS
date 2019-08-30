@@ -21,8 +21,14 @@
 			<acme:display code="topic" value="${m.topic.spanish}" />
 		</jstl:otherwise>
 	</jstl:choose>
-	<acme:display code="recivers" value="${m.recivers}" />
+	<spring:message code="recivers" />:
+	<ul>
+		<jstl:forEach items="${m.recivers}" var="r">
+			<li><jstl:out value="${r}" /></li>
+		</jstl:forEach>
+	</ul>
 	<acme:display code="body" value="${m.body}" />
+	
 
 
 

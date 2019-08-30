@@ -41,6 +41,9 @@ public class AdministratorService {
 	@Autowired
 	private Validator				validator;
 
+	@Autowired
+	private FolderService			folderService;
+
 
 	public Administrator create() {
 		final Administrator a = new Administrator();
@@ -67,6 +70,8 @@ public class AdministratorService {
 			final UserAccount uasaved = this.userAccountService.save(ua);
 			a.setUserAccount(uasaved);
 			result = this.administratorRepository.save(a);
+
+			this.folderService.setFoldersByDefault(result);
 		} else {
 			final Administrator principal = this.findByPrincipal();
 			Assert.isTrue(principal.getId() == a.getId(), "You can not edit the information of another administrator");
@@ -111,6 +116,7 @@ public class AdministratorService {
 			admin = this.create();
 			admin.setName(actorForm.getName());
 			admin.setSurname(actorForm.getSurname());
+			admin.setMiddleName(actorForm.getMiddleName());
 			admin.setPhoto(actorForm.getPhoto());
 			admin.setPhone(actorForm.getPhone());
 			admin.setEmail(actorForm.getEmail());
@@ -129,6 +135,7 @@ public class AdministratorService {
 			admin = this.administratorRepository.findOne(actorForm.getId());
 			admin.setName(actorForm.getName());
 			admin.setSurname(actorForm.getSurname());
+			admin.setMiddleName(actorForm.getMiddleName());
 			admin.setPhoto(actorForm.getPhoto());
 			admin.setPhone(actorForm.getPhone());
 			admin.setEmail(actorForm.getEmail());
