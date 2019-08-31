@@ -35,26 +35,25 @@ public class TutorialServiceTest extends AbstractTest {
 
 
 	@Test
-	public void createTutorialWithAuthenticationTest() {
+	public void createTest() {
 		super.authenticate("admin1");
 		final Tutorial tutorial = this.tutorialService.create();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void createTutorialWithoutAuthenticationTest() {
-		final Tutorial tutorial = this.tutorialService.create();
+		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteWithConferenceNotInDraftModeTest() {
+		super.authenticate("admin1");
 		final List<Tutorial> tutorials = new ArrayList<Tutorial>(this.tutorialService.findTutorials());
 		final Tutorial tutorial = tutorials.get(0);
 		final Conference conference = this.conferenceService.findConferenceByTutorialId(tutorial.getId());
 		this.tutorialService.delete(tutorial, conference.getId());
+		super.unauthenticate();
 	}
 
 	@Test
 	public void deleteWithConferenceInDraftModeTest() {
+		super.authenticate("admin1");
 		final List<Tutorial> tutorials = new ArrayList<Tutorial>(this.tutorialService.findTutorials());
 		final Tutorial tutorial = tutorials.get(0);
 		final Conference conference = this.conferenceService.findConferenceByTutorialId(tutorial.getId());
@@ -71,5 +70,6 @@ public class TutorialServiceTest extends AbstractTest {
 		conference.setEndDate(endDate);
 		final Conference saved = this.conferenceService.save(conference);
 		this.tutorialService.delete(tutorial, saved.getId());
+		super.unauthenticate();
 	}
 }

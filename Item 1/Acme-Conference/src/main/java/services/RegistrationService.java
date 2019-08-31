@@ -123,6 +123,7 @@ public class RegistrationService {
 		final Collection<Registration> registrations = this.findAllByAuthorUserId(c.getUserAccount().getId());
 		if (!registrations.isEmpty())
 			this.deleteAll(registrations);
+		Assert.isTrue(this.registrationRepository.findAllByAuthorUserId(c.getUserAccount().getId()).isEmpty());
 	}
 
 	private void deleteAll(final Collection<Registration> registrationsToDelete) {

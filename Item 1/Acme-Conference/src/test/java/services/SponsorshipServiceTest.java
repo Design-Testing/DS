@@ -36,10 +36,22 @@ public class SponsorshipServiceTest extends AbstractTest {
 		super.authenticate("sponsor1");
 		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
 		final Sponsorship sponsorship = sponsorships.get(0);
+		sponsorship.getCreditCard().setExpirationMonth(12);
 		sponsorship.setBanner("http://www.url.com/prueba");
 		this.sponsorshipService.save(sponsorship);
+		super.unauthenticate();
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void saveWithExpiredCreditCardTest() {
+		super.authenticate("sponsor1");
+		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
+		final Sponsorship sponsorship = sponsorships.get(0);
+		sponsorship.getCreditCard().setExpirationYear(10);
+		sponsorship.setBanner("http://www.url.com/prueba");
+		this.sponsorshipService.save(sponsorship);
+		super.unauthenticate();
+	}
 	@Test(expected = IllegalArgumentException.class)
 	public void saveSponsorshipNotOwnedTest() {
 		super.authenticate("sponsor1");
@@ -47,6 +59,7 @@ public class SponsorshipServiceTest extends AbstractTest {
 		final Sponsorship sponsorship = sponsorships.get(1);
 		sponsorship.setBanner("http://www.url.com/prueba");
 		this.sponsorshipService.save(sponsorship);
+		super.unauthenticate();
 	}
 
 	@Test
@@ -55,6 +68,7 @@ public class SponsorshipServiceTest extends AbstractTest {
 		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
 		final Sponsorship sponsorship = sponsorships.get(0);
 		this.sponsorshipService.delete(sponsorship);
+		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -63,6 +77,7 @@ public class SponsorshipServiceTest extends AbstractTest {
 		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
 		final Sponsorship sponsorship = sponsorships.get(1);
 		this.sponsorshipService.delete(sponsorship);
+		super.unauthenticate();
 	}
 
 }

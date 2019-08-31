@@ -71,15 +71,11 @@ public class CategoryService {
 		if (categoriasDependientes.isEmpty()) {
 			this.conferenceService.reassignConferences(categoryId);
 			this.categoryRepository.delete(categoryId);
-			System.out.println("Se ha eliminado la categoria" + categoryId);
 		} else {
-			for (int i = 0; i < categoriasDependientes.size(); i++) {
-				System.out.println(categoriasDependientes.get(i));
+			for (int i = 0; i < categoriasDependientes.size(); i++)
 				this.delete(categoriasDependientes.get(i).getId());
-			}
 			this.conferenceService.reassignConferences(categoryId);
 			this.categoryRepository.delete(categoryId);
-			System.out.println("Se ha eliminado la categoria" + categoryId);
 		}
 
 	}

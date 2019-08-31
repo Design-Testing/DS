@@ -88,7 +88,7 @@ public class ActorForm extends DomainEntity {
 
 	@Column(unique = true)
 	@NotBlank
-	@Pattern(regexp = "^((([\\w]\\s)*[\\w])+<\\w+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}>)$||^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}$")
+	@Pattern(regexp = "^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3})$||^((([\\w]\\s)*[\\w])+\\s<[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3})>)$")
 	public String getEmail() {
 		return this.email;
 	}

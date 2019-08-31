@@ -28,8 +28,10 @@ public class CategoryServiceTest extends AbstractTest {
 
 	@Test
 	public void createTest() {
+		super.authenticate("admin1");
 		final Category category = this.categoryService.create();
 		Assert.notNull(category);
+		super.unauthenticate();
 
 	}
 
@@ -41,8 +43,9 @@ public class CategoryServiceTest extends AbstractTest {
 		category.setTitleEs("TEST");
 		final Category saved = this.categoryService.save(category);
 		Assert.isTrue(category.getTitleEs().equals(saved.getTitleEs()));
-
+		super.unauthenticate();
 	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void saveRootCategoryTest() {
 		super.authenticate("admin1");
@@ -50,6 +53,7 @@ public class CategoryServiceTest extends AbstractTest {
 		final Category category = categories.get(0);
 		category.setTitleEs("TEST");
 		this.categoryService.save(category);
+		super.unauthenticate();
 
 	}
 
@@ -59,6 +63,7 @@ public class CategoryServiceTest extends AbstractTest {
 		final List<Category> categories = new ArrayList<Category>(this.categoryService.findAll());
 		final Category category = categories.get(0);
 		this.categoryService.delete(category.getId());
+		super.unauthenticate();
 	}
 
 	@Test
@@ -67,5 +72,6 @@ public class CategoryServiceTest extends AbstractTest {
 		final List<Category> categories = new ArrayList<Category>(this.categoryService.findAll());
 		final Category category = categories.get(1);
 		this.categoryService.delete(category.getId());
+		super.unauthenticate();
 	}
 }

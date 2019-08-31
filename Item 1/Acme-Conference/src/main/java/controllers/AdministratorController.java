@@ -19,7 +19,7 @@ import services.ConfigurationParametersService;
 import services.FinderService;
 import domain.Administrator;
 import domain.Finder;
-import forms.ActorForm;
+import forms.AdminForm;
 
 @Controller
 @RequestMapping("/administrator")
@@ -51,7 +51,7 @@ public class AdministratorController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView editAdministrator() {
 		final Administrator administrator = this.administratorService.findByPrincipal();
-		final ActorForm actorForm = new ActorForm();
+		final AdminForm actorForm = new AdminForm();
 		actorForm.setAddress(administrator.getAddress());
 		actorForm.setEmail(administrator.getEmail());
 		actorForm.setId(administrator.getId());
@@ -73,7 +73,7 @@ public class AdministratorController extends AbstractController {
 	public ModelAndView signupAdministrator() {
 		final ModelAndView result;
 
-		final ActorForm actorForm = new ActorForm();
+		final AdminForm actorForm = new AdminForm();
 
 		result = new ModelAndView("administrator/signup");
 		result.addObject("actorForm", actorForm);
@@ -82,7 +82,7 @@ public class AdministratorController extends AbstractController {
 		return result;
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveAdministrator(@ModelAttribute("actorForm") @Valid final ActorForm actorForm, final BindingResult binding, final HttpServletRequest request) {
+	public ModelAndView saveAdministrator(@ModelAttribute("actorForm") @Valid final AdminForm actorForm, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
 			result = new ModelAndView("administrator/signup");

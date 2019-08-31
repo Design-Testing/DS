@@ -20,7 +20,7 @@ import security.LoginService;
 import security.UserAccount;
 import security.UserAccountRepository;
 import domain.Administrator;
-import forms.ActorForm;
+import forms.AdminForm;
 
 @Service
 @Transactional
@@ -109,7 +109,7 @@ public class AdministratorService {
 		return this.administratorRepository.findSystem();
 	}
 
-	public Administrator reconstruct(final ActorForm actorForm, final BindingResult binding) {
+	public Administrator reconstruct(final AdminForm actorForm, final BindingResult binding) {
 		Administrator admin;
 
 		if (actorForm.getId() == 0) {
