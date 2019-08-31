@@ -136,4 +136,15 @@ public class SponsorshipService {
 		return res;
 	}
 
+	public Sponsorship findRandomSponsorship() {
+		Sponsorship res;
+		final Collection<Sponsorship> sponsorships = this.findAll();
+		if (sponsorships.size() > 0) {
+			final int randomNumber = (int) (Math.random() * sponsorships.size());
+			res = (Sponsorship) sponsorships.toArray()[randomNumber];
+		} else
+			res = null;
+
+		return res;
+	}
 }
