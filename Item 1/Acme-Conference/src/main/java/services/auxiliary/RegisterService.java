@@ -88,6 +88,7 @@ public class RegisterService {
 		final String hash = encoder.encodePassword(ua.getPassword(), null);
 		if (sponsor.getId() == 0) {
 			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
+
 			ua.setPassword(hash);
 			sponsor.setUserAccount(ua);
 			result = this.sponsorService.save(sponsor);

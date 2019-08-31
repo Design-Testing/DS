@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ConfigurationParametersService;
 import services.FinderService;
 import services.ReviewerService;
 import domain.Reviewer;
@@ -24,12 +25,15 @@ import forms.ReviewerForm;
 public class ReviewerController extends AbstractController {
 
 	@Autowired
-	private ReviewerService	reviewerService;
+	private ReviewerService					reviewerService;
 
 	@Autowired
-	private FinderService	finderService;
+	private FinderService					finderService;
 
-	final String			lang	= LocaleContextHolder.getLocale().getLanguage();
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
+
+	final String							lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -71,6 +75,7 @@ public class ReviewerController extends AbstractController {
 		final ReviewerForm reviewerForm = new ReviewerForm();
 
 		result = new ModelAndView("reviewer/signup");
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		result.addObject("reviewerForm", reviewerForm);
 		return result;
 	}
