@@ -369,6 +369,8 @@ public class ConferenceAdministratorController extends AbstractController {
 					result.addObject("notificationMsg", "conference.no.status.updated");
 				if (oops.getMessage().equals("All the submissions of this conference has already been decided"))
 					result.addObject("notificationMsg", "message.all.submissions.already.decided");
+				if (oops.getMessage().equals("notification deadline is elapsed"))
+					result.addObject("notificationMsg", "conference.notification.elapsed");
 				else
 					result.addObject("notificationMsgDecision", oops.getMessage());
 
