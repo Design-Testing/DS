@@ -32,16 +32,20 @@ public interface ConferenceRepository extends JpaRepository<Conference, Integer>
 	@Query("select c from Conference c join c.activities ac where ac.id=?1")
 	Conference findConference(int activityId);
 
-	@Query("select c from Conference c WHERE ((month(CURRENT_TIMESTAMP) - month(c.submission) = 0 AND day(CURRENT_TIMESTAMP) - day(c.submission) <=5 AND day(CURRENT_TIMESTAMP) - day(c.submission) >=0) OR ((month(CURRENT_TIMESTAMP) - month(c.submission) = 1 OR month(CURRENT_TIMESTAMP) - month(c.submission) = -11 ) AND day(CURRENT_TIMESTAMP) - day(c.submission) <=-25 AND day(CURRENT_TIMESTAMP) - day(c.submission) >=-30)) ")
+	//@Query("select c from Conference c WHERE ((month(CURRENT_TIMESTAMP) - month(c.submission) = 0 AND day(CURRENT_TIMESTAMP) - day(c.submission) <=5 AND day(CURRENT_TIMESTAMP) - day(c.submission) >=0) OR ((month(CURRENT_TIMESTAMP) - month(c.submission) = 1 OR month(CURRENT_TIMESTAMP) - month(c.submission) = -11 ) AND day(CURRENT_TIMESTAMP) - day(c.submission) <=-25 AND day(CURRENT_TIMESTAMP) - day(c.submission) >=-30)) ")
+	@Query("select c from Conference c where DATEDIFF(CURRENT_TIMESTAMP,c.submission ) <= 5 and DATEDIFF(CURRENT_TIMESTAMP,c.submission ) >= 0")
 	Collection<Conference> findFiveDaysFromSubmissionConferences();
 
-	@Query("select c from Conference c WHERE ((month(c.notification) - month(CURRENT_TIMESTAMP) = 0 AND day(c.notification) - day(CURRENT_TIMESTAMP) <=5 AND day(c.notification) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.notification) - month(CURRENT_TIMESTAMP) = 1 OR month(c.notification) - month(CURRENT_TIMESTAMP) = -11 )AND day(c.notification) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.notification) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	//@Query("select c from Conference c WHERE ((month(c.notification) - month(CURRENT_TIMESTAMP) = 0 AND day(c.notification) - day(CURRENT_TIMESTAMP) <=5 AND day(c.notification) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.notification) - month(CURRENT_TIMESTAMP) = 1 OR month(c.notification) - month(CURRENT_TIMESTAMP) = -11 )AND day(c.notification) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.notification) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	@Query("select c from Conference c where DATEDIFF(c.notification , CURRENT_TIMESTAMP) <= 5 and DATEDIFF(c.notification , CURRENT_TIMESTAMP) >= 0")
 	Collection<Conference> findFiveDaysForNotificationConferences();
 
-	@Query("select c from Conference c WHERE ((month(c.cameraReady) - month(CURRENT_TIMESTAMP) = 0 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) <=5 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.cameraReady) - month(CURRENT_TIMESTAMP) = 1 OR month(c.cameraReady) - month(CURRENT_TIMESTAMP) = -11) AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	//@Query("select c from Conference c WHERE ((month(c.cameraReady) - month(CURRENT_TIMESTAMP) = 0 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) <=5 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.cameraReady) - month(CURRENT_TIMESTAMP) = 1 OR month(c.cameraReady) - month(CURRENT_TIMESTAMP) = -11) AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.cameraReady) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	@Query("select c from Conference c where DATEDIFF(c.cameraReady , CURRENT_TIMESTAMP) <= 5 and DATEDIFF(c.cameraReady , CURRENT_TIMESTAMP) >= 0 ")
 	Collection<Conference> findFiveDaysForCameraReadyConferences();
 
-	@Query("select c from Conference c WHERE ((month(c.startDate) - month(CURRENT_TIMESTAMP) = 0 AND day(c.startDate) - day(CURRENT_TIMESTAMP) <=5 AND day(c.startDate) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.startDate) - month(CURRENT_TIMESTAMP) = 1 OR month(c.startDate) - month(CURRENT_TIMESTAMP) = -11) AND day(c.startDate) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.startDate) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	//@Query("select c from Conference c WHERE ((month(c.startDate) - month(CURRENT_TIMESTAMP) = 0 AND day(c.startDate) - day(CURRENT_TIMESTAMP) <=5 AND day(c.startDate) - day(CURRENT_TIMESTAMP) >=0) OR ((month(c.startDate) - month(CURRENT_TIMESTAMP) = 1 OR month(c.startDate) - month(CURRENT_TIMESTAMP) = -11) AND day(c.startDate) - day(CURRENT_TIMESTAMP) <=-25 AND day(c.startDate) - day(CURRENT_TIMESTAMP) >=-30)) ")
+	@Query("select c from Conference c where DATEDIFF(c.startDate , CURRENT_TIMESTAMP)<= 5 and  DATEDIFF(c.startDate , CURRENT_TIMESTAMP) >= 0")
 	Collection<Conference> findFiveDaysForBeginningConferences();
 
 	@Query("select ac from Conference c join c.activities ac WHERE c.id=?1")
