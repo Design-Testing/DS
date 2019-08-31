@@ -115,8 +115,7 @@ public class SubmissionServiceTest extends AbstractTest {
 		caught = null;
 		try {
 			this.authenticate(author);
-			final Paper cameraReadyPaper = this.paperService.save(paper);
-			this.submissionService.sendCameraReadyPaper(this.getEntityId(submission), cameraReadyPaper);
+			this.submissionService.sendCameraReadyPaper(this.getEntityId(submission), paper);
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
@@ -141,7 +140,11 @@ public class SubmissionServiceTest extends AbstractTest {
 			{
 				//				A: Acme-Conference: un administrador asigna una solicitud de presentación a un revisor
 				//				B: Test Positivo: un administrador asigna una solicitud de presentación a un revisor correctamente
-				"reviewer2", "submission1", null
+				"reviewer2", "submission8", java.lang.IllegalArgumentException.class
+			}, {
+				//				A: Acme-Conference: un administrador asigna una solicitud de presentación a un revisor
+				//				B: Test Positivo: un administrador intenta asignar a un revisor una solicitud de presentación de una confrencia cuyo plazo de notificación ha expirado
+				"reviewer2", "submission1", java.lang.IllegalArgumentException.class
 			}, {
 				//				A: Acme-Conference: un administrador asigna una presentación a un revisor
 				//				B: Test Negativo: un administrador intenta asignar a un revisor una solicitud de presentación que ya tiene asignada

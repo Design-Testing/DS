@@ -670,6 +670,16 @@
 		<property name="isNotified" value="false" />
 	</bean>
 	
+	<bean id="submission8" class="domain.Submission">
+		<property name="ticker" value="AUX-BQ22" />
+		<property name="moment" value="2019/08/20 07:25" />
+		<property name="status" value="UNDER-REVIEWED" />
+		<property name="reviewPaper" ref="paper9" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference5" />
+		<property name="isNotified" value="false" />
+	</bean>
+	
 
 
 	<!-- =================================================================== -->
@@ -792,6 +802,7 @@
 
 	</bean>
 	
+	<!-- NO CAMBIAR FECHAS DE ESTA CONFERENCIA -->
 	<bean id="conference6" class="domain.Conference">
 		<!-- CONFERENCE -->
 		<property name="title" value="Herramientas de desarrollo para Android" />
@@ -819,7 +830,7 @@
 		<property name="title" value="Big data en la sociedad actual" />
 		<property name="acronym" value="bigdata" />
 		<property name="venue" value="Big Data" />
-		<property name="submission" value="2019/09/20 00:00" />
+		<property name="submission" value="2019/10/20 00:00" />
 		<property name="notification" value="2019/10/31 00:00" />
 		<property name="cameraReady" value="2019/11/04 00:00" />
 		<property name="startDate" value="2019/11/05 00:00" />
@@ -1228,6 +1239,17 @@
 		<property name="authors">
 			<list>
 				<value>Author of paper8</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="paper9" class="domain.Paper">
+		<property name="title" value="Title of paper 9" />
+		<property name="summary" value="Summary of paper 9" />
+		<property name="document" value="http://www.documentPaper9.com" />
+		<property name="authors">
+			<list>
+				<value>Author of paper9</value>
 			</list>
 		</property>
 	</bean>
