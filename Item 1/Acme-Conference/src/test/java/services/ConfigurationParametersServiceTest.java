@@ -22,29 +22,39 @@ public class ConfigurationParametersServiceTest extends AbstractTest {
 	private ConfigurationParametersService	configurationParametersService;
 
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void saveCountryPhoneCodeTest() {
 		super.authenticate("admin1");
 		final ConfigurationParameters configurationParameters = this.configurationParametersService.find();
 		configurationParameters.setCountryPhoneCode("34");
 		this.configurationParametersService.save(configurationParameters);
+		super.unauthenticate();
 
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void saveCreditCardMakeTest() {
 		super.authenticate("admin1");
 		final ConfigurationParameters configurationParameters = this.configurationParametersService.find();
 		configurationParameters.getCreditCardMake().add("");
 		this.configurationParametersService.save(configurationParameters);
+		super.unauthenticate();
+
+	}
+
+	@Test
+	public void saveBannerTest() {
+		super.authenticate("admin1");
+		final ConfigurationParameters configurationParameters = this.configurationParametersService.find();
+		configurationParameters.setBanner("http://www.img.com/image-1.png");
+		this.configurationParametersService.save(configurationParameters);
+		super.unauthenticate();
 
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void saveBannerTest() {
-		super.authenticate("admin1");
+	public void saveUnauthenticatedTest() {
 		final ConfigurationParameters configurationParameters = this.configurationParametersService.find();
-		configurationParameters.setBanner("prueba");
 		this.configurationParametersService.save(configurationParameters);
 
 	}

@@ -30,6 +30,7 @@ public class PresentationServiceTest extends AbstractTest {
 	public void createPresentationWithAuthenticationTest() {
 		super.authenticate("admin1");
 		final Presentation presentation = this.presentationService.create();
+		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
