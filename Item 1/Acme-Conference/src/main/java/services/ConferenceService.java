@@ -243,9 +243,8 @@ public class ConferenceService {
 		this.administratorService.findByPrincipal();
 		final Conference retrieved = this.findOne(conferenceId);
 		Assert.notNull(retrieved);
-		//final Date now = new Date();
-		//TODO submission deadline
-		//Assert.isTrue(retrieved.getSubmission().before(now), "submission deadline must be elapsed");
+		final Date now = new Date();
+		Assert.isTrue(now.before(retrieved.getNotification()), "notification deadline is elapsed");
 		final Collection<Submission> submissions = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 
 		Assert.isTrue(!submissions.isEmpty(), "All the submissions of this conference has already been decided");
