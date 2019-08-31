@@ -181,15 +181,16 @@ public class SubmissionService {
 		final Double numberDecidedReports = numberAccept + numberBorderLine + numberReject;
 		Assert.isTrue(numberDecidedReports.equals(numberTotalReports), "Not all reports of submission " + retrieved.getTicker() + " has been completed");
 
-		if (numberAccept > numberReject)
+		if (Double.compare(numberAccept, numberReject) > 0)
 			this.acceptSubmission(submissionId);
-		else if (numberAccept == numberReject) {
+		else if (Double.compare(numberAccept, numberReject) == 0) {
 			if (numberBorderLine > 0)
 				this.acceptSubmission(submissionId);
 			else
 				this.acceptSubmission(submissionId);
-		} else if (numberReject > numberAccept)
+		} else if (Double.compare(numberAccept, numberReject) < 0)
 			this.rejectSubmission(submissionId);
+
 	}
 
 	public Submission findOne(final Integer submissionId) {
