@@ -41,6 +41,42 @@ public class AuthorServiceTest extends AbstractTest {
 		final Author author = authors.get(0);
 		author.setName("Test");
 		this.authorService.save(author);
-
+		super.unauthenticate();
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void saveUnauthenticatedTest() {
+		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
+		final Author author = authors.get(0);
+		author.setName("Test");
+		this.authorService.save(author);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void saveAnotherAuthorTest() {
+		super.authenticate("author2");
+		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
+		final Author author = authors.get(0);
+		author.setName("Test");
+		this.authorService.save(author);
+		super.unauthenticate();
+	}
+
+	@Test
+	public void deleteTest() {
+		super.authenticate("author1");
+		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
+		final Author author = authors.get(0);
+		this.authorService.delete(author);
+		super.unauthenticate();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void deleteUnauthenticatedTest() {
+		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
+		final Author author = authors.get(0);
+		this.authorService.delete(author);
+		super.unauthenticate();
+	}
+
 }

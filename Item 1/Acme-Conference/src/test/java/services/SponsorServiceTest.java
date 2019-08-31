@@ -37,6 +37,7 @@ public class SponsorServiceTest extends AbstractTest {
 		final Sponsor sponsor = sponsors.get(0);
 		sponsor.setEmail("probando@correo.com");
 		this.sponsorService.save(sponsor);
+		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -46,5 +47,6 @@ public class SponsorServiceTest extends AbstractTest {
 		final Sponsor sponsor = sponsors.get(1);
 		sponsor.setName("Pruebas");
 		this.sponsorService.save(sponsor);
+		super.unauthenticate();
 	}
 }

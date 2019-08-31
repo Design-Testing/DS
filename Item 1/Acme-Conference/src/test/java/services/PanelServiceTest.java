@@ -30,8 +30,8 @@ public class PanelServiceTest extends AbstractTest {
 	public void createPanelWithAuthenticationTest() {
 		super.authenticate("admin1");
 		final Panel panel = this.panelService.create();
+		super.unauthenticate();
 	}
-
 	@Test(expected = IllegalArgumentException.class)
 	public void createPanelWithoutAuthenticationTest() {
 		final Panel panel = this.panelService.create();

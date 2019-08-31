@@ -38,14 +38,10 @@ public class SectionServiceTest extends AbstractTest {
 
 
 	@Test
-	public void createSectionWithAuthenticationTest() {
+	public void createTest() {
 		super.authenticate("admin1");
 		final Section section = this.sectionService.create();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void createSectionWithoutAuthenticationTest() {
-		final Section section = this.sectionService.create();
+		super.unauthenticate();
 	}
 
 	@Test
@@ -58,11 +54,35 @@ public class SectionServiceTest extends AbstractTest {
 		conference.setIsDraft(true);
 		final Section section = sections.get(0);
 		this.sectionService.save(section, tutorial.getId());
+		super.unauthenticate();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void saveUnauthenticatedTest() {
+		final List<Tutorial> tutorials = new ArrayList<Tutorial>(this.tutorialService.findTutorials());
+		final List<Section> sections = new ArrayList<Section>(this.sectionService.findAll());
+		final Tutorial tutorial = tutorials.get(0);
+		final Conference conference = this.conferenceService.findConferenceByTutorialId(tutorial.getId());
+		conference.setIsDraft(true);
+		final Section section = sections.get(0);
+		this.sectionService.save(section, tutorial.getId());
 	}
 
 	@Test
 	public void deleteTest() {
 		super.authenticate("admin1");
+		final List<Tutorial> tutorials = new ArrayList<Tutorial>(this.tutorialService.findTutorials());
+		final List<Section> sections = new ArrayList<Section>(this.sectionService.findAll());
+		final Tutorial tutorial = tutorials.get(0);
+		final Conference conference = this.conferenceService.findConferenceByTutorialId(tutorial.getId());
+		final Section section = sections.get(0);
+		conference.setIsDraft(true);
+		this.sectionService.delete(section, tutorial.getId(), conference.getId());
+		super.unauthenticate();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void deleteUnauthenticatedTest() {
 		final List<Tutorial> tutorials = new ArrayList<Tutorial>(this.tutorialService.findTutorials());
 		final List<Section> sections = new ArrayList<Section>(this.sectionService.findAll());
 		final Tutorial tutorial = tutorials.get(0);
