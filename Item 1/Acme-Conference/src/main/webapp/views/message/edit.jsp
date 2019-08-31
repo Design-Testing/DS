@@ -27,15 +27,25 @@
 	<form:hidden path="moment" />
 	<form:hidden path="sender" />
 
-	<form:label path="recivers">
+
+	<jstl:choose>
+		<jstl:when test="${isBroadcast != true}">
+		<form:label path="recivers">
 		<spring:message code="recivers" />:
-    </form:label>
-	<form:select path="recivers" code="recivers">
-		<jstl:forEach items="${actors}" var="r">
-			<form:option value="${r.id}" label="${r.name}" />
-		</jstl:forEach>
-	</form:select>
-	<form:errors path="recivers" cssClass="error" />
+	    </form:label>
+		<form:select path="recivers" code="recivers">
+			<jstl:forEach items="${actors}" var="r">
+				<form:option value="${r.id}" label="${r.name}" />
+			</jstl:forEach>
+		</form:select>
+		<form:errors path="recivers" cssClass="error" />
+		</jstl:when>
+		<jstl:otherwise>
+			<form:hidden path="recivers" />
+		</jstl:otherwise>
+	</jstl:choose>
+
+	
 	<br />
 	<br />
 
@@ -77,3 +87,4 @@
 		</button>
 	</jstl:if>
 </form:form>
+

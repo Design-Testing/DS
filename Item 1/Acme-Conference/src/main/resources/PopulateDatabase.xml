@@ -1166,7 +1166,7 @@
 	</bean>
 
 	<bean id="paper3" class="domain.Paper">
-		<property name="title" value="Title of paper 3" />
+		<property name="title" value="Title of paper 3 per conference summary" />
 		<property name="summary" value="Summary of paper 3" />
 		<property name="document" value="http://www.documentPaper3.com" />
 		<property name="authors">

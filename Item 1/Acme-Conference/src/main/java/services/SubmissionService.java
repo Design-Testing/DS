@@ -316,6 +316,18 @@ public class SubmissionService {
 		return result;
 	}
 
+	public Collection<Submission> findAcceptedSubmissions() {
+		final Collection<Submission> result = this.submissionRepository.findAcceptedSubmissions();
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Submission> findRejectedSubmissions() {
+		final Collection<Submission> result = this.submissionRepository.findRejectedSubmissions();
+		Assert.notNull(result);
+		return result;
+	}
+
 	public Collection<Reviewer> availableReviewers(final int submissionId) {
 		final Submission s = this.findOne(submissionId);
 		final Conference conference = s.getConference();

@@ -20,9 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 import services.AdministratorService;
 import services.CategoryService;
 import services.ConferenceService;
+import services.RegistrationService;
 import services.SubmissionService;
 import controllers.AbstractController;
 import domain.Conference;
+import domain.Registration;
 import domain.Submission;
 import forms.ConferenceForm;
 
@@ -41,6 +43,9 @@ public class ConferenceAdministratorController extends AbstractController {
 
 	@Autowired
 	private CategoryService			categoryService;
+
+	@Autowired
+	private RegistrationService		registrationService;
 
 
 	// LIST --------------------------------------------------------
@@ -307,10 +312,16 @@ public class ConferenceAdministratorController extends AbstractController {
 			if (now.after(conference.getSubmission()))
 				isSubmissionElapsed = true;
 
+			final Collection<Registration> registrations = this.registrationService.findByConference(conferenceId);
+			Boolean hasRegistrations = false;
+			if (!registrations.isEmpty())
+				hasRegistrations = true;
+
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", true);
 			result.addObject("submissions", submissions);
+			result.addObject("hasRegistrations", hasRegistrations);
 			result.addObject("isNotificationElapsed", isNotificationElapsed);
 			result.addObject("isSubmissionElapsed", isSubmissionElapsed);
 			result.addObject("acceptedSubmissions", acceptedSubmissions);

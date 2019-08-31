@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,21 +129,28 @@ public class DashboardService {
 		return res;
 	}
 
-	// AUTHOR SCORE
-
-	public Double computeScores() {
+	/**
+	 * Compute authors scores and save them with his new score
+	 * 
+	 * @return Double Maximum score (maximum number of occurrencies)
+	 * @author a8081
+	 * */
+	public Double computeAuthorsScore() {
 		this.administratorService.findByPrincipal();
 		final Collection<Author> authors = this.authorService.findAll();
 		final Collection<String> buzzWords = this.findAllBuzzWords();
 		Double maximumScore = 0.;
 
+		//"(.*)" + bw + "(.*)"
 		for (final Author author : authors) {
 			Double score = 0.;
 			for (final Paper cameraReadyPaper : this.paperService.findByAuthorUAId(author.getUserAccount().getId()))
-				for (final String bw : buzzWords)
-					if (cameraReadyPaper.getTitle().matches("(.*) " + bw + " (.*)") || cameraReadyPaper.getSummary().matches("(.*) " + bw + " (.*)"))
-						score += 1;
-
+				for (final String bw : buzzWords) {
+					final String all = cameraReadyPaper.getTitle() + " " + cameraReadyPaper.getSummary();
+					final int matches = StringUtils.countMatches(all.toLowerCase(), bw);
+					if (matches > 0)
+						score += matches;
+				}
 			if (score > maximumScore)
 				maximumScore = score;
 
@@ -157,6 +165,13 @@ public class DashboardService {
 			}
 		return maximumScore;
 	}
+
+	/**
+	 * Get all buzz words of the system
+	 * 
+	 * @return Collection<String> Buzz words
+	 * @author a8081
+	 * */
 	public Collection<String> findAllBuzzWords() {
 		final Collection<String> res = new ArrayList<>();
 
@@ -181,15 +196,22 @@ public class DashboardService {
 
 		return res;
 	}
+
+	/**
+	 * Get words inside conference titles and summaries that aren't void words
+	 * 
+	 * @return Collection<String> Not void words of the system
+	 * @author a8081
+	 * */
 	private Collection<String> findBuzzWords() {
 		final Collection<String> res = new ArrayList<>();
 
 		for (final Conference conference : this.conferenceService.findLast12MonthOrFuture()) {
 			String all = conference.getTitle() + " " + conference.getSummary();
-			all = all.replaceAll("\\d", "");
+			all = all.toLowerCase().replaceAll("\\d", "");
 
 			for (final String voidWord : this.configurationParametersService.find().getVoidWords())
-				all = all.replaceAll("(.*) " + voidWord + " (.*)", "");
+				all = all.replaceAll("\\b" + voidWord + "\\b", "");
 
 			res.addAll(Arrays.asList(all.split("\\W+")));
 		}
@@ -197,6 +219,12 @@ public class DashboardService {
 		return res;
 	}
 
+	/**
+	 * max function of Java 8 stream custom
+	 * 
+	 * @return Integer Maximum integer inside the collection
+	 * @author a8081
+	 * */
 	private Integer max(final Collection<Integer> input) {
 		int max = 0;
 

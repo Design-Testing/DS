@@ -32,10 +32,20 @@
 					<li><a href="conference/administrator/fiveDaysBeginning.do"><spring:message code="master.page.five.days.beginning.conferences" /></a></li>
 				</ul>
 			</li>
-			<li><a class="fNiv" href="submission/administrator/submissions.do"><spring:message code="master.page.submissions" /></a></li>
+			<li><a class="fNiv" ><spring:message code="master.page.submissions" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="submission/administrator/submissions.do"><spring:message code="master.page.all.submissions" /></a></li>
+					<li><a href="submission/administrator/acceptedSubmissions.do"><spring:message code="master.page.accepted.submissions" /></a></li>
+					<li><a href="submission/administrator/rejectedSubmissions.do"><spring:message code="master.page.rejected.submissions" /></a></li>
+					<li><a href="submission/administrator/underReviewedSubmissions.do"><spring:message code="master.page.under.reviewed.submissions" /></a></li>
+				</ul>
+			
+			</li>
 			<li><a class="fNiv" href="topic/list.do"><spring:message code="master.page.topics" /></a></li>
 			<li><a class="fNiv" href="dashboard/get.do"><spring:message code="master.page.dashboard" /></a></li>
 			<li><a class="fNiv" href="category/administrator/list.do"><spring:message code="master.page.categories" /></a></li>
+			<li><a class="fNiv" href="administrator/author/list.do"><spring:message code="master.page.authors" /></a></li>
 			<li><a class="fNiv" href="configurationParameters/administrator/display.do"><spring:message code="master.page.config" /></a></li>
 			
 			
