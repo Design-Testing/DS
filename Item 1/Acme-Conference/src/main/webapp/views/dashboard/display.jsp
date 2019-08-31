@@ -17,11 +17,11 @@
     <td><jstl:out value="${SubmissionPerConferenceAvg}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="min" /></td>
+  	<td><spring:message code="dashboard.min" /></td>
     <td><jstl:out value="${SubmissionPerConferenceMin}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="max" /></td>
+  	<td><spring:message code="dashboard.max" /></td>
     <td><jstl:out value="${SubmissionPerConferenceMax}"></jstl:out></td>
   </tr>
   <tr>
@@ -37,11 +37,11 @@
     <td><jstl:out value="${RegistrationPerConferenceAvg}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="min" /></td>
+  	<td><spring:message code="dashboard.min" /></td>
     <td><jstl:out value="${RegistrationPerConferenceMin}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="max" /></td>
+  	<td><spring:message code="dashboard.max" /></td>
     <td><jstl:out value="${RegistrationPerConferenceMax}"></jstl:out></td>
   </tr>
   <tr>
@@ -58,11 +58,11 @@
     <td><jstl:out value="${ConferenceFeesAvg}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="min" /></td>
+  	<td><spring:message code="dashboard.min" /></td>
     <td><jstl:out value="${ConferenceFeesMin}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="max" /></td>
+  	<td><spring:message code="dashboard.max" /></td>
     <td><jstl:out value="${ConferenceFeesMax}"></jstl:out></td>
   </tr>
   <tr>
@@ -79,11 +79,11 @@
     <td><jstl:out value="${CommentsPerActivityAvg}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="min" /></td>
+  	<td><spring:message code="dashboard.min" /></td>
     <td><jstl:out value="${CommentsPerActivityMin}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="max" /></td>
+  	<td><spring:message code="dashboard.max" /></td>
     <td><jstl:out value="${CommentsPerActivityMax}"></jstl:out></td>
   </tr>
   <tr>
@@ -99,11 +99,11 @@
     <td><jstl:out value="${DaysPerConferenceAvg}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="min" /></td>
+  	<td><spring:message code="dashboard.min" /></td>
     <td><jstl:out value="${DaysPerConferenceMin}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="max" /></td>
+  	<td><spring:message code="dashboard.max" /></td>
     <td><jstl:out value="${DaysPerConferenceMax}"></jstl:out></td>
   </tr>
   <tr>
@@ -120,11 +120,11 @@
     <td><jstl:out value="${ConferencesPerCategoryAvg}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="min" /></td>
+  	<td><spring:message code="dashboard.min" /></td>
     <td><jstl:out value="${ConferencesPerCategoryMin}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="max" /></td>
+  	<td><spring:message code="dashboard.max" /></td>
     <td><jstl:out value="${ConferencesPerCategoryMax}"></jstl:out></td>
   </tr>
   <tr>
@@ -141,11 +141,11 @@
     <td><jstl:out value="${CommentsPerConferenceAvg}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="min" /></td>
+  	<td><spring:message code="dashboard.min" /></td>
     <td><jstl:out value="${CommentsPerConferenceMin}"></jstl:out></td>
   </tr>
   <tr>
-  	<td><spring:message code="max" /></td>
+  	<td><spring:message code="dashboard.max" /></td>
     <td><jstl:out value="${CommentsPerConferenceMax}"></jstl:out></td>
   </tr>
   <tr>
