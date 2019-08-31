@@ -95,7 +95,6 @@ public class SubmissionService {
 		submission.setIsNotified(false);
 		final Paper paperSaved = this.paperService.save(reviewPaper);
 		submission.setReviewPaper(paperSaved);
-		System.out.println(submission.getTicker());
 		res = this.submissionRepository.save(submission);
 		Assert.notNull(res);
 		return res;
@@ -255,12 +254,8 @@ public class SubmissionService {
 		final StringBuilder sb = new StringBuilder(4);
 		for (int i = 0; i < 4; i++) {
 
-			// 0-62 (exclusive), random returns 0-61
 			final int rndCharAt = random.nextInt(data.length());
 			final char rndChar = data.charAt(rndCharAt);
-
-			// debug
-			//System.out.format("%d\t:\t%c%n", rndCharAt, rndChar);
 
 			sb.append(rndChar);
 

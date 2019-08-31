@@ -670,15 +670,6 @@
 		<property name="isNotified" value="false" />
 	</bean>
 	
-	<bean id="submission8" class="domain.Submission">
-		<property name="ticker" value="AUX-BQ12" />
-		<property name="moment" value="2019/08/20 07:25" />
-		<property name="status" value="UNDER-REVIEWED" />
-		<property name="reviewPaper" ref="paper8" />
-		<property name="author" ref="author1" />
-		<property name="conference" ref="conference1" />
-		<property name="isNotified" value="false" />
-	</bean>
 
 
 	<!-- =================================================================== -->
