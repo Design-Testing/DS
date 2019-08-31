@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -74,7 +73,6 @@ public class Actor extends DomainEntity {
 
 	@Column(unique = true)
 	@NotBlank
-	@Pattern(regexp = "^((([\\w]\\s)*[\\w])+<\\w+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}>)$||^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}$")
 	public String getEmail() {
 		return this.email;
 	}
