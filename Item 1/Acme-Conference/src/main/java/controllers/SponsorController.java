@@ -84,6 +84,7 @@ public class SponsorController extends AbstractController {
 		final ActorForm actorForm = new ActorForm();
 
 		result = new ModelAndView("sponsor/signup");
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		result.addObject("sponsor", actorForm);
 		return result;
 	}

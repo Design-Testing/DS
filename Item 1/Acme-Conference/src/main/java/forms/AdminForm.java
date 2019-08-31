@@ -90,7 +90,7 @@ public class AdminForm extends DomainEntity {
 
 	@Column(unique = true)
 	@NotBlank
-	@Pattern(regexp = "^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}$||^((([\\w]\\s)*[\\w])+\\s<[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}>)$")
+	@Pattern(regexp = "^[a-zA-Z0-9]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}$||^((([a-zA-Z0-9]\\s)*[a-zA-Z0-9])+\\s<[a-zA-Z0-9]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}>)$")
 	public String getEmail() {
 		return this.email;
 	}
