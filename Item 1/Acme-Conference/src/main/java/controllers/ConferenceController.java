@@ -17,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import security.Authority;
 import services.ActorService;
 import services.ConferenceService;
+import services.SponsorshipService;
 import domain.Actor;
 import domain.Conference;
+import domain.Sponsorship;
 
 @Controller
 @RequestMapping("/conference")
@@ -29,6 +31,9 @@ public class ConferenceController extends AbstractController {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private SponsorshipService	sponsorshipService;
 
 
 	// DISPLAY --------------------------------------------------------
@@ -60,9 +65,15 @@ public class ConferenceController extends AbstractController {
 
 		}
 
+		String imgBanner = null;
+		final Sponsorship sponsorship = this.sponsorshipService.findRandomSponsorship();
+		if (sponsorship != null)
+			imgBanner = sponsorship.getBanner();
+
 		if (conference != null && conference.getIsDraft() == false) {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
+			result.addObject("imgBanner", imgBanner);
 			result.addObject("isAdministrator", false);
 			result.addObject("availableToSubmit", availableToSubmit);
 			result.addObject("isAuthor", isAuthor);

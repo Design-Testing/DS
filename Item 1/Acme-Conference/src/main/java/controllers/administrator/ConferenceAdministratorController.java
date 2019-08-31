@@ -21,10 +21,12 @@ import services.AdministratorService;
 import services.CategoryService;
 import services.ConferenceService;
 import services.RegistrationService;
+import services.SponsorshipService;
 import services.SubmissionService;
 import controllers.AbstractController;
 import domain.Conference;
 import domain.Registration;
+import domain.Sponsorship;
 import domain.Submission;
 import forms.ConferenceForm;
 
@@ -46,6 +48,9 @@ public class ConferenceAdministratorController extends AbstractController {
 
 	@Autowired
 	private RegistrationService		registrationService;
+
+	@Autowired
+	private SponsorshipService		sponsorshipService;
 
 
 	// LIST --------------------------------------------------------
@@ -317,10 +322,16 @@ public class ConferenceAdministratorController extends AbstractController {
 			if (!registrations.isEmpty())
 				hasRegistrations = true;
 
+			String imgBanner = null;
+			final Sponsorship sponsorship = this.sponsorshipService.findRandomSponsorship();
+			if (sponsorship != null)
+				imgBanner = sponsorship.getBanner();
+
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", true);
 			result.addObject("submissions", submissions);
+			result.addObject("imgBanner", imgBanner);
 			result.addObject("hasRegistrations", hasRegistrations);
 			result.addObject("isNotificationElapsed", isNotificationElapsed);
 			result.addObject("isSubmissionElapsed", isSubmissionElapsed);
@@ -334,7 +345,6 @@ public class ConferenceAdministratorController extends AbstractController {
 
 		return result;
 	}
-
 	// DECIDE ON CONFERENCE --------------------------------------------------------
 
 	@RequestMapping(value = "/decideOnConference", method = RequestMethod.GET)
