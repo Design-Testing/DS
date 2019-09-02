@@ -11,7 +11,12 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<form:form action="finder/actor/edit.do" modelAttribute="finder" method="POST">
+<jstl:set value="finder/actor/edit.do" var="uri"/>
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:set value="finder/administrator/edit.do" var="uri"/>
+	<jstl:set value="/administrator" var="rolURL"/>
+</security:authorize>
+<form:form action="${uri}" modelAttribute="finder" method="POST">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
