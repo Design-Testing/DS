@@ -323,15 +323,19 @@ public class ConferenceAdministratorController extends AbstractController {
 				hasRegistrations = true;
 
 			String imgBanner = null;
-			final Sponsorship sponsorship = this.sponsorshipService.findRandomSponsorship();
-			if (sponsorship != null)
-				imgBanner = sponsorship.getBanner();
+			String targetPage = null;
 
+			final Sponsorship sponsorship = this.sponsorshipService.findRandomSponsorship();
+			if (sponsorship != null) {
+				imgBanner = sponsorship.getBanner();
+				targetPage = sponsorship.getTargetPage();
+			}
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("isAdministrator", true);
 			result.addObject("submissions", submissions);
 			result.addObject("imgBanner", imgBanner);
+			result.addObject("targetPage", targetPage);
 			result.addObject("hasRegistrations", hasRegistrations);
 			result.addObject("isNotificationElapsed", isNotificationElapsed);
 			result.addObject("isSubmissionElapsed", isSubmissionElapsed);

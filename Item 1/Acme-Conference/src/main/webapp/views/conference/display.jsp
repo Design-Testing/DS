@@ -357,7 +357,7 @@
 <!-------------------------------------------------------------------------------->
 
 <jstl:if test="${not empty imgBanner}">
-		<a href="<jstl:out value="${imgBanner}"/>">
+		<a href="<jstl:out value="${targetPage}"/>">
 		<img class="resize" src="${imgBanner}" alt="Banner"/>
 	</a><br /><br />
 </jstl:if>
