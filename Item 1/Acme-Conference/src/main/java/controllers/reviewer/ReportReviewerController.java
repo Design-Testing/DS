@@ -40,6 +40,22 @@ public class ReportReviewerController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/listFinal", method = RequestMethod.GET)
+	public ModelAndView listFinal() {
+		ModelAndView result;
+		result = new ModelAndView("report/list");
+		result.addObject("reports", this.reportService.findFinalReportsByReviewer(this.actorService.findByPrincipal().getId()));
+		return result;
+	}
+
+	@RequestMapping(value = "/listDraft", method = RequestMethod.GET)
+	public ModelAndView listDraft() {
+		ModelAndView result;
+		result = new ModelAndView("report/list");
+		result.addObject("reports", this.reportService.findDraftReportsByReviewer(this.actorService.findByPrincipal().getId()));
+		return result;
+	}
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView edit(@Valid final Report report, final BindingResult binding) {
 		ModelAndView result;

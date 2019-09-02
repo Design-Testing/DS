@@ -88,8 +88,13 @@
 					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
 				</ul>
 			</li>
-			<li><a class="fNiv" href="report/reviewer/list.do"><spring:message	code="master.page.reports" /></a>
 
+			<li><a class="fNiv"><spring:message	code="master.page.reports" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="report/reviewer/listDraft.do"><spring:message code="master.page.draft.reports" /></a></li>
+					<li><a href="report/reviewer/listFinal.do"><spring:message code="master.page.final.reports" /></a></li>
+				</ul>
 			</li>
 		</security:authorize>
 		
