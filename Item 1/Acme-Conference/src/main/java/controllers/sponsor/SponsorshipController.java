@@ -75,7 +75,7 @@ public class SponsorshipController extends AbstractController {
 		ModelAndView result = new ModelAndView();
 		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
 		final Sponsor sponsor = this.sponsorService.findByPrincipal();
-		final Collection<String> makes = this.configurationParametersService.find().getCreditCardMake();
+		final Collection<String> makes = this.configurationParametersService.findMakes();
 
 		if (sponsor.getId() == sponsorship.getSponsor().getId()) {
 			result = new ModelAndView("sponsorship/edit");
@@ -90,7 +90,7 @@ public class SponsorshipController extends AbstractController {
 	public ModelAndView createSponsorship() {
 		final ModelAndView result;
 		final Sponsor sponsor = this.sponsorService.findByPrincipal();
-		final Collection<String> makes = this.configurationParametersService.find().getCreditCardMake();
+		final Collection<String> makes = this.configurationParametersService.findMakes();
 		System.out.println(makes);
 
 		final Sponsorship sponsorship = this.sponsorshipService.create();
@@ -106,7 +106,7 @@ public class SponsorshipController extends AbstractController {
 	public ModelAndView saveSponsorship(@ModelAttribute("sponsorship") @Valid final Sponsorship sponsorship, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 		final Sponsor sponsor = this.sponsorService.findByPrincipal();
-		final Collection<String> makes = this.configurationParametersService.find().getCreditCardMake();
+		final Collection<String> makes = this.configurationParametersService.findMakes();
 
 		if (binding.hasErrors()) {
 			result = new ModelAndView("sponsorship/edit");
@@ -121,7 +121,14 @@ public class SponsorshipController extends AbstractController {
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("sponsorship/edit");
 				result.addObject("sponsorship", sponsorship);
+				result.addObject("makes", makes);
 				result.addObject("errors", "commit.error");
+			} catch (final Throwable oops) {
+				result = new ModelAndView("sponsorship/edit");
+				result.addObject("makes", makes);
+				if (oops.getMessage().equals("credit card is expired"))
+					result.addObject("msgerror", "credit.card.expired");
+
 			}
 		else
 			result = new ModelAndView("forward:/sponsorship/sponsor/list.do");

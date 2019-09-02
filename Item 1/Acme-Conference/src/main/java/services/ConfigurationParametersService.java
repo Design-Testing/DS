@@ -70,6 +70,10 @@ public class ConfigurationParametersService {
 		return this.configurationParametersRepository.findSysName();
 	}
 
+	public Collection<String> findMakes() {
+		return this.configurationParametersRepository.findMakes();
+	}
+
 	public ConfigurationParameters find() {
 		final ConfigurationParameters res = (ConfigurationParameters) this.configurationParametersRepository.findAll().toArray()[0];
 		Assert.notNull(res);

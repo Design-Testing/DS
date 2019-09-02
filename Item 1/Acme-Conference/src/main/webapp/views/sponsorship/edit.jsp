@@ -38,16 +38,11 @@
     <br/>
 
     <br/>
-    <br/>
+
     
-    
-	
-	<br/>
-    <br/>
-    <br/>
     
     <jstl:if test="${not empty msgerror  }">
-    	<h5 style="color: red;"><spring:message code="${msgerror}"/></h5>
+    	<h4 style="color: red;"><spring:message code="${msgerror}"/></h4>
     </jstl:if>
   
 	

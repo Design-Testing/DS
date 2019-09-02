@@ -88,7 +88,7 @@ public class SponsorshipService {
 			//Assert.isTrue(this.sponsorshipRepository.availableSponsorshipPosition(s.getPosition().getId(), principal.getUserAccount().getId()), "Cannot sponsors twice the same parade");
 			Assert.notNull(s.getCreditCard(), "You must to set a credit card to create a sponsorship");
 			//Assert.isTrue(this.positionService.exists(s.getPosition().getId()), "You must sponsors to a parade of the system");
-			Assert.isTrue(!this.expiredCreditCard(s.getCreditCard()));
+			Assert.isTrue(!this.expiredCreditCard(s.getCreditCard()), "credit card is expired");
 		} else {
 			Assert.isTrue(ss.contains(s), "You only can modify your sponsorships, you haven't access to this resource");
 			Assert.isTrue(!this.expiredCreditCard(s.getCreditCard()));

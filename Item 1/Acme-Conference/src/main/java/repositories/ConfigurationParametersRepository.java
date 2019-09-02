@@ -1,6 +1,8 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,5 +23,8 @@ public interface ConfigurationParametersRepository extends JpaRepository<Configu
 
 	@Query("select c.sysName from ConfigurationParameters c")
 	String findSysName();
+
+	@Query("select m  from ConfigurationParameters c join c.creditCardMake m")
+	Collection<String> findMakes();
 
 }
