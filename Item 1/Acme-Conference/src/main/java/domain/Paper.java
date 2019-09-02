@@ -63,6 +63,7 @@ public class Paper extends DomainEntity {
 
 	@NotNull
 	@NotEmpty
+	//@SafeHtml
 	@ElementCollection
 	@EachNotBlank
 	public Collection<String> getAuthors() {
