@@ -521,4 +521,17 @@ public class ConferenceService {
 		return this.conferenceRepository.findLast12MonthOrFuture();
 	}
 
+	public Collection<Conference> findAllConferences(final String keyword) {
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> res = this.conferenceRepository.findAllConferences(keyword);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Conference> findAllConferences(final String keyword, final String categoryName, final Date fromDate, final Date toDate, final Double maximumFee) {
+		final Collection<Conference> res = this.conferenceRepository.findAllConferences(keyword, categoryName, fromDate, toDate, maximumFee);
+		Assert.notNull(res);
+		return res;
+	}
+
 }

@@ -14,8 +14,9 @@
 	<acme:display code="administrator.name" value="${administrator.name}" />
 	<acme:display code="administrator.middleName" value="${administrator.middleName}" />
 	<acme:display code="administrator.surname" value="${administrator.surname}" />
-	<spring:message code="author.photo" />:<br/>
-	<img src="${author.photo}" alt="<jstl:out value ="${author.photo}"/>" width="220" height="135"/>
+	<spring:message code="administrator.photo" />:<br/>
+	<img src="${administrator.photo}" alt="<jstl:out value ="${administrator.photo}"/>" width="220" height="135"/>
+	</br>
 	<acme:display code="administrator.email" value="${administrator.email}" />
 	<acme:display code="administrator.phone" value="${administrator.phone}" />
 	<acme:display code="administrator.address" value="${administrator.address}" />

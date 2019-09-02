@@ -66,14 +66,18 @@ public class ConferenceController extends AbstractController {
 		}
 
 		String imgBanner = null;
+		String targetPage = null;
 		final Sponsorship sponsorship = this.sponsorshipService.findRandomSponsorship();
-		if (sponsorship != null)
+		if (sponsorship != null) {
 			imgBanner = sponsorship.getBanner();
+			targetPage = sponsorship.getTargetPage();
+		}
 
 		if (conference != null && conference.getIsDraft() == false) {
 			result = new ModelAndView("conference/display");
 			result.addObject("conference", conference);
 			result.addObject("imgBanner", imgBanner);
+			result.addObject("targetPage", targetPage);
 			result.addObject("isAdministrator", false);
 			result.addObject("availableToSubmit", availableToSubmit);
 			result.addObject("isAuthor", isAuthor);
@@ -82,7 +86,6 @@ public class ConferenceController extends AbstractController {
 
 		return result;
 	}
-
 	// LIST --------------------------------------------------------
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)

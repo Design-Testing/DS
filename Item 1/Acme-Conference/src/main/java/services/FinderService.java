@@ -19,13 +19,16 @@ import domain.Finder;
 public class FinderService {
 
 	@Autowired
-	private FinderRepository	finderRepository;
+	private FinderRepository		finderRepository;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
 
 	@Autowired
-	private ConferenceService	conferenceService;
+	private AdministratorService	administratorService;
+
+	@Autowired
+	private ConferenceService		conferenceService;
 
 
 	/**
@@ -90,6 +93,13 @@ public class FinderService {
 		return this.save(finder);
 	}
 
+	public Finder findAdmin(final Finder finder) {
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> result = new ArrayList<>(this.conferenceService.findAllConferences(finder.getKeyword(), finder.getCategoryName(), finder.getFromDate(), finder.getToDate(), finder.getMaximumFee()));
+		finder.setConferences(result);
+		return this.save(finder);
+	}
+
 	public Finder save(final Finder finder) {
 		final Actor actor = this.actorService.findByPrincipal();
 		//Assert.notNull(finder);
@@ -97,11 +107,15 @@ public class FinderService {
 		//Assert.isTrue(this.finderRepository.findActorFinder(actor.getId()).getId() == finder.getId(), "You're not owner of this finder, you cannot modify it");
 
 		//finder.setCreationDate(new Date(System.currentTimeMillis()));
+		Assert.isTrue(this.finderRepository.findActorFinder(actor.getId()).getId() == finder.getId(), "You're not owner of this finder, you cannot delete it");
 		final Finder res = this.finderRepository.save(finder);
 		//Assert.notNull(res);
 
-		actor.setFinder(finder);
-		this.actorService.save(actor);
+		if (finder.getId() == 0) {
+			actor.setFinder(finder);
+			this.actorService.save(actor);
+		}
+
 		return res;
 	}
 
@@ -148,13 +162,14 @@ public class FinderService {
 	public Finder clear(final Finder finder) {
 		final Actor actor = this.actorService.findByPrincipal();
 		final Finder result = this.finderRepository.findActorFinder(actor.getId());
+		Assert.isTrue(result.getId() == finder.getId(), "You're not owner of this finder, you cannot delete it");
 		Assert.isTrue(result.equals(finder), "You're not owner of this finder");
 		Assert.notNull(result);
-		finder.setKeyword("");
-		finder.setCategoryName("");
-		finder.setFromDate(null);
-		finder.setMaximumFee(null);
-		finder.setToDate(null);
+		result.setKeyword("");
+		result.setCategoryName("");
+		result.setFromDate(null);
+		result.setMaximumFee(null);
+		result.setToDate(null);
 		//finder.setCreationDate(new Date(System.currentTimeMillis()));
 		result.setConferences(new ArrayList<Conference>());
 		final Finder saved = this.save(result);
