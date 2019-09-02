@@ -468,21 +468,18 @@ public class ConferenceService {
 		Assert.notNull(conference);
 		final Date now = new Date();
 		Assert.isTrue(now.before(conference.getNotification()), "the notification deadline has elapsed");
-
 		final Collection<Submission> submissionsToAssign = this.submissionService.findUnderReviewedSubmissionsByConference(conferenceId);
 
 		Assert.isTrue(!submissionsToAssign.isEmpty(), "all submissions are already been decided");
 		final Collection<Reviewer> reviewers = this.reviewerService.findReviewersAccordingToConference(conferenceId);
 		Assert.isTrue(!reviewers.isEmpty(), "no reviewers available to be assigned");
-
 		final Collection<Topic> topics = this.topicService.findTopicByNames("OTRO", "OTHER");
 		final Topic topic = topics.iterator().next();
-
 		Boolean anyReviewerAssigned = false;
 
 		for (final Reviewer r : reviewers)
 			for (final Submission s : submissionsToAssign)
-				if (this.reportService.findReportsBySubmission(s.getId()).size() < 3) {
+				if (this.reportService.findAllReportsBySubmission(s.getId()).size() < 3) {
 					final Report existingReport = this.reportService.findReportBySubmissionAndReviewer(s.getId(), r.getId());
 					if (existingReport == null) {
 						Report newReport = this.reportService.create(s.getId(), r.getId());

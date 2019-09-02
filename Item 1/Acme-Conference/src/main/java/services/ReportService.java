@@ -33,7 +33,6 @@ public class ReportService {
 
 
 	public Report create(final int submissionId, final int reviewerId) {
-		this.reviewerService.findByPrincipal();
 		final Report res = new Report();
 		res.setOriginality(0);
 		res.setReadability(0);
@@ -51,7 +50,6 @@ public class ReportService {
 	}
 
 	public Report save(final Report report, final Submission submission, final Reviewer reviewer) {
-		this.reviewerService.findByPrincipal();
 		Assert.notNull(report);
 		Assert.notNull(submission);
 		Assert.notNull(reviewer);
