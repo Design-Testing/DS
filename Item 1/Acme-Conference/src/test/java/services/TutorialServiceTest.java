@@ -1,9 +1,7 @@
 
 package services;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,8 +42,8 @@ public class TutorialServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteWithConferenceNotInDraftModeTest() {
 		super.authenticate("admin1");
-		final List<Tutorial> tutorials = new ArrayList<Tutorial>(this.tutorialService.findTutorials());
-		final Tutorial tutorial = tutorials.get(0);
+		final int tutorialId = this.getEntityId("tutorial1");
+		final Tutorial tutorial = this.tutorialService.findOne(tutorialId);
 		final Conference conference = this.conferenceService.findConferenceByTutorialId(tutorial.getId());
 		this.tutorialService.delete(tutorial, conference.getId());
 		super.unauthenticate();
@@ -54,8 +52,8 @@ public class TutorialServiceTest extends AbstractTest {
 	@Test
 	public void deleteWithConferenceInDraftModeTest() {
 		super.authenticate("admin1");
-		final List<Tutorial> tutorials = new ArrayList<Tutorial>(this.tutorialService.findTutorials());
-		final Tutorial tutorial = tutorials.get(0);
+		final int tutorialId = this.getEntityId("tutorial1");
+		final Tutorial tutorial = this.tutorialService.findOne(tutorialId);
 		final Conference conference = this.conferenceService.findConferenceByTutorialId(tutorial.getId());
 		final Date submission = new Date(116, 5, 3);
 		final Date notification = new Date(117, 5, 3);

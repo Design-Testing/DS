@@ -44,8 +44,8 @@ public class ActivityServiceTest extends AbstractTest {
 	@Test
 	public void saveTest() {
 		super.authenticate("admin1");
-		final List<Conference> conferences = new ArrayList<Conference>(this.conferenceService.findAll());
-		final Conference conference = conferences.get(1);
+		final int conferenceId = this.getEntityId("conference2");
+		final Conference conference = this.conferenceService.findOne(conferenceId);
 		conference.setIsDraft(true);
 		final Date submission = new Date(116, 5, 3);
 		final Date notification = new Date(117, 5, 3);
@@ -66,8 +66,8 @@ public class ActivityServiceTest extends AbstractTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void saveUnauthenticatedTest() {
-		final List<Conference> conferences = new ArrayList<Conference>(this.conferenceService.findAll());
-		final Conference conference = conferences.get(1);
+		final int conferenceId = this.getEntityId("conference2");
+		final Conference conference = this.conferenceService.findOne(conferenceId);
 		conference.setIsDraft(true);
 		final Date submission = new Date(116, 5, 3);
 		final Date notification = new Date(117, 5, 3);
@@ -88,8 +88,8 @@ public class ActivityServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void saveActivityWichNotBelongsToConferenceTest() {
 		super.authenticate("admin1");
-		final List<Conference> conferences = new ArrayList<Conference>(this.conferenceService.findAll());
-		final Conference conference = conferences.get(0);
+		final int conferenceId = this.getEntityId("conference1");
+		final Conference conference = this.conferenceService.findOne(conferenceId);
 		conference.setIsDraft(true);
 		final Date submission = new Date(116, 5, 3);
 		final Date notification = new Date(117, 5, 3);
@@ -112,8 +112,8 @@ public class ActivityServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteWithConferenceInDraftModeTest() {
 		super.authenticate("admin1");
-		final List<Conference> conferences = new ArrayList<Conference>(this.conferenceService.findAll());
-		final Conference conference = conferences.get(1);
+		final int conferenceId = this.getEntityId("conference2");
+		final Conference conference = this.conferenceService.findOne(conferenceId);
 		conference.setIsDraft(true);
 		final Date submission = new Date(116, 5, 3);
 		final Date notification = new Date(117, 5, 3);
