@@ -16,10 +16,19 @@
 	<acme:display code="author.surname" value="${author.surname}" />
 	<spring:message code="author.photo" />:<br/>
 	<img src="${author.photo}" alt="<jstl:out value ="${author.photo}"/>" width="220" height="135"/>
+	<br/>
 	<acme:display code="author.email" value="${author.email}" />
 	<acme:display code="author.phone" value="${author.phone}" />
 	<acme:display code="author.address" value="${author.address}" />
-	<acme:display code="author.score" value="${author.score}" />
+	
+	<jstl:choose>
+		<jstl:when test="${(not empty author.score) and (author.score ne 0.)}">
+			<acme:display code="author.score" value="${author.score}" />
+		</jstl:when>
+		<jstl:otherwise>
+			<acme:display code="author.score" value="N/A" />
+		</jstl:otherwise>
+	</jstl:choose>
 
 	
 	
