@@ -36,17 +36,21 @@ public class RegistrationServiceTest extends AbstractTest {
 
 	@Test
 	public void createTest() {
-		final Author author = this.authorService.findOne(3198);
-		final Conference conference = this.conferenceService.findOne(3204);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
+		final int conferenceId = this.getEntityId("conference1");
+		final Conference conference = this.conferenceService.findOne(conferenceId);
 		final Registration registration = this.registrationService.create(author, conference);
 		super.unauthenticate();
 	}
 
 	@Test
 	public void saveTest() {
-		final Author author = this.authorService.findOne(3198);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		super.authenticate(author.getUserAccount().getUsername());
-		final Registration registration = this.registrationService.findOne(3214);
+		final int registrationId = this.getEntityId("registration1");
+		final Registration registration = this.registrationService.findOne(registrationId);
 		registration.getCreditCard().setExpirationMonth(12);
 		this.registrationService.save(registration);
 		super.unauthenticate();
@@ -54,41 +58,49 @@ public class RegistrationServiceTest extends AbstractTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void saveUnauthenticatedTest() {
-		final Registration registration = this.registrationService.findOne(3214);
+		final int registrationId = this.getEntityId("registration1");
+		final Registration registration = this.registrationService.findOne(registrationId);
 		registration.getCreditCard().setExpirationMonth(12);
 		this.registrationService.save(registration);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void saveWithExpiredCreditCardTest() {
-		final Author author = this.authorService.findOne(3198);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		super.authenticate(author.getUserAccount().getUsername());
-		final Registration registration = this.registrationService.findOne(3214);
+		final int registrationId = this.getEntityId("registration1");
+		final Registration registration = this.registrationService.findOne(registrationId);
 		this.registrationService.save(registration);
 		super.unauthenticate();
 	}
 
 	@Test
 	public void deleteTest() {
-		final Author author = this.authorService.findOne(3198);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		super.authenticate(author.getUserAccount().getUsername());
-		final Registration registration = this.registrationService.findOne(3214);
+		final int registrationId = this.getEntityId("registration1");
+		final Registration registration = this.registrationService.findOne(registrationId);
 		this.registrationService.delete(registration);
 		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteNotOwnedTest() {
-		final Author author = this.authorService.findOne(3198);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		super.authenticate(author.getUserAccount().getUsername());
-		final Registration registration = this.registrationService.findOne(3215);
+		final int registrationId = this.getEntityId("registration2");
+		final Registration registration = this.registrationService.findOne(registrationId);
 		this.registrationService.delete(registration);
 		super.unauthenticate();
 	}
 
 	@Test
 	public void deleteAuthorRegistrations() {
-		final Author author = this.authorService.findOne(3198);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		super.authenticate(author.getUserAccount().getUsername());
 		this.registrationService.deleteAuthorRegistrations();
 		super.unauthenticate();

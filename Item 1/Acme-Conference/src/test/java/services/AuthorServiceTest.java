@@ -1,9 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +34,8 @@ public class AuthorServiceTest extends AbstractTest {
 	@Test
 	public void saveTest() {
 		super.authenticate("author1");
-		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
-		final Author author = authors.get(0);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		author.setName("Test");
 		this.authorService.save(author);
 		super.unauthenticate();
@@ -46,8 +43,8 @@ public class AuthorServiceTest extends AbstractTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void saveUnauthenticatedTest() {
-		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
-		final Author author = authors.get(0);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		author.setName("Test");
 		this.authorService.save(author);
 	}
@@ -55,8 +52,8 @@ public class AuthorServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void saveAnotherAuthorTest() {
 		super.authenticate("author2");
-		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
-		final Author author = authors.get(0);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		author.setName("Test");
 		this.authorService.save(author);
 		super.unauthenticate();
@@ -65,16 +62,16 @@ public class AuthorServiceTest extends AbstractTest {
 	@Test
 	public void deleteTest() {
 		super.authenticate("author1");
-		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
-		final Author author = authors.get(0);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		this.authorService.delete(author);
 		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteUnauthenticatedTest() {
-		final List<Author> authors = new ArrayList<Author>(this.authorService.findAll());
-		final Author author = authors.get(0);
+		final int authorId = this.getEntityId("author1");
+		final Author author = this.authorService.findOne(authorId);
 		this.authorService.delete(author);
 		super.unauthenticate();
 	}

@@ -25,7 +25,11 @@
 <jstl:otherwise>
 <jstl:set var="keyword"/>
 
-<form action="finder/search.do?keyword=${keyword}" method="GET">
+<jstl:set value="finder/search.do?keyword=${keyword}" var="uri"/>
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:set value="finder/administrator/search.do?keyword=${keyword}" var="uri"/>
+</security:authorize>
+<form action="${uri}" method="GET">
 	<label for="keyword"><spring:message code="finder.keyword" />:</label>
 	<input type="text" id="keyword" name="keyword"/><br>
 	<jstl:out value="${keyword}"></jstl:out>	

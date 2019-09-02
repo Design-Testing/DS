@@ -504,12 +504,9 @@ public class ConferenceService {
 	public Collection<Conference> reassignConferences(final int categoryId) {
 		final List<Conference> toReassign = new ArrayList<Conference>(this.conferenceRepository.findByCategory(categoryId));
 		final Category father = this.categoryService.findOne(categoryId).getFather();
-		System.out.println("Reasignacion a la categoria padre: " + father.getTitleEs());
-		System.out.println("Se van a reasignar las conferencias: " + toReassign);
 		for (int i = 0; i < toReassign.size(); i++) {
 			final Conference c = toReassign.get(i);
 			c.setCategory(father);
-			System.out.println("Conferencia reasignada: " + c.getTitle() + "/ " + c.getCategory());
 			this.conferenceRepository.save(c);
 		}
 
@@ -519,6 +516,19 @@ public class ConferenceService {
 
 	public Collection<Conference> findLast12MonthOrFuture() {
 		return this.conferenceRepository.findLast12MonthOrFuture();
+	}
+
+	public Collection<Conference> findAllConferences(final String keyword) {
+		this.administratorService.findByPrincipal();
+		final Collection<Conference> res = this.conferenceRepository.findAllConferences(keyword);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Conference> findAllConferences(final String keyword, final String categoryName, final Date fromDate, final Date toDate, final Double maximumFee) {
+		final Collection<Conference> res = this.conferenceRepository.findAllConferences(keyword, categoryName, fromDate, toDate, maximumFee);
+		Assert.notNull(res);
+		return res;
 	}
 
 }

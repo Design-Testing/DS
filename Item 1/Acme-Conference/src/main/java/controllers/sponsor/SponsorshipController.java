@@ -126,9 +126,10 @@ public class SponsorshipController extends AbstractController {
 			} catch (final Throwable oops) {
 				result = new ModelAndView("sponsorship/edit");
 				result.addObject("makes", makes);
-				if (oops.getMessage().equals("credit card is expired"))
-					result.addObject("msgerror", "credit.card.expired");
-
+				String error = "commit.error";
+				if (oops.getMessage().contains(".error"))
+					error = oops.getMessage();
+				result.addObject("message", error);
 			}
 		else
 			result = new ModelAndView("forward:/sponsorship/sponsor/list.do");
@@ -142,10 +143,11 @@ public class SponsorshipController extends AbstractController {
 		ModelAndView result;
 		if (sponsor.getId() == sponsorship.getSponsor().getId()) {
 			this.sponsorshipService.delete(sponsorship);
-			result = new ModelAndView("sponsorship/list");
-			result.addObject("requestURI", "sponsorship/list.do");
-		} else
-			result = new ModelAndView("sponsorship/sponsor/list");
+			result = new ModelAndView("forward:/sponsorship/sponsor/list.do");
+		} else {
+			result = new ModelAndView("forward:/sponsorship/sponsor/list.do");
+			result.addObject("msg", "cannot.delete");
+		}
 
 		return result;
 	}
