@@ -1,9 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +31,8 @@ public class SponsorshipServiceTest extends AbstractTest {
 	@Test
 	public void saveTest() {
 		super.authenticate("sponsor1");
-		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
-		final Sponsorship sponsorship = sponsorships.get(0);
+		final int sponsorshipId = this.getEntityId("sponsorship1");
+		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
 		sponsorship.getCreditCard().setExpirationMonth(12);
 		sponsorship.setBanner("http://www.url.com/prueba");
 		this.sponsorshipService.save(sponsorship);
@@ -45,8 +42,8 @@ public class SponsorshipServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void saveWithExpiredCreditCardTest() {
 		super.authenticate("sponsor1");
-		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
-		final Sponsorship sponsorship = sponsorships.get(0);
+		final int sponsorshipId = this.getEntityId("sponsorship1");
+		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
 		sponsorship.getCreditCard().setExpirationYear(10);
 		sponsorship.setBanner("http://www.url.com/prueba");
 		this.sponsorshipService.save(sponsorship);
@@ -55,8 +52,8 @@ public class SponsorshipServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void saveSponsorshipNotOwnedTest() {
 		super.authenticate("sponsor1");
-		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
-		final Sponsorship sponsorship = sponsorships.get(1);
+		final int sponsorshipId = this.getEntityId("sponsorship2");
+		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
 		sponsorship.setBanner("http://www.url.com/prueba");
 		this.sponsorshipService.save(sponsorship);
 		super.unauthenticate();
@@ -65,8 +62,8 @@ public class SponsorshipServiceTest extends AbstractTest {
 	@Test
 	public void deleteTest() {
 		super.authenticate("sponsor1");
-		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
-		final Sponsorship sponsorship = sponsorships.get(0);
+		final int sponsorshipId = this.getEntityId("sponsorship1");
+		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
 		this.sponsorshipService.delete(sponsorship);
 		super.unauthenticate();
 	}
@@ -74,8 +71,8 @@ public class SponsorshipServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteSponsorshipNotOwnedTest() {
 		super.authenticate("sponsor1");
-		final List<Sponsorship> sponsorships = new ArrayList<Sponsorship>(this.sponsorshipService.findAll());
-		final Sponsorship sponsorship = sponsorships.get(1);
+		final int sponsorshipId = this.getEntityId("sponsorship2");
+		final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
 		this.sponsorshipService.delete(sponsorship);
 		super.unauthenticate();
 	}

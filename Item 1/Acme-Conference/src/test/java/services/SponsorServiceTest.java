@@ -1,9 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +30,8 @@ public class SponsorServiceTest extends AbstractTest {
 	@Test
 	public void saveTest() {
 		super.authenticate("sponsor1");
-		final List<Sponsor> sponsors = new ArrayList<Sponsor>(this.sponsorService.findAll());
-		final Sponsor sponsor = sponsors.get(0);
+		final int sponsorId = this.getEntityId("sponsor1");
+		final Sponsor sponsor = this.sponsorService.findOne(sponsorId);
 		sponsor.setEmail("probando@correo.com");
 		this.sponsorService.save(sponsor);
 		super.unauthenticate();
@@ -43,8 +40,8 @@ public class SponsorServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void saveOtherSponsorTest() {
 		super.authenticate("sponsor1");
-		final List<Sponsor> sponsors = new ArrayList<Sponsor>(this.sponsorService.findAll());
-		final Sponsor sponsor = sponsors.get(1);
+		final int sponsorId = this.getEntityId("sponsor2");
+		final Sponsor sponsor = this.sponsorService.findOne(sponsorId);
 		sponsor.setName("Pruebas");
 		this.sponsorService.save(sponsor);
 		super.unauthenticate();
