@@ -28,6 +28,9 @@ public class SponsorshipService {
 	@Autowired
 	private SponsorService			sponsorService;
 
+	@Autowired
+	private RegistrationService		registrationService;
+
 
 	//Constructor
 	public SponsorshipService() {
@@ -82,21 +85,23 @@ public class SponsorshipService {
 		final Sponsor principal = this.sponsorService.findByPrincipal();
 		final Collection<Sponsorship> ss = this.findAllByUserId(principal.getUserAccount().getId());
 		Assert.isTrue(s.getSponsor().equals(principal));
+		final CreditCard c = s.getCreditCard();
 
 		if (s.getId() == 0) {
 			s.setSponsor(principal);
 			//Assert.isTrue(this.sponsorshipRepository.availableSponsorshipPosition(s.getPosition().getId(), principal.getUserAccount().getId()), "Cannot sponsors twice the same parade");
-			Assert.notNull(s.getCreditCard(), "You must to set a credit card to create a sponsorship");
+			Assert.notNull(c, "sponsorship.not.creditcard.error");
 			//Assert.isTrue(this.positionService.exists(s.getPosition().getId()), "You must sponsors to a parade of the system");
-			Assert.isTrue(!this.expiredCreditCard(s.getCreditCard()), "credit card is expired");
+			Assert.isTrue(!this.expiredCreditCard(c), "creditcard.expired.error");
 		} else {
-			Assert.isTrue(ss.contains(s), "You only can modify your sponsorships, you haven't access to this resource");
+			Assert.isTrue(ss.contains(s), "sponsorship.ss.error");
 			Assert.isTrue(!this.expiredCreditCard(s.getCreditCard()));
 		}
+		c.setNumber(c.getNumber().replaceAll(" ", ""));
+		Assert.isTrue(this.registrationService.isValidInteger(c.getNumber()), "sponsorship.creditcard.number.error");
 		final Sponsorship saved = this.sponsorshipRepository.save(s);
 		return saved;
 	}
-
 	private Collection<Sponsorship> findAllByUserId(final int id) {
 		Assert.isTrue(id != 0);
 		return this.sponsorshipRepository.findAllByUserId(id);
