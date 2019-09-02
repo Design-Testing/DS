@@ -28,7 +28,7 @@
 	}
 	</script>
 	
-	<jstl:if test="${not empty alert}">
+<jstl:if test="${not empty alert}">
 	<script>
 	 $(document).ready(function() {
 		 alert('<spring:message code="${alert}"/>');

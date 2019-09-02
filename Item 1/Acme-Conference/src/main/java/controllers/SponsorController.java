@@ -105,17 +105,16 @@ public class SponsorController extends AbstractController {
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("sponsor/signup");
 				result.addObject("actorForm", actorForm);
-				result.addObject("errors", "commit.error");
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
 			} catch (final Throwable e) {
 				result = new ModelAndView("sponsor/signup");
-				if (e.getMessage().contains("Username is already in use"))
-					result.addObject("alert", "sponsor.usernameIsUsed");
-				else if (e.getMessage().contains("Email is already in use"))
-					result.addObject("alert", "sponsor.emailIsUsed");
+				String error = "commit.error";
+				if (e.getMessage().contains(".error"))
+					error = e.getMessage();
+				result.addObject("message", error);
 
-				result.addObject("errors", "commit.error");
+				result.addObject("message", error);
 				result.addObject("actorForm", actorForm);
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
@@ -133,12 +132,11 @@ public class SponsorController extends AbstractController {
 
 			} catch (final Throwable e) {
 				result = new ModelAndView("sponsor/signup");
-				if (e.getMessage().contains("Username is already in use"))
-					result.addObject("alert", "sponsor.usernameIsUsed");
-				else if (e.getMessage().contains("Email is already in use"))
-					result.addObject("alert", "sponsor.emailIsUsed");
 
-				result.addObject("errors", "commit.error");
+				String error = "commit.error";
+				if (e.getMessage().contains(".error"))
+					error = e.getMessage();
+				result.addObject("errors", error);
 				result.addObject("actorForm", actorForm);
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 

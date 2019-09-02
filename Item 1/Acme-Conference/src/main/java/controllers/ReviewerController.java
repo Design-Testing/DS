@@ -94,14 +94,12 @@ public class ReviewerController extends AbstractController {
 			} catch (final ValidationException oops) {
 				result = new ModelAndView("reviewer/signup");
 				result.addObject("reviewerForm", reviewerForm);
-				result.addObject("errors", "commit.error");
 			} catch (final Throwable e) {
 				result = new ModelAndView("reviewer/signup");
-				if (e.getMessage().contains("Username is already in use"))
-					result.addObject("alert", "reviewer.usernameIsUsed");
-				else if (e.getMessage().contains("Email is already in use"))
-					result.addObject("alert", "reviewer.emailIsUsed");
-				result.addObject("errors", "commit.error");
+				String error = "commit.error";
+				if (e.getMessage().contains(".error"))
+					error = e.getMessage();
+				result.addObject("message", error);
 				result.addObject("reviewerForm", reviewerForm);
 			}
 		else
@@ -115,11 +113,10 @@ public class ReviewerController extends AbstractController {
 				result.addObject("errors", "commit.error");
 			} catch (final Throwable e) {
 				result = new ModelAndView("reviewer/signup");
-				if (e.getMessage().contains("Username is already in use"))
-					result.addObject("alert", "reviewer.usernameIsUsed");
-				else if (e.getMessage().contains("Email is already in use"))
-					result.addObject("alert", "reviewer.emailIsUsed");
-				result.addObject("errors", "commit.error");
+				String error = "commit.error";
+				if (e.getMessage().contains(".error"))
+					error = e.getMessage();
+				result.addObject("message", error);
 				result.addObject("reviewerForm", reviewerForm);
 			}
 

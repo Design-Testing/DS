@@ -98,13 +98,16 @@ public class AdministratorController extends AbstractController {
 				administrator = this.administratorService.save(administrator);
 				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
-				final String error = "commit.error";
 				result = new ModelAndView("administrator/signup");
-				if (oops.getMessage().contains("username is register"))
-					result.addObject("alert", "actor.edit.usernameIsUsed");
-				result.addObject("errors", binding.getAllErrors());
 				result.addObject("actorForm", actorForm);
-				result.addObject("errors", error);
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+			} catch (final Throwable e) {
+				result = new ModelAndView("administrator/signup");
+				String error = "commit.error";
+				if (e.getMessage().contains(".error"))
+					error = e.getMessage();
+				result.addObject("message", error);
+				result.addObject("actorForm", actorForm);
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
 			}
@@ -117,6 +120,15 @@ public class AdministratorController extends AbstractController {
 				result = new ModelAndView("administrator/signup");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
+
+			} catch (final Throwable e) {
+				result = new ModelAndView("administrator/signup");
+				String error = "commit.error";
+				if (e.getMessage().contains(".error"))
+					error = e.getMessage();
+				result.addObject("message", error);
+				result.addObject("actorForm", actorForm);
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
 			}

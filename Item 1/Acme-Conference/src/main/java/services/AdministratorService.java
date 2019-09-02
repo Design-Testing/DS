@@ -59,11 +59,11 @@ public class AdministratorService {
 		Assert.notNull(a);
 		Administrator result;
 		if (a.getId() == 0) {
-			//			this.actorService.setAuthorityUserAccount(Authority.ADMIN, a);
+			//			this.actorService.setAuthorityUserAccount(Authority.ADMIN, a)
 			final UserAccount ua = a.getUserAccount();
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			final String hash = encoder.encodePassword(ua.getPassword(), null);
-			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
+			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "administrator.usernameIsUsed.error");
 			ua.setAuthorities(ua.getAuthorities());
 			ua.setUsername(ua.getUsername());
 			ua.setPassword(hash);
@@ -121,6 +121,8 @@ public class AdministratorService {
 			admin.setPhone(actorForm.getPhone());
 			admin.setEmail(actorForm.getEmail());
 			admin.setAddress(actorForm.getAddress());
+
+			Assert.isTrue(this.checkForEmailInUse(admin.getEmail()) == false, "administrator.emailIsUsed.error");
 			admin.setVersion(actorForm.getVersion());
 			final UserAccount account = this.userAccountService.create();
 			final Collection<Authority> authorities = new ArrayList<>();
@@ -138,6 +140,8 @@ public class AdministratorService {
 			admin.setMiddleName(actorForm.getMiddleName());
 			admin.setPhoto(actorForm.getPhoto());
 			admin.setPhone(actorForm.getPhone());
+			if (!admin.getEmail().equals(actorForm.getEmail()))
+				Assert.isTrue(this.checkForEmailInUse(actorForm.getEmail()) == false, "administrator.emailIsUsed.error");
 			admin.setEmail(actorForm.getEmail());
 			admin.setAddress(actorForm.getAddress());
 			admin.setVersion(actorForm.getVersion());
@@ -157,5 +161,13 @@ public class AdministratorService {
 
 	public void flush() {
 		this.administratorRepository.flush();
+	}
+
+	public Boolean checkForEmailInUse(final String email) {
+		Boolean res = false;
+		final String inUse = this.administratorRepository.checkForEmailInUse(email);
+		if (inUse != null)
+			res = true;
+		return res;
 	}
 }

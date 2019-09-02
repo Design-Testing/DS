@@ -17,6 +17,7 @@ import repositories.ReviewerRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import security.UserAccountRepository;
 import utilities.HashPassword;
 import domain.Actor;
 import domain.Finder;
@@ -28,22 +29,25 @@ import forms.ReviewerForm;
 public class ReviewerService {
 
 	@Autowired
-	private ReviewerRepository	reviewerRepository;
+	private ReviewerRepository		reviewerRepository;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
 
 	@Autowired
-	private FinderService		finderService;
+	private FinderService			finderService;
 
 	@Autowired
-	private UserAccountService	userAccountService;
+	private UserAccountService		userAccountService;
 
 	@Autowired
-	private Validator			validator;
+	private Validator				validator;
 
 	@Autowired
-	private FolderService		folderService;
+	private FolderService			folderService;
+
+	@Autowired
+	private UserAccountRepository	userAccountRepository;
 
 
 	public Reviewer create() {
@@ -73,10 +77,11 @@ public class ReviewerService {
 		if (reviewer.getId() == 0) {
 			final String username = reviewer.getUserAccount().getUsername();
 			final String password = HashPassword.hashPassword(reviewer.getUserAccount().getPassword());
+			Assert.isTrue(this.userAccountRepository.findByUsername(reviewer.getUserAccount().getUsername()) == null, "reviewer.usernameIsUsed.error");
 			final Finder finder = this.finderService.createForNewActor();
 			reviewer.setFinder(finder);
 			final Reviewer withUserAccount = (Reviewer) this.actorService.setUserAccount(Authority.REVIEWER, reviewer, username, password);
-			Assert.isTrue(this.checkForEmailInUse(withUserAccount.getEmail()) == false, "Email is already in use");
+			Assert.isTrue(this.checkForEmailInUse(withUserAccount.getEmail()) == false, "reviewer.emailIsUsed.error");
 			result = this.reviewerRepository.save(withUserAccount);
 
 			this.folderService.setFoldersByDefault(result);
@@ -141,7 +146,7 @@ public class ReviewerService {
 			reviewer.setMiddleName(reviewerForm.getMiddleName());
 			reviewer.setPhoto(reviewerForm.getPhoto());
 			reviewer.setPhone(reviewerForm.getPhone());
-			Assert.isTrue(this.checkForEmailInUse(reviewerForm.getEmail()) == false, "Email is already in use");
+			Assert.isTrue(this.checkForEmailInUse(reviewerForm.getEmail()) == false, "reviewer.emailIsUsed.error");
 			reviewer.setEmail(reviewerForm.getEmail());
 			reviewer.setAddress(reviewerForm.getAddress());
 			reviewer.setVersion(reviewerForm.getVersion());
@@ -166,7 +171,7 @@ public class ReviewerService {
 			reviewer.setPhone(reviewerForm.getPhone());
 			reviewer.setKeywords(reviewerForm.getKeywords());
 			if (!reviewer.getEmail().equals(reviewerForm.getEmail()))
-				Assert.isTrue(this.checkForEmailInUse(reviewerForm.getEmail()) == false, "Email is already in use");
+				Assert.isTrue(this.checkForEmailInUse(reviewerForm.getEmail()) == false, "reviewer.emailIsUsed.error");
 			reviewer.setEmail(reviewerForm.getEmail());
 			reviewer.setAddress(reviewerForm.getAddress());
 			reviewer.setVersion(reviewerForm.getVersion());

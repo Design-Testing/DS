@@ -85,7 +85,7 @@ public class AuthorController extends AbstractController {
 	public ModelAndView saveAuthor(@ModelAttribute("actorForm") @Valid final ActorForm actorForm, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
-			result = new ModelAndView("author/signup");
+			result = (actorForm.getId() == 0) ? new ModelAndView("author/signup") : new ModelAndView("author/edit");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("actorForm", actorForm);
 			result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
@@ -99,18 +99,16 @@ public class AuthorController extends AbstractController {
 				else
 					result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("author/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("author/signup") : new ModelAndView("author/edit");
 				result.addObject("actorForm", actorForm);
-				result.addObject("errors", "commit.error");
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
 			} catch (final Throwable e) {
-				result = new ModelAndView("author/signup");
-				if (e.getMessage().contains("Username is already in use"))
-					result.addObject("alert", "author.usernameIsUsed");
-				else if (e.getMessage().contains("Email is already in use"))
-					result.addObject("alert", "author.emailIsUsed");
-				result.addObject("errors", "commit.error");
+				result = (actorForm.getId() == 0) ? new ModelAndView("author/signup") : new ModelAndView("author/edit");
+				String error = "commit.error";
+				if (e.getMessage().contains(".error"))
+					error = e.getMessage();
+				result.addObject("message", error);
 				result.addObject("actorForm", actorForm);
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
