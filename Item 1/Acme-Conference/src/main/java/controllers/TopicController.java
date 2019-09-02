@@ -31,6 +31,7 @@ public class TopicController extends AbstractController {
 	public ModelAndView list() {
 		ModelAndView result;
 		result = new ModelAndView("topic/list");
+		result.addObject("requestURI", "topic/list.do");
 		result.addObject("topics", this.topicService.findAll());
 		return result;
 	}
