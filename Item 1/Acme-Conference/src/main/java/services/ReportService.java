@@ -20,16 +20,19 @@ import domain.Submission;
 public class ReportService {
 
 	@Autowired
-	private ReportRepository	reportRepository;
+	private ReportRepository		reportRepository;
 
 	@Autowired
-	private SubmissionService	submissionService;
+	private SubmissionService		submissionService;
 
 	@Autowired
-	private ReviewerService		reviewerService;
+	private ReviewerService			reviewerService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
+
+	@Autowired
+	private AdministratorService	administratorService;
 
 
 	public Report create(final int submissionId, final int reviewerId) {
@@ -41,8 +44,6 @@ public class ReportService {
 		res.setIsDraft(true);
 		final Submission submission = this.submissionService.findOne(submissionId);
 		Assert.notNull(submission);
-		//TODO under-reviewed
-		//Assert.isTrue(submission.getStatus().equals("UNDER-REVIEWED"), "no se puede crear un report sobre una submission que no esté en estado PRE-REVIEWED");
 		final Reviewer reviewer = this.reviewerService.findOne(reviewerId);
 		Assert.notNull(reviewer);
 
@@ -53,23 +54,22 @@ public class ReportService {
 		Assert.notNull(report);
 		Assert.notNull(submission);
 		Assert.notNull(reviewer);
-		Assert.isTrue(report.getDecision().matches("^(BORDER-LINE|ACCEPT|REJECT)$"));
-		Assert.notNull(report.getReadability());
-		Assert.isTrue(report.getReadability() >= 0 && report.getReadability() <= 10);
-		Assert.notNull(report.getQuality());
-		Assert.isTrue(report.getQuality() >= 0 && report.getQuality() <= 10);
-		Assert.notNull(report.getOriginality());
-		Assert.isTrue(report.getOriginality() >= 0 && report.getOriginality() <= 10);
+
+		if (report.getId() == 0) {
+			this.administratorService.findByPrincipal();
+			Assert.isTrue(report.getIsDraft() == true, "a report created by default must be in draft mode");
+		} else { //cuando un revisor lo edita
+			final Reviewer principal = this.reviewerService.findByPrincipal();
+			Assert.isTrue(principal.getUserAccount().getId() == reviewer.getUserAccount().getId());
+		}
 
 		report.setSubmission(submission);
 		report.setReviewer(reviewer);
-
 		final Report res = this.reportRepository.save(report);
 		Assert.notNull(res);
 
 		return res;
 	}
-
 	public Report findOne(final Integer reportId) {
 		Assert.notNull(reportId);
 		final Actor principal = this.actorService.findByPrincipal();
@@ -113,6 +113,18 @@ public class ReportService {
 
 	public Collection<Report> findReportsByReviewer(final int reviewerId) {
 		final Collection<Report> result = this.reportRepository.findReportsByReviewer(reviewerId);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Report> findDraftReportsByReviewer(final int reviewerId) {
+		final Collection<Report> result = this.reportRepository.findDraftReportsByReviewer(reviewerId);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Report> findFinalReportsByReviewer(final int reviewerId) {
+		final Collection<Report> result = this.reportRepository.findFinalReportsByReviewer(reviewerId);
 		Assert.notNull(result);
 		return result;
 	}
