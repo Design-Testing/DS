@@ -43,7 +43,7 @@
         <spring:message code="activity.speakers"/>:
     </form:label>
     <form:select path="speakers" code="activity.speakers">
-    	<form:options items="${actors}"/>
+    	<form:options items="${actors}" itemLabel="userAccount.username"/>
     </form:select>
     <form:errors path="speakers" cssClass="error" />
     <br/><br/>
