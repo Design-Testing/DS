@@ -42,9 +42,8 @@
     <form:hidden path="id"/>
     <form:hidden path="version"/>
     <form:hidden path="userAccountpassword"/>
-    
-    <acme:textbox path="userAccountuser" code="reviewer.userAccount.username"/>
-    <br/>
+    <form:hidden path="userAccountuser"/>
+
     
     <acme:textbox path="name" code="reviewer.name"/>
     <br/>
@@ -69,14 +68,6 @@
     <acme:textarea path="keywords" code="reviewer.keywords"/>
     <br/>
 
-    <br/>
-    <br/>
-    
-    
-	
-	<br/>
-    <br/>
-    <br/>
     
     <jstl:if test="${not empty msgerror  }">
     	<h5 style="color: red;"><spring:message code="${msgerror}"/></h5>

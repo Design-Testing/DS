@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.UserAccount;
 import services.AdministratorService;
 import services.ConfigurationParametersService;
 import services.FinderService;
@@ -81,11 +82,12 @@ public class AdministratorController extends AbstractController {
 
 		return result;
 	}
+
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveAdministrator(@ModelAttribute("actorForm") @Valid final AdminForm actorForm, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
-			result = new ModelAndView("administrator/signup");
+			result = (actorForm.getId() == 0) ? new ModelAndView("administrator/signup") : new ModelAndView("administrator/edit");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("actorForm", actorForm);
 			result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
@@ -98,11 +100,11 @@ public class AdministratorController extends AbstractController {
 				administrator = this.administratorService.save(administrator);
 				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("administrator/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("administrator/signup") : new ModelAndView("administrator/edit");
 				result.addObject("actorForm", actorForm);
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 			} catch (final Throwable e) {
-				result = new ModelAndView("administrator/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("administrator/signup") : new ModelAndView("administrator/edit");
 				String error = "commit.error";
 				if (e.getMessage().contains(".error"))
 					error = e.getMessage();
@@ -113,17 +115,22 @@ public class AdministratorController extends AbstractController {
 			}
 		else
 			try {
+				if (actorForm.getId() != 0) {
+					final UserAccount userAccount = this.administratorService.findOne((actorForm.getId())).getUserAccount();
+					actorForm.setUserAccountuser(userAccount.getUsername());
+					actorForm.setUserAccountpassword(userAccount.getPassword());
+				}
 				final Administrator administrator = this.administratorService.reconstruct(actorForm, binding);
 				this.administratorService.save(administrator);
 				result = this.viewAdministrator();
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("administrator/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("administrator/signup") : new ModelAndView("administrator/edit");
 				result.addObject("actorForm", actorForm);
 				result.addObject("errors", "commit.error");
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
 			} catch (final Throwable e) {
-				result = new ModelAndView("administrator/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("administrator/signup") : new ModelAndView("administrator/edit");
 				String error = "commit.error";
 				if (e.getMessage().contains(".error"))
 					error = e.getMessage();

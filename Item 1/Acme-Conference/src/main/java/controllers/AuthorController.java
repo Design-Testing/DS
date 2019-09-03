@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.UserAccount;
 import services.AuthorService;
 import services.ConfigurationParametersService;
 import services.FinderService;
@@ -92,7 +93,14 @@ public class AuthorController extends AbstractController {
 
 		} else
 			try {
+				if (actorForm.getId() != 0) {
+					final UserAccount userAccount = this.authorService.findOne((actorForm.getId())).getUserAccount();
+					actorForm.setUserAccountuser(userAccount.getUsername());
+					actorForm.setUserAccountpassword(userAccount.getPassword());
+				}
+
 				final Author author = this.authorService.reconstruct(actorForm, binding);
+
 				this.authorService.save(author);
 				if (actorForm.getId() != 0)
 					result = this.viewAuthor();

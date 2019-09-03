@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.UserAccount;
 import services.ConfigurationParametersService;
 import services.FinderService;
 import services.ReviewerService;
@@ -83,7 +84,7 @@ public class ReviewerController extends AbstractController {
 	public ModelAndView saveReviewer(@ModelAttribute("reviewerForm") @Valid final ReviewerForm reviewerForm, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
-			result = new ModelAndView("reviewer/signup");
+			result = (reviewerForm.getId() == 0) ? new ModelAndView("reviewer/signup") : new ModelAndView("reviewer/edit");
 			result.addObject("errors", binding.getAllErrors());
 			result.addObject("reviewerForm", reviewerForm);
 		} else if (reviewerForm.getId() == 0)
@@ -92,32 +93,41 @@ public class ReviewerController extends AbstractController {
 				reviewer = this.reviewerService.save(reviewer);
 				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("reviewer/signup");
+				result = (reviewerForm.getId() == 0) ? new ModelAndView("reviewer/signup") : new ModelAndView("reviewer/edit");
 				result.addObject("reviewerForm", reviewerForm);
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 			} catch (final Throwable e) {
-				result = new ModelAndView("reviewer/signup");
+				result = (reviewerForm.getId() == 0) ? new ModelAndView("reviewer/signup") : new ModelAndView("reviewer/edit");
 				String error = "commit.error";
 				if (e.getMessage().contains(".error"))
 					error = e.getMessage();
 				result.addObject("message", error);
 				result.addObject("reviewerForm", reviewerForm);
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 			}
 		else
 			try {
+				if (reviewerForm.getId() != 0) {
+					final UserAccount userAccount = this.reviewerService.findOne((reviewerForm.getId())).getUserAccount();
+					reviewerForm.setUserAccountuser(userAccount.getUsername());
+					reviewerForm.setUserAccountpassword(userAccount.getPassword());
+				}
+
 				final Reviewer reviewer = this.reviewerService.reconstruct(reviewerForm, binding);
 				this.reviewerService.save(reviewer);
 				result = this.viewReviewer();
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("reviewer/signup");
+				result = (reviewerForm.getId() == 0) ? new ModelAndView("reviewer/signup") : new ModelAndView("reviewer/edit");
 				result.addObject("reviewerForm", reviewerForm);
-				result.addObject("errors", "commit.error");
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 			} catch (final Throwable e) {
-				result = new ModelAndView("reviewer/signup");
+				result = (reviewerForm.getId() == 0) ? new ModelAndView("reviewer/signup") : new ModelAndView("reviewer/edit");
 				String error = "commit.error";
 				if (e.getMessage().contains(".error"))
 					error = e.getMessage();
 				result.addObject("message", error);
 				result.addObject("reviewerForm", reviewerForm);
+				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 			}
 
 		return result;
