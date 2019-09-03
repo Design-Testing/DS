@@ -15,7 +15,26 @@
 
 <acme:display code="submission.moment" value="${submission.moment}" />
 
-<acme:display code="submission.status" value="${submission.status}" />
+
+
+<jstl:choose>
+	<jstl:when test="${lang eq 'es' }">
+		<jstl:choose>
+		<jstl:when test="${submission.status eq 'ACCEPTED' }">
+			<acme:display code="submission.status" value="ACEPTADA" />
+		</jstl:when>
+		<jstl:when test="${submission.status eq 'REJECTED' }">
+			<acme:display code="submission.status" value="RECHAZADA" />
+		</jstl:when>
+		<jstl:when test="${submission.status eq 'UNDER-REVIEWED' }">
+			<acme:display code="submission.status" value="BAJO REVISIÓN" />
+		</jstl:when>
+		</jstl:choose>
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:display code="submission.status" value="${submission.status}" />
+	</jstl:otherwise>
+</jstl:choose>
 
 <acme:display code="submission.author" value="${submission.author.name}" />
 
