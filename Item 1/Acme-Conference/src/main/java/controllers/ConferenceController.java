@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import services.ActorService;
+import services.CategoryService;
 import services.ConferenceService;
 import services.SponsorshipService;
 import domain.Actor;
@@ -34,6 +36,11 @@ public class ConferenceController extends AbstractController {
 
 	@Autowired
 	private SponsorshipService	sponsorshipService;
+
+	@Autowired
+	private CategoryService		categoryService;
+
+	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	// DISPLAY --------------------------------------------------------
@@ -160,6 +167,32 @@ public class ConferenceController extends AbstractController {
 		result.addObject("isAdministrator", false);
 		result.addObject("requestURI", "conference/administrator/listRunning.do");
 
+		return result;
+	}
+
+	// GROUPEDN BY CATEGORY  ---------------------------------------------------------------
+
+	@RequestMapping(value = "/listCategory", method = RequestMethod.GET)
+	public ModelAndView search() {
+		ModelAndView result;
+		result = new ModelAndView("finder/listByCategory");
+		result.addObject("categories", this.categoryService.findCategoriesName(this.lang));
+		return result;
+	}
+	@RequestMapping(value = "/listByCategory", method = RequestMethod.GET)
+	public ModelAndView search(@RequestParam final String category) {
+		ModelAndView result;
+		try {
+			final Collection<Conference> conferences = this.conferenceService.findConferencesGroupedByCategory(category);
+			result = new ModelAndView("finder/listByCategory");
+			result.addObject("conferences", conferences);
+			result.addObject("categories", this.categoryService.findCategoriesName(this.lang));
+			result.addObject("cate", category.toLowerCase());
+		} catch (final Throwable e) {
+			result = new ModelAndView("finder/listByCategory");
+			result.addObject("categories", this.categoryService.findCategoriesName(this.lang));
+			result.addObject("errortrace", "commit.error");
+		}
 		return result;
 	}
 

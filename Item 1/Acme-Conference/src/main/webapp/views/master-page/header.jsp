@@ -30,6 +30,7 @@
 					<li><a href="conference/administrator/fiveDaysNotification.do"><spring:message code="master.page.five.days.notification.conferences" /></a></li>
 					<li><a href="conference/administrator/fiveDaysCameraReady.do"><spring:message code="master.page.five.days.camera.ready.conferences" /></a></li>
 					<li><a href="conference/administrator/fiveDaysBeginning.do"><spring:message code="master.page.five.days.beginning.conferences" /></a></li>
+					<li><a href="conference/listCategory.do"><spring:message code="master.page.conferences.category" /></a></li>
 				</ul>
 			</li>
 			<li><a class="fNiv" ><spring:message code="master.page.submissions" /></a>
@@ -64,6 +65,7 @@
 					<li><a href="conference/listPast.do"><spring:message code="master.page.past.conferences" /></a></li>
 					<li><a href="conference/listRunning.do"><spring:message code="master.page.running.conferences" /></a></li>
 					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
+					<li><a href="conference/listCategory.do"><spring:message code="master.page.conferences.category" /></a></li>
 				</ul>
 			</li>
 			<li><a class="fNiv" href="submission/author/mySubmissions.do"><spring:message code="master.page.my.submissions" /></a></li>
@@ -86,6 +88,7 @@
 					<li><a href="conference/listPast.do"><spring:message code="master.page.past.conferences" /></a></li>
 					<li><a href="conference/listRunning.do"><spring:message code="master.page.running.conferences" /></a></li>
 					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
+					<li><a href="conference/listCategory.do"><spring:message code="master.page.conferences.category" /></a></li>
 				</ul>
 			</li>
 
@@ -113,6 +116,7 @@
 					<li><a href="conference/listPast.do"><spring:message code="master.page.past.conferences" /></a></li>
 					<li><a href="conference/listRunning.do"><spring:message code="master.page.running.conferences" /></a></li>
 					<li><a href="conference/listFurthcoming.do"><spring:message code="master.page.furthcoming.conferences" /></a></li>
+					<li><a href="conference/listCategory.do"><spring:message code="master.page.conferences.category" /></a></li>
 				</ul>
 			</li>
 			<li><a href="sponsorship/sponsor/list.do"><spring:message code="master.page.sponsorships" /></a></li>

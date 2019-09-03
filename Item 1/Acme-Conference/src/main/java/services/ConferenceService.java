@@ -525,6 +525,12 @@ public class ConferenceService {
 		return res;
 	}
 
+	public Collection<Conference> findConferencesGroupedByCategory(final String category) {
+		final Collection<Conference> res = this.conferenceRepository.findConferencesGroupedByCategory(category);
+		Assert.notNull(res);
+		return res;
+	}
+
 	public Collection<Conference> findAllConferences(final String keyword, final String categoryName, final Date fromDate, final Date toDate, final Double maximumFee) {
 		final Collection<Conference> res = this.conferenceRepository.findAllConferences(keyword, categoryName, fromDate, toDate, maximumFee);
 		Assert.notNull(res);
