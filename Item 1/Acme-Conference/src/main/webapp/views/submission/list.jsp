@@ -34,7 +34,26 @@
 	
 	<display:column property="conference.title" titleKey="submission.conference" />
 	
-	<display:column property="status" titleKey="submission.status" />
+	
+	
+	<jstl:choose>
+	<jstl:when test="${lang eq 'es' }">
+		<jstl:choose>
+		<jstl:when test="${row.status eq 'ACCEPTED' }">
+			<display:column value="ACEPTADA" titleKey="submission.status" />
+		</jstl:when>
+		<jstl:when test="${row.status eq 'REJECTED' }">
+			<display:column value="RECHAZADA" titleKey="submission.status" />
+		</jstl:when>
+		<jstl:when test="${row.status eq 'UNDER-REVIEWED' }">
+			<display:column value="BAJO REVISIÓN" titleKey="submission.status" />
+		</jstl:when>
+		</jstl:choose>
+	</jstl:when>
+	<jstl:otherwise>
+		<display:column property="status" titleKey="submission.status" />
+	</jstl:otherwise>
+	</jstl:choose>
 	
 	
 	
