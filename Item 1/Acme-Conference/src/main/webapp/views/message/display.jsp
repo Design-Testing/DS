@@ -9,6 +9,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 
+</style>
 
 	<acme:display code="sender" value="${m.sender.name}" />
 	<acme:display code="subject" value="${m.subject}" />
@@ -22,11 +23,13 @@
 		</jstl:otherwise>
 	</jstl:choose>
 	<spring:message code="recivers" />:
-	<ul>
-		<jstl:forEach items="${m.recivers}" var="r">
-			<li><jstl:out value="${r}" /></li>
-		</jstl:forEach>
-	</ul>
+	<div style="height:240px;width:180px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+		<ul>
+			<jstl:forEach items="${m.recivers}" var="r">
+				<li><jstl:out value="${r}" /></li>
+			</jstl:forEach>
+		</ul>
+	</div>
 	<acme:display code="body" value="${m.body}" />
 	
 

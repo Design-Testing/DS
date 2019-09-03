@@ -20,6 +20,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
+
 <form:form action="${action}" modelAttribute="m">
 
 	<form:hidden path="id" />
@@ -79,10 +80,10 @@
 		<spring:message code="send" />
 	</button>
 	<jstl:if test="${isAdmin and isBroadcast != true}">
-		<button type="submit" formaction="message/broadcastAuthors.do" class="button">
+		<button type="submit" formaction="message/broadcastAuthors.do?origen=${origen}" class="button">
 			<spring:message code="broadcastAuthors" />
 		</button>
-		<button type="submit" formaction="message/broadcastActors.do" class="button">
+		<button type="submit" formaction="message/broadcastActors.do?origen=${origen}" class="button">
 			<spring:message code="broadcastActors" />
 		</button>
 	</jstl:if>

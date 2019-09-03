@@ -210,7 +210,7 @@ public class MessageController extends AbstractController {
 	public ModelAndView broadcastAuthors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors() && !binding.hasFieldErrors("recivers"))
 			result = this.createEditModelAndView(message, null);
 		else
 			try {
@@ -261,7 +261,7 @@ public class MessageController extends AbstractController {
 	public ModelAndView broadcastActors(@ModelAttribute("m") @Valid final Message message, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors() && !binding.hasFieldErrors("recivers"))
 			result = this.createEditModelAndView(message, null);
 		else
 			try {
