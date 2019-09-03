@@ -19,8 +19,9 @@
 <acme:display code="reviewer.surname" value="${reviewer.surname}" />
 <spring:message code="author.photo" />:
 <br />
-<img src="${author.photo}" alt="<jstl:out value ="${author.photo}"/>"
+<img src="${reviewer.photo}" alt="<jstl:out value ="${reviewer.photo}"/>"
 	width="220" height="135" />
+	</br>
 <acme:display code="reviewer.email" value="${reviewer.email}" />
 <acme:display code="reviewer.phone" value="${reviewer.phone}" />
 
