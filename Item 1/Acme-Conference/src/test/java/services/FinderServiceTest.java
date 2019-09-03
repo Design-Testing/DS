@@ -37,13 +37,14 @@ public class FinderServiceTest extends AbstractTest {
 
 	@Test
 	public void createTest() {
-		final Finder finder = this.finderService.create();
+		this.finderService.create();
 	}
 
 	@Test
 	public void saveTest() {
 		super.authenticate("author1");
-		final Finder finder = this.finderService.findOne(3184);
+		final Finder finder = this.finderService.findOne(this.getEntityId("finderAuthor1"));
+		finder.setKeyword("hola");
 		this.finderService.save(finder);
 		super.unauthenticate();
 	}
@@ -51,50 +52,50 @@ public class FinderServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void saveUnauthenticatedTest() {
 		this.unauthenticate();
-		final Finder finder = this.finderService.findOne(3184);
+		final Finder finder = this.finderService.findOne(this.getEntityId("finderAuthor1"));
 		this.finderService.save(finder);
 	}
 
 	@Test
 	public void deleteTest() {
 		super.authenticate("author1");
-		final Finder finder = this.finderService.findOne(3184);
+		final Finder finder = this.finderService.findOne(this.getEntityId("finderAuthor1"));
 		this.finderService.delete(finder);
 		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteUnauthenticatedTest() {
-		final Finder finder = this.finderService.findOne(3184);
+		final Finder finder = this.finderService.findOne(this.getEntityId("finderAuthor2"));
 		this.finderService.delete(finder);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteNotOwnedTest() {
 		super.authenticate("author1");
-		final Finder finder = this.finderService.findOne(3185);
+		final Finder finder = this.finderService.findOne(this.getEntityId("finderSponsor1"));
 		this.finderService.delete(finder);
 		super.unauthenticate();
 	}
 
 	@Test
 	public void clearTest() {
-		super.authenticate("author1");
-		final Finder finder = this.finderService.findOne(3184);
+		super.authenticate("sponsor2");
+		final Finder finder = this.finderService.findOne(this.getEntityId("finderSponsor2"));
 		this.finderService.clear(finder);
 		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void clearUnauthenticatedTest() {
-		final Finder finder = this.finderService.findOne(3184);
+		final Finder finder = this.finderService.findOne(this.getEntityId("finderAdmin1"));
 		this.finderService.clear(finder);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void clearNotOwnedTest() {
 		super.authenticate("author1");
-		final Finder finder = this.finderService.findOne(3185);
+		final Finder finder = this.finderService.findOne(this.getEntityId("finderAdmin1"));
 		this.finderService.clear(finder);
 		super.unauthenticate();
 	}

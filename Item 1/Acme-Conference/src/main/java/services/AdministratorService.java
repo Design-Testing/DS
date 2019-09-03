@@ -105,9 +105,9 @@ public class AdministratorService {
 		return a;
 	}
 
-	public Administrator findSystem() {
-		return this.administratorRepository.findSystem();
-	}
+	//	public Administrator findSystem() {
+	//		return this.administratorRepository.findSystem();
+	//	}
 
 	public Administrator reconstruct(final AdminForm actorForm, final BindingResult binding) {
 		Administrator admin;

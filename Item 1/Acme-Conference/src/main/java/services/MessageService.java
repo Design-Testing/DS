@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.MessageRepository;
-import security.Authority;
 import domain.Actor;
 import domain.Folder;
 import domain.Message;
@@ -32,6 +31,9 @@ public class MessageService {
 
 	@Autowired
 	private FolderService			folderService;
+
+	@Autowired
+	private AuthorService			authorService;
 
 
 	public Message create() {
@@ -77,6 +79,7 @@ public class MessageService {
 
 		outboxMessages.add(sent);
 		outbox.setMessages(outboxMessages);
+		this.folderService.save(outbox, sender);
 
 		for (final Actor r : recipients) {
 			inbox = this.folderService.findInboxByUserId(r.getUserAccount().getId());
@@ -99,7 +102,6 @@ public class MessageService {
 
 		final Collection<Actor> actors = this.actorService.findAll();
 		final Actor actor = this.actorService.findByPrincipal();
-		actors.remove(this.administratorService.findSystem());
 		actors.remove(actor);
 		m.setRecivers(actors);
 		this.send(m);
@@ -113,13 +115,8 @@ public class MessageService {
 		Assert.notNull(m);
 		this.administratorService.findByPrincipal();
 
-		final Collection<Actor> actors = this.actorService.findAll();
 		final Collection<Actor> autors = new ArrayList<Actor>();
-		final Authority authAutor = new Authority();
-		authAutor.setAuthority(Authority.AUTHOR);
-		for (final Actor actor : actors)
-			if (actor.getUserAccount().getAuthorities().contains(authAutor))
-				autors.add(actor);
+		autors.addAll(this.authorService.findAll());
 		m.setRecivers(autors);
 		this.send(m);
 	}
@@ -127,42 +124,42 @@ public class MessageService {
 	/**
 	 * This method sends a message to the authors who have made a submission to a conference and sets the logged user as the sender.
 	 * */
-	public void broadcastToAuthorsSubmission() {
-		final Message m = this.create();
-		m.setSubject("New submission to a conference");
-		m.setBody("You has sent a submission to a conference");
-		this.administratorService.findByPrincipal();
-
-		final Collection<Actor> actors = this.actorService.findAll();
-		final Collection<Actor> autors = new ArrayList<Actor>();
-		final Authority authAutor = new Authority();
-		authAutor.setAuthority(Authority.AUTHOR);
-		for (final Actor actor : actors)
-			if (actor.getUserAccount().getAuthorities().contains(authAutor))
-				autors.add(actor);
-		m.setRecivers(autors);
-		this.send(m);
-	}
+	//	public void broadcastToAuthorsSubmission() {
+	//		this.administratorService.findByPrincipal();
+	//		final Message m = this.create();
+	//		m.setSubject("New submission to a conference");
+	//		m.setBody("You has sent a submission to a conference");
+	//
+	//		final Collection<Actor> actors = this.actorService.findAll();
+	//		final Collection<Actor> autors = new ArrayList<Actor>();
+	//		final Authority authAutor = new Authority();
+	//		authAutor.setAuthority(Authority.AUTHOR);
+	//		for (final Actor actor : actors)
+	//			if (actor.getUserAccount().getAuthorities().contains(authAutor))
+	//				autors.add(actor);
+	//		m.setRecivers(autors);
+	//		this.send(m);
+	//	}
 
 	/**
 	 * This method sends a message to the authors who has registered to a conference and sets the logged user as the sender.
 	 * */
-	public void broadcastToAuthorsRegistration() {
-		final Message m = this.create();
-		m.setSubject("New registration to a conference");
-		m.setBody("Yo have been registered to a conference");
-		this.administratorService.findByPrincipal();
-
-		final Collection<Actor> actors = this.actorService.findAll();
-		final Collection<Actor> autors = new ArrayList<Actor>();
-		final Authority authAutor = new Authority();
-		authAutor.setAuthority(Authority.AUTHOR);
-		for (final Actor actor : actors)
-			if (actor.getUserAccount().getAuthorities().contains(authAutor))
-				autors.add(actor);
-		m.setRecivers(autors);
-		this.send(m);
-	}
+	//	public void broadcastToAuthorsRegistration() {
+	//		final Message m = this.create();
+	//		m.setSubject("New registration to a conference");
+	//		m.setBody("Yo have been registered to a conference");
+	//		this.administratorService.findByPrincipal();
+	//
+	//		final Collection<Actor> actors = this.actorService.findAll();
+	//		final Collection<Actor> autors = new ArrayList<Actor>();
+	//		final Authority authAutor = new Authority();
+	//		authAutor.setAuthority(Authority.AUTHOR);
+	//		for (final Actor actor : actors)
+	//			if (actor.getUserAccount().getAuthorities().contains(authAutor))
+	//				autors.add(actor);
+	//		m.setRecivers(autors);
+	//		this.send(m);
+	//	}
 
 	public Collection<Message> findAllByFolderIdAndUserId(final int folderId, final int userAccountId) {
 		Assert.isTrue(folderId != 0);
@@ -226,8 +223,8 @@ public class MessageService {
 	}
 
 	public void delete(Message message) {
-		message = this.messageRepository.findOne(message.getId());
 		final Actor principal = this.actorService.findByPrincipal();
+		message = this.messageRepository.findOne(message.getId());
 		final Folder inbox = this.folderService.findInboxByUserId(principal.getUserAccount().getId());
 		final List<Message> messages = new ArrayList<>(inbox.getMessages());
 		if (messages.contains(message))
