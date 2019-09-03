@@ -37,7 +37,7 @@ public class CommentServiceTest extends AbstractTest {
 
 	@Test
 	public void createOnConferenceTest() {
-		this.commentService.create("conference", this.getEntityId("comment1"));
+		this.commentService.create("conference", this.getEntityId("conference1"));
 	}
 
 	@Test
@@ -47,8 +47,12 @@ public class CommentServiceTest extends AbstractTest {
 
 	@Test
 	public void saveTest() {
-		final Comment comment = this.commentService.findOne(this.getEntityId("comment3"));
+		super.authenticate("author1");
+		final Comment comment = this.commentService.create();
 		comment.setText("Nuevo texto de prueba");
+		comment.setTitle("Title");
+		comment.setConference(this.conferenceService.findOne(this.getEntityId("conference5")));
 		this.commentService.save(comment);
+		super.unauthenticate();
 	}
 }
