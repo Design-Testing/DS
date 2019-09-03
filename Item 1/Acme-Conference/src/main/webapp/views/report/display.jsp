@@ -13,7 +13,10 @@
 <acme:display code="report.originality" value="${report.originality}"/>
 <acme:display code="report.quality" value="${report.quality}"/>
 <acme:display code="report.readability" value="${report.readability}"/>
-<acme:display code="report.decision" value="${report.decision}"/>
+<spring:message code="report.decision" />:
+<jstl:if test="${report.decision eq 'REJECT'}"><spring:message code="REJECT"/></jstl:if>
+<jstl:if test="${report.decision eq 'BORDER-LINE'}"><spring:message code="BORDER.LINE"/></jstl:if>
+<jstl:if test="${report.decision eq 'ACCEPT'}"><spring:message code="ACCEPT"/></jstl:if>
 
 <security:authorize access="hasRole('AUTHOR')">
 	<acme:button code="report.submission" name="submission" url="submission/author/display.do?submissionId=${report.submission.id}"/>

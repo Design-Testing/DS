@@ -34,9 +34,9 @@
 	</label>
 	<select id="decision" name="decision">
 		
-		<option value="REJECT" <jstl:if test="${report.decision eq 'REJECT'}">selected</jstl:if>>REJECT</option>
-		<option value="BORDER-LINE" <jstl:if test="${report.decision eq 'BORDER-LINE'}">selected</jstl:if>>BORDER-LINE</option>
-		<option value="ACCEPT" <jstl:if test="${report.decision eq 'ACCEPT'}">selected</jstl:if>>ACCEPT</option>
+		<option value="REJECT" <jstl:if test="${report.decision eq 'REJECT'}">selected</jstl:if>><spring:message code="REJECT"/></option>
+		<option value="BORDER-LINE" <jstl:if test="${report.decision eq 'BORDER-LINE'}">selected</jstl:if>><spring:message code="BORDER.LINE"/></option>
+		<option value="ACCEPT" <jstl:if test="${report.decision eq 'ACCEPT'}">selected</jstl:if>><spring:message code="ACCEPT"/></option>
 	</select>
 	<br>
 	

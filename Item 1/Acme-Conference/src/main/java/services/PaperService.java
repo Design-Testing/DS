@@ -66,4 +66,10 @@ public class PaperService {
 		return res;
 	}
 
+	public Collection<Paper> findByConference(final int conferenceId) {
+		Assert.isTrue(conferenceId != 0);
+		final Collection<Paper> res = this.paperRepository.findByConference(conferenceId);
+		return res;
+	}
+
 }
