@@ -42,9 +42,8 @@
     <form:hidden path="id"/>
     <form:hidden path="version"/>
     <form:hidden path="userAccountpassword"/>
-    
-    <acme:textbox path="userAccountuser" code="author.userAccount.username"/>
-    <br/>
+    <form:hidden path="userAccountuser"/>
+
     
     <acme:textbox path="name" code="author.name"/>
     <br/>
@@ -69,14 +68,6 @@
     <acme:textbox path="address" code="author.address"/>
     <br/>
 
-
-    <br/>
-    <br/>
-    
-    
-	
-	<br/>
-    <br/>
     <br/>
     
     <jstl:if test="${not empty msgerror  }">

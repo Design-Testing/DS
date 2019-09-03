@@ -108,7 +108,7 @@ public class SponsorService {
 			this.folderService.setFoldersByDefault(result);
 
 		} else {
-			final String password = HashPassword.hashPassword(s.getUserAccount().getPassword());
+			final String password = s.getUserAccount().getPassword();
 			final Actor principal = this.actorService.findByPrincipal();
 			s.getUserAccount().setPassword(password);
 			Assert.isTrue(principal.getId() == s.getId(), "You only can edit your info");

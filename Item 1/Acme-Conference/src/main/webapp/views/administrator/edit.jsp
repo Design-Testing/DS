@@ -42,8 +42,8 @@
     <form:hidden path="id"/>
     <form:hidden path="version"/>
     <form:hidden path="userAccountpassword"/>
+    <form:hidden path="userAccountuser"/>
     
-    <acme:textbox path="userAccountuser" code="administrator.userAccount.username"/>
     <br/>
     
     <acme:textbox path="name" code="administrator.name"/>
@@ -67,15 +67,6 @@
     <acme:textbox path="address" code="administrator.address"/>
     <br/>
 
-
-    <br/>
-    <br/>
-    
-    
-	
-	<br/>
-    <br/>
-    <br/>
     
     <jstl:if test="${not empty msgerror  }">
     	<h5 style="color: red;"><spring:message code="${msgerror}"/></h5>

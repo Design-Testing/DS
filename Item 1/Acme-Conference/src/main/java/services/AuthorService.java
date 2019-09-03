@@ -176,8 +176,6 @@ public class AuthorService {
 			author.setAddress(actorForm.getAddress());
 			author.setVersion(actorForm.getVersion());
 			author.setFinder(this.finderService.findActorFinder());
-			if (!author.getUserAccount().getUsername().equals(actorForm.getUserAccountuser()))
-				Assert.isTrue(this.userAccountRepository.findByUsername(author.getUserAccount().getUsername()) == null, "author.usernameIsUsed.error");
 			UserAccount account = this.userAccountService.findOne(author.getUserAccount().getId());
 			account.setUsername(actorForm.getUserAccountuser());
 			account.setPassword(actorForm.getUserAccountpassword());

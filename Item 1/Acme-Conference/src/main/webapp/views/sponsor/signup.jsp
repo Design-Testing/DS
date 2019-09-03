@@ -37,7 +37,7 @@
 	</script>
 </jstl:if>
 
-<form:form action="sponsor/save.do" modelAttribute="sponsor">
+<form:form action="sponsor/save.do" modelAttribute="actorForm">
      
     
     <form:hidden path="id"/>

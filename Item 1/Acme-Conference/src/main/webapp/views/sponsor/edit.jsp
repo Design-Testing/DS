@@ -41,11 +41,10 @@
 
     <form:hidden path="id"/>
     <form:hidden path="version"/>
+    <form:hidden path="userAccountuser"/>
+    <form:hidden path="userAccountpassword"/>
     
-    <acme:textbox path="userAccountuser" code="sponsor.userAccount.username"/>
-    <br/>
-    <acme:textbox path="userAccountpassword" code="sponsor.userAccount.password"/>
-    <br/>
+
     <acme:textbox path="name" code="sponsor.name"/>
     <br/>
     <acme:textbox path="surname" code="sponsor.surname"/>
@@ -68,16 +67,8 @@
     <br/>
 
 
-    <br/>
-    <br/>
     
-    
-	
-	<br/>
-    <br/>
-    <br/>
-    
-    <jstl:if test="${not empty msgerror  }">
+    <jstl:if test="${not empty msgerror}">
     	<h5 style="color: red;"><spring:message code="${msgerror}"/></h5>
     </jstl:if>
   

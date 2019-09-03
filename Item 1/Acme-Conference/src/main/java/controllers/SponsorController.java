@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.UserAccount;
 import services.ActorService;
 import services.ConfigurationParametersService;
 import services.FinderService;
@@ -67,7 +67,7 @@ public class SponsorController extends AbstractController {
 		actorForm.setPhone(sponsor.getPhone());
 		actorForm.setPhoto(sponsor.getPhoto());
 		actorForm.setSurname(sponsor.getSurname());
-		//actorForm.setUserAccountpassword(sponsor.getUserAccount().getPassword());
+		actorForm.setUserAccountpassword(sponsor.getUserAccount().getPassword());
 		actorForm.setUserAccountuser(sponsor.getUserAccount().getUsername());
 		final ModelAndView result;
 		result = new ModelAndView("sponsor/edit");
@@ -85,16 +85,16 @@ public class SponsorController extends AbstractController {
 
 		result = new ModelAndView("sponsor/signup");
 		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
-		result.addObject("sponsor", actorForm);
+		result.addObject("actorForm", actorForm);
 		return result;
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveSponsor(@ModelAttribute("sponsor") @Valid final ActorForm actorForm, final BindingResult binding, final HttpServletRequest request) {
+	public ModelAndView saveSponsor(@Valid final ActorForm actorForm, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result = null;
 		if (binding.hasErrors()) {
-			result = new ModelAndView("sponsor/signup");
+			result = (actorForm.getId() == 0) ? new ModelAndView("sponsor/signup") : new ModelAndView("sponsor/edit");
 			result.addObject("errors", binding.getAllErrors());
-			result.addObject("sponsor", actorForm);
+			result.addObject("actorForm", actorForm);
 			result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
 		} else if (actorForm.getId() == 0)
@@ -103,16 +103,15 @@ public class SponsorController extends AbstractController {
 				sponsor = this.sponsorService.save(sponsor);
 				result = new ModelAndView("forward:/security/login.do");
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("sponsor/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("sponsor/signup") : new ModelAndView("sponsor/edit");
 				result.addObject("actorForm", actorForm);
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
 			} catch (final Throwable e) {
-				result = new ModelAndView("sponsor/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("sponsor/signup") : new ModelAndView("sponsor/edit");
 				String error = "commit.error";
 				if (e.getMessage().contains(".error"))
 					error = e.getMessage();
-				result.addObject("message", error);
 
 				result.addObject("message", error);
 				result.addObject("actorForm", actorForm);
@@ -121,22 +120,26 @@ public class SponsorController extends AbstractController {
 			}
 		else
 			try {
+				if (actorForm.getId() != 0) {
+					final UserAccount userAccount = this.sponsorService.findOne((actorForm.getId())).getUserAccount();
+					actorForm.setUserAccountuser(userAccount.getUsername());
+					actorForm.setUserAccountpassword(userAccount.getPassword());
+				}
 				final Sponsor sponsor = this.sponsorService.reconstruct(actorForm, binding);
 				this.sponsorService.save(sponsor);
 				result = this.viewSponsor();
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("sponsor/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("sponsor/signup") : new ModelAndView("sponsor/edit");
 				result.addObject("actorForm", actorForm);
-				result.addObject("errors", "commit.error");
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
 			} catch (final Throwable e) {
-				result = new ModelAndView("sponsor/signup");
+				result = (actorForm.getId() == 0) ? new ModelAndView("sponsor/signup") : new ModelAndView("sponsor/edit");
 
 				String error = "commit.error";
 				if (e.getMessage().contains(".error"))
 					error = e.getMessage();
-				result.addObject("errors", error);
+				result.addObject("message", error);
 				result.addObject("actorForm", actorForm);
 				result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 
