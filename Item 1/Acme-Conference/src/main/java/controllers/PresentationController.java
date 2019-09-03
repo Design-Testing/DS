@@ -155,7 +155,7 @@ public class PresentationController extends AbstractController {
 
 		this.administratorService.findByPrincipal();
 
-		final Collection<Paper> papers = this.paperService.findAll();
+		final Collection<Paper> papers = this.paperService.findByConference(conferenceId);
 
 		result = new ModelAndView("presentation/edit");
 		result.addObject("presentation", presentation);

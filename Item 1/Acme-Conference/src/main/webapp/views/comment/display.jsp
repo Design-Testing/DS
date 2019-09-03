@@ -15,7 +15,14 @@
 
 <acme:display code="comment.moment" value="${comment.moment}" />
 
-<acme:display code="comment.author" value="${comment.author}" />
+<jstl:choose>
+<jstl:when test="${not empty comment.author}">
+	<acme:display code="comment.author" value="${comment.author}" />
+</jstl:when>
+<jstl:choose>
+	<spring:message code="anonymus.comment"/>
+</jstl:choose>
+</jstl:choose>
 
 <jstl:if test="${not empty comment.conference}">
 	<acme:display code="comment.conference" value="${comment.conference.title}" url="conference/display.do?conferenceId=${comment.conference.id}"/>

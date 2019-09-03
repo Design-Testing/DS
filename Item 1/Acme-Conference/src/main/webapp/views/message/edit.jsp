@@ -36,7 +36,7 @@
 	    </form:label>
 		<form:select path="recivers" code="recivers">
 			<jstl:forEach items="${actors}" var="r">
-				<form:option value="${r.id}" label="${r.name}" />
+				<form:option value="${r.id}" label="${r}" />
 			</jstl:forEach>
 		</form:select>
 		<form:errors path="recivers" cssClass="error" />
