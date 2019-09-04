@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.AdministratorService;
 import services.DashboardService;
 
 @Controller
@@ -14,13 +15,18 @@ import services.DashboardService;
 public class DashboardController {
 
 	@Autowired
-	private DashboardService	dashboardService;
+	private DashboardService		dashboardService;
+
+	@Autowired
+	private AdministratorService	administratorService;
 
 
 	@RequestMapping(value = "get", method = RequestMethod.GET)
 	public ModelAndView get() {
 		ModelAndView result;
 		result = new ModelAndView("dashboard/display");
+
+		this.administratorService.findByPrincipal();
 
 		final Double[] SubmissionPerConference = this.dashboardService.getNumberSubmissionPerConference();
 		result.addObject("SubmissionPerConferenceAvg", SubmissionPerConference[0]);
