@@ -11,6 +11,9 @@ Decisions about the views:
 
 Decisions about the implementation:
 -------------------------------------
+
+- As a generla rule, an admin only can create and edit activities if the conference is in draft mode. However, there is an exception with presentations because to create a presentation it is needed a camera-ready paper from one of the accepted submissions of the conference. Since authors just can submits final conferences, then presentatiosn can be created when the conference is in final mode. 
+
 - To delete a topic there must not be any message related to that topic
 
 - When deleting a category all the childs are deleted too (and also the childs of the childs if any). All the categories that were related to any of the category that has been deleted, are reassigned.
