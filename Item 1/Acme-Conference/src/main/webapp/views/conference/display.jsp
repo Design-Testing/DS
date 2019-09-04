@@ -160,7 +160,6 @@
 </security:authorize>
 <acme:button url="presentation/list.do?conferenceId=${conference.id}" name="presentations" code="conference.presentations" />
 <security:authorize access="hasRole('ADMIN')">
-	<jstl:if test="${conference.isDraft}">
 	<jstl:choose>
 	<jstl:when test="${mostrarPresentation}">
 		<acme:button
@@ -171,7 +170,6 @@
 		<spring:message code="no.paper.presentation"/>
 	</jstl:otherwise>
 	</jstl:choose>
-	</jstl:if>
 </security:authorize>
 
 <br>

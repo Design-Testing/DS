@@ -38,13 +38,18 @@ public class TopicController extends AbstractController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int topicId) {
-		ModelAndView result;
+		final ModelAndView result = this.list();
 
-		final Topic topic = this.topicService.findOne(topicId);
-		this.topicService.delete(topic);
-
-		result = new ModelAndView("topic/list");
-		result.addObject("topics", this.topicService.findAll());
+		try {
+			final Topic topic = this.topicService.findOne(topicId);
+			this.topicService.delete(topic);
+			result.addObject("msg", "delete.ok");
+		} catch (final Throwable oops) {
+			String errorMessage = "topic.commit.error";
+			if (oops.getMessage().contains(".error"))
+				errorMessage = oops.getMessage();
+			result.addObject("msg", errorMessage);
+		}
 		return result;
 	}
 

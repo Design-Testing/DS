@@ -44,11 +44,11 @@ public class TopicService {
 
 	public Topic save(final Topic topic) {
 		final Administrator principal = this.administratorService.findByPrincipal();
-		Assert.notNull(principal, "error.a");
-		Assert.notNull(topic.getEnglish(), "error.b");
-		Assert.notNull(topic.getSpanish(), "error.c");
-		Assert.isTrue(!topic.getEnglish().equals(""), "error.d");
-		Assert.isTrue(!topic.getSpanish().equals(""), "error.e");
+		Assert.notNull(principal, "topic.error.a");
+		Assert.notNull(topic.getEnglish(), "topic.error.b");
+		Assert.notNull(topic.getSpanish(), "topic.error.c");
+		Assert.isTrue(!topic.getEnglish().equals(""), "topic.error.d");
+		Assert.isTrue(!topic.getSpanish().equals(""), "topic.error.e");
 		final Topic res = this.topicRepository.save(topic);
 		Assert.notNull(res);
 		return res;
@@ -56,10 +56,10 @@ public class TopicService {
 
 	public void delete(final Topic topic) {
 		final Administrator principal = this.administratorService.findByPrincipal();
-		Assert.notNull(principal, "error.g");
+		Assert.notNull(principal, "topic.error.g");
 		//No se puede eliminar un topic si hay un mensaje con ese topic
 		final Collection<Message> messages = this.messageService.findAllByTopic(topic.getId());
-		Assert.isTrue(messages.isEmpty(), "error.h");
+		Assert.isTrue(messages.isEmpty(), "topic.error.h");
 		this.topicRepository.delete(topic);
 	}
 

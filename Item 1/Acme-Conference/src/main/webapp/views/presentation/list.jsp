@@ -35,21 +35,17 @@
 		</display:column>
 		<display:column>
 			<security:authorize access="hasRole('ADMIN')">
-				<jstl:if test="${isDraft}">
 				<acme:button
 					url="presentation/edit.do?conferenceId=${conferenceId}&presentationId=${row.id}"
 					name="edit" code="activity.edit" />
-				</jstl:if>
 			</security:authorize>
 		</display:column>
 	</jstl:if>
 </display:table>
 <security:authorize access="hasRole('ADMIN')">
-	<jstl:if test="${isDraft}">
 		<acme:button
 			url="presentation/create.do?conferenceId=${conferenceId}&presentationId=${row.id}"
 			name="edit" code="activity.create" /><br/><br/>
-	</jstl:if>
 	<jstl:set value="/administrator" var="autorize"/>
 </security:authorize>
 <jstl:if test="${not empty conferenceId}">

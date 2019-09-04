@@ -135,6 +135,10 @@ public class ConferenceService {
 		return res;
 	}
 
+	Conference update(final Conference conference) {
+		return this.conferenceRepository.save(conference);
+	}
+
 	//TODO ALBA ** hacer que no se pueda pasar a final hasta que tenga alguna actividad?
 	public void toFinalMode(final Conference conference) {
 		final Conference retrieved = this.findOne(conference.getId());
