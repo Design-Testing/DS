@@ -38,7 +38,9 @@ public class TopicController extends AbstractController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int topicId) {
-		final ModelAndView result = this.list();
+		final ModelAndView result;
+		result = new ModelAndView("topic/list");
+		result.addObject("requestURI", "topic/list.do");
 
 		try {
 			final Topic topic = this.topicService.findOne(topicId);
@@ -50,6 +52,9 @@ public class TopicController extends AbstractController {
 				errorMessage = oops.getMessage();
 			result.addObject("msg", errorMessage);
 		}
+
+		result.addObject("topics", this.topicService.findAll());
+
 		return result;
 	}
 
