@@ -17,6 +17,7 @@
     <jstl:if test="${lang eq 'es' }" >
     	<acme:display code="category.father" value="${category.father.titleEs}" />
     </jstl:if>
+    <h3><spring:message code="category.subcategories" /></h3>
     <display:table name="subcategories" id="row"
 		requestURI="${requestURI}" pagesize="5"
 		class="displaytag">
@@ -34,7 +35,7 @@
 </display:table>
 	
 	
-
+<br><br>
 <jstl:choose>
     <jstl:when test="${category.titleEn eq 'CONFERENCE'}">
     </jstl:when>
