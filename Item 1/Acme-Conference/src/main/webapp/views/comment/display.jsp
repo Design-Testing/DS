@@ -19,9 +19,9 @@
 <jstl:when test="${not empty comment.author}">
 	<acme:display code="comment.author" value="${comment.author}" />
 </jstl:when>
-<jstl:choose>
+<jstl:otherwise>
 	<spring:message code="anonymus.comment"/>
-</jstl:choose>
+</jstl:otherwise>
 </jstl:choose>
 
 <jstl:if test="${not empty comment.conference}">
