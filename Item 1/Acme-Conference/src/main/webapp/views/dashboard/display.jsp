@@ -9,6 +9,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<security:authorize access="hasRole('ADMIN')">
 
 <table>
   <caption><spring:message code="SubmissionPerConference" /></caption>
@@ -153,3 +154,5 @@
     <td><jstl:out value="${CommentsPerConferenceStd}"></jstl:out></td>
   </tr>
 </table>
+
+</security:authorize>
