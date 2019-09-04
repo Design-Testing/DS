@@ -51,19 +51,32 @@ public class TopicController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView edit(@Valid final Topic topic, final BindingResult binding) {
 		ModelAndView result;
-		if (!binding.hasErrors()) {
-			result = new ModelAndView("topic/list");
-			this.topicService.save(topic);
-			result.addObject("topics", this.topicService.findAll());
-		} else {
-			result = new ModelAndView("topic/edit");
-			result.addObject("topic", topic);
-			result.addObject("errors", binding.getAllErrors());
-		}
 
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(topic);
+		else
+			try {
+				this.topicService.save(topic);
+				result = new ModelAndView("redirect:/topic/list.do");
+			} catch (final Throwable oops) {
+				String errorMessage = "topic.commit.error";
+				if (oops.getMessage().contains(".error"))
+					errorMessage = oops.getMessage();
+				result = this.createEditModelAndView(topic, errorMessage);
+			}
 		return result;
 	}
+	protected ModelAndView createEditModelAndView(final Topic topic) {
+		return this.createEditModelAndView(topic, null);
+	}
 
+	protected ModelAndView createEditModelAndView(final Topic topic, final String message) {
+		ModelAndView result;
+		result = new ModelAndView("topic/edit");
+		result.addObject("topic", topic);
+		result.addObject("message", message);
+		return result;
+	}
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int topicId) {
 		ModelAndView result;

@@ -58,8 +58,7 @@ public class ActivityService {
 		this.administratorService.findByPrincipal();
 		Assert.notNull(activity, "Activity is null - save");
 		final Conference conference = this.conferenceService.findOne(conferenceId);
-		//	TODO: Decidir si la actividad se anyade solo en draft mode o siempre
-		//	Assert.isTrue(conference.getIsDraft(), "La conferencia asociada a la actividad que estar en modo draft");
+		Assert.isTrue(conference.getIsDraft(), "La conferencia asociada a la actividad que estar en modo draft");
 		Assert.notNull(conference);
 		Assert.notEmpty(activity.getSpeakers());
 		final Collection<Activity> activities = this.conferenceService.findConferenceActivities(conferenceId);
