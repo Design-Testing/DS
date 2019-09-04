@@ -54,3 +54,8 @@ function deleteTopic(id, text){
 	</display:column>
 
 </display:table>
+<jstl:if test="${not empty msg}">
+	<h3 style="color: red;">
+		<spring:message code="${msg}" />
+	</h3>
+</jstl:if>

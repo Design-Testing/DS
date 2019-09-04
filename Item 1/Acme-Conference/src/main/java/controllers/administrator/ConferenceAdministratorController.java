@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.AdministratorService;
 import services.CategoryService;
 import services.ConferenceService;
+import services.PaperService;
 import services.RegistrationService;
 import services.SponsorshipService;
 import services.SubmissionService;
@@ -51,6 +52,9 @@ public class ConferenceAdministratorController extends AbstractController {
 
 	@Autowired
 	private SponsorshipService		sponsorshipService;
+
+	@Autowired
+	private PaperService			paperService;
 
 
 	// LIST --------------------------------------------------------
@@ -342,6 +346,7 @@ public class ConferenceAdministratorController extends AbstractController {
 			result.addObject("acceptedSubmissions", acceptedSubmissions);
 			result.addObject("rejectedSubmissions", rejectedSubmissions);
 			result.addObject("underReviewedSubmissions", underReviewedSubmissions);
+			result.addObject("mostrarPresentation", !this.paperService.findByConference(conference.getId()).isEmpty());
 			result.addObject("ratioDecidedAssignedSubmissions", this.submissionService.getRatioCalculatedSubmissionsOverAssignedSubmissions(conferenceId));
 
 		} else
